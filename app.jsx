@@ -1,0 +1,297 @@
+/* EREBOROS — audio player + tweaks + app shell */
+
+function usePlayer(tracks) {
+  const [current, setCurrent] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const [opened, setOpened] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    audioRef.current = new Audio();
+    audioRef.current.preload = "metadata";
+    const a = audioRef.current;
+    const onTime = () => setProgress(a.currentTime);
+    const onMeta = () => setDuration(a.duration || 0);
+    const onEnd  = () => {
+      setCurrent((c) => (c + 1 < tracks.length ? c + 1 : 0));
+    };
+    a.addEventListener("timeupdate", onTime);
+    a.addEventListener("loadedmetadata", onMeta);
+    a.addEventListener("ended", onEnd);
+    return () => {
+      a.pause();
+      a.removeEventListener("timeupdate", onTime);
+      a.removeEventListener("loadedmetadata", onMeta);
+      a.removeEventListener("ended", onEnd);
+    };
+  }, []);
+
+  useEffect(() => {
+    const a = audioRef.current;
+    if (!a) return;
+    a.src = tracks[current].src;
+    if (playing) {
+      a.play().catch(() => setPlaying(false));
+    }
+  }, [current]);
+
+  useEffect(() => {
+    const a = audioRef.current;
+    if (!a) return;
+    if (playing) a.play().catch(() => setPlaying(false));
+    else a.pause();
+  }, [playing]);
+
+  const playIndex = (i) => {
+    if (i === current) {
+      setPlaying((p) => !p);
+    } else {
+      setCurrent(i);
+      setPlaying(true);
+    }
+    setOpened(true);
+  };
+  const next = () => { setCurrent((c) => (c + 1) % tracks.length); setPlaying(true); setOpened(true); };
+  const prev = () => { setCurrent((c) => (c - 1 + tracks.length) % tracks.length); setPlaying(true); setOpened(true); };
+  const togglePlay = () => { setPlaying((p) => !p); setOpened(true); };
+  const seek = (pct) => {
+    const a = audioRef.current;
+    if (a && duration) a.currentTime = pct * duration;
+  };
+  const close = () => { setPlaying(false); setOpened(false); };
+
+  return { current, playing, opened, progress, duration, playIndex, next, prev, togglePlay, seek, close };
+}
+
+function fmtTime(s) {
+  if (!s || !isFinite(s)) return "0:00";
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60).toString().padStart(2, "0");
+  return `${m}:${sec}`;
+}
+
+function PlayerBar({ player, tracks, lang, i18n }) {
+  const t = tracks[player.current];
+  const pct = player.duration ? (player.progress / player.duration) * 100 : 0;
+  const barRef = useRef(null);
+
+  const onBar = (e) => {
+    const r = barRef.current.getBoundingClientRect();
+    const p = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+    player.seek(p);
+  };
+
+  return (
+    <div className={`player ${player.opened ? "is-open" : ""}`}>
+      <div className="player-now">
+        <div className="player-art"><span className="player-art-cross">✝</span></div>
+        <div className="player-info">
+          <div className="player-track">{t.title}</div>
+          <div className="player-sub">Ereboros · {t.n}</div>
+        </div>
+      </div>
+
+      <div className="player-controls">
+        <div className="player-btns">
+          <button className="player-btn" onClick={player.prev} aria-label="Prev"><Icon.Prev /></button>
+          <button className="player-btn player-btn-main" onClick={player.togglePlay} aria-label="Play">
+            {player.playing ? <Icon.Pause /> : <Icon.Play />}
+          </button>
+          <button className="player-btn" onClick={player.next} aria-label="Next"><Icon.Next /></button>
+        </div>
+        <div className="player-progress">
+          <span>{fmtTime(player.progress)}</span>
+          <div className="player-bar" ref={barRef} onClick={onBar}>
+            <div className="player-bar-fill" style={{ width: `${pct}%` }} />
+          </div>
+          <span>{fmtTime(player.duration)}</span>
+        </div>
+      </div>
+
+      <div className="player-right">
+        <span className="meta">{pick(i18n.player.now, lang)}</span>
+        <button className="player-close" onClick={player.close}>×  {lang === "pt" ? "Fechar" : "Close"}</button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Tweaks ---------- */
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accent": "oxide",
+  "bg": "ink",
+  "capitals": "roman"
+}/*EDITMODE-END*/;
+
+const ACCENTS = {
+  oxide:  { bright: "#8b3329", base: "#6b2820", label: "Oxide" },
+  bone:   { bright: "#ebe5d8", base: "#c6bda9", label: "Bone" },
+  ember:  { bright: "#a24a1f", base: "#7a3414", label: "Ember" },
+  frost:  { bright: "#6a7c8a", base: "#3f4a55", label: "Frost" },
+};
+const BGS = {
+  ink:  { a: "#0a0908", b: "#14110f", c: "#1d1916", label: "Ink" },
+  coal: { a: "#050504", b: "#0d0c0b", c: "#161412", label: "Coal" },
+  soil: { a: "#0f0a07", b: "#17110c", c: "#1f1811", label: "Soil" },
+};
+
+function applyTweaks(state) {
+  const root = document.documentElement;
+  const acc = ACCENTS[state.accent] || ACCENTS.oxide;
+  const bg = BGS[state.bg] || BGS.ink;
+  root.style.setProperty("--oxide", acc.base);
+  root.style.setProperty("--oxide-bright", acc.bright);
+  root.style.setProperty("--ink", bg.a);
+  root.style.setProperty("--ink-2", bg.b);
+  root.style.setProperty("--ink-3", bg.c);
+}
+
+function Tweaks({ state, setState, open, setOpen }) {
+  useEffect(() => { applyTweaks(state); }, [state]);
+
+  const set = (patch) => {
+    const next = { ...state, ...patch };
+    setState(next);
+    try {
+      window.parent.postMessage({ type: "__edit_mode_set_keys", edits: patch }, "*");
+    } catch (e) {}
+  };
+
+  return (
+    <div className={`tweaks ${open ? "is-open" : ""}`}>
+      <h4>Tweaks</h4>
+      <div className="tweak-row">
+        <label>Accent</label>
+        <div className="tweak-swatches">
+          {Object.entries(ACCENTS).map(([k, v]) => (
+            <button
+              key={k}
+              className={`tweak-swatch ${state.accent === k ? "active" : ""}`}
+              style={{ background: v.bright }}
+              onClick={() => set({ accent: k })}
+              title={v.label}
+            />
+          ))}
+        </div>
+      </div>
+      <div className="tweak-row">
+        <label>Background</label>
+        <div className="tweak-pick">
+          {Object.entries(BGS).map(([k, v]) => (
+            <button
+              key={k}
+              className={state.bg === k ? "active" : ""}
+              onClick={() => set({ bg: k })}
+            >
+              {v.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="tweak-row">
+        <label>{"Capital numerals"}</label>
+        <div className="tweak-pick">
+          <button className={state.capitals === "roman" ? "active" : ""} onClick={() => set({ capitals: "roman" })}>Roman</button>
+          <button className={state.capitals === "arabic" ? "active" : ""} onClick={() => set({ capitals: "arabic" })}>Arabic</button>
+        </div>
+      </div>
+      <div style={{ fontSize: 9, opacity: 0.55, marginTop: 10 }}>
+        Toggle the Tweaks button in the toolbar to hide.
+      </div>
+    </div>
+  );
+}
+
+/* ---------- App ---------- */
+
+function App() {
+  const data = window.EREBOROS_DATA;
+  const i18n = data.i18n;
+  const [lang, setLang] = useState("pt");
+
+  const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+  const [tweakOpen, setTweakOpen] = useState(false);
+
+  // language persistence
+  useEffect(() => {
+    const saved = localStorage.getItem("ereboros.lang");
+    if (saved) setLang(saved);
+  }, []);
+  useEffect(() => { localStorage.setItem("ereboros.lang", lang); }, [lang]);
+
+  // edit-mode protocol (Tweaks toolbar toggle)
+  useEffect(() => {
+    const onMsg = (e) => {
+      const t = e?.data?.type;
+      if (t === "__activate_edit_mode") setTweakOpen(true);
+      else if (t === "__deactivate_edit_mode") setTweakOpen(false);
+    };
+    window.addEventListener("message", onMsg);
+    try {
+      window.parent.postMessage({ type: "__edit_mode_available" }, "*");
+    } catch (e) {}
+    return () => window.removeEventListener("message", onMsg);
+  }, []);
+
+  // smooth scroll for hash links
+  useEffect(() => {
+    const easeInOutCubic = (t) => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3) / 2;
+    const onClick = (e) => {
+      const a = e.target.closest && e.target.closest('a[href^="#"]');
+      if (!a) return;
+      const href = a.getAttribute("href");
+      if (!href || href === "#" || href.length < 2) return;
+      const el = document.getElementById(href.slice(1));
+      if (!el) return;
+      e.preventDefault();
+      const navH = (document.querySelector(".nav")?.getBoundingClientRect().height) || 0;
+      const startY = window.scrollY || window.pageYOffset;
+      const targetY = el.getBoundingClientRect().top + startY - navH - 12;
+      const dist = targetY - startY;
+      const dur = Math.min(1400, Math.max(700, Math.abs(dist) * 0.6));
+      const t0 = performance.now();
+      const step = (now) => {
+        const p = Math.min(1, (now - t0) / dur);
+        window.scrollTo(0, startY + dist * easeInOutCubic(p));
+        if (p < 1) requestAnimationFrame(step);
+        else history.replaceState(null, "", href);
+      };
+      requestAnimationFrame(step);
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, []);
+
+  // remap section numerals based on tweaks
+  const numerals = tweaks.capitals === "arabic"
+    ? { about: "01", listen: "02", videos: "03", tour: "04", gallery: "05", store: "06", booking: "07" }
+    : null;
+  const effI18n = useMemo(() => {
+    if (!numerals) return i18n;
+    const clone = JSON.parse(JSON.stringify(i18n));
+    Object.keys(numerals).forEach((k) => { clone.sections[k].num = numerals[k]; });
+    return clone;
+  }, [numerals, i18n]);
+
+  return (
+    <>
+      <Nav lang={lang} setLang={setLang} i18n={effI18n} />
+      <Hero    lang={lang} data={data} i18n={effI18n} />
+      <About   lang={lang} data={data} i18n={effI18n} />
+      <Listen  lang={lang} data={data} i18n={effI18n} />
+      <Videos  lang={lang} data={data} i18n={effI18n} />
+      <Tour    lang={lang} data={data} i18n={effI18n} />
+      <Gallery lang={lang} data={data} i18n={effI18n} />
+      <Store   lang={lang} data={data} i18n={effI18n} />
+      <Booking lang={lang} data={data} i18n={effI18n} />
+      <Footer  lang={lang} data={data} i18n={effI18n} />
+
+      <Tweaks state={tweaks} setState={setTweaks} open={tweakOpen} setOpen={setTweakOpen} />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
