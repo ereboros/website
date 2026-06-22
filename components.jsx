@@ -159,9 +159,15 @@ function SectionHead({ num, title, kicker }) {
    NEWSLETTER — botão na nav + popover com o form embed do MailerLite
    ============================================================================ */
 
+const ML_I18N = {
+  pt: { email: "Seu e-mail", btn: "Inscrever-se", sucH: "Obrigado!", sucP: "Você entrou na nossa lista com sucesso." },
+  en: { email: "Your email", btn: "Subscribe",   sucH: "Thank you!", sucP: "You have successfully joined our subscriber list." },
+};
+
 function Newsletter({ lang }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
+  const embedRef = useRef(null);
 
   useEffect(() => {
     if (!open) return;
@@ -176,6 +182,27 @@ function Newsletter({ lang }) {
       document.removeEventListener("mousedown", onDown);
     };
   }, [open]);
+
+  // O form do MailerLite tem textos fixos; localizamos placeholder/botão/sucesso
+  // conforme o idioma. O MutationObserver pega a hidratação assíncrona e reaplica
+  // na troca de idioma (guardado por igualdade para não entrar em loop).
+  useEffect(() => {
+    const el = embedRef.current;
+    const t = ML_I18N[lang];
+    if (!el || !t) return;
+    const setText = (node, text) => { if (node && node.textContent.trim() !== text) node.textContent = text; };
+    const apply = () => {
+      const input = el.querySelector('input[type="email"]');
+      if (input && input.placeholder !== t.email) input.placeholder = t.email;
+      setText(el.querySelector("button.primary"), t.btn);
+      setText(el.querySelector(".ml-form-successBody h4"), t.sucH);
+      setText(el.querySelector(".ml-form-successBody p"), t.sucP);
+    };
+    apply();
+    const obs = new MutationObserver(apply);
+    obs.observe(el, { childList: true, subtree: true });
+    return () => obs.disconnect();
+  }, [lang]);
 
   return (
     <div className="newsletter" ref={ref}>
@@ -192,7 +219,7 @@ function Newsletter({ lang }) {
           {lang === "pt" ? "Entre na lista" : "Join the list"}
         </div>
         {/* O MailerLite Universal (carregado em app.jsx) hidrata este div. */}
-        <div className="ml-embedded" data-form="xEw6cK" />
+        <div className="ml-embedded" data-form="xEw6cK" ref={embedRef} />
       </div>
     </div>
   );

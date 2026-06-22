@@ -274,10 +274,10 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   top: calc(100% + 16px);
   left: 0;
-  width: min(320px, calc(100vw - 32px));
+  width: min(400px, calc(100vw - 32px));
   background: var(--ink-2);
   border: 1px solid var(--rule);
-  padding: 18px 16px 8px;
+  padding: 24px 22px 22px;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
   opacity: 0;
   pointer-events: none;
@@ -309,11 +309,77 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
   color: var(--oxide-bright);
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
-/* contém o form que o MailerLite injeta dentro do popover */
-.newsletter-pop .ml-embedded { min-height: 36px; }
-.newsletter-pop .ml-embedded * { max-width: 100% !important; box-sizing: border-box; }
+
+/* --- Form embed do MailerLite dentro do popover --- */
+.newsletter-pop .ml-embedded { width: 100%; min-height: 36px; }
+/* remove a moldura própria do MailerLite — o popover já é o container */
+.newsletter-pop .ml-form-embedWrapper,
+.newsletter-pop .ml-form-embedBody,
+.newsletter-pop .ml-form-embedContent,
+.newsletter-pop .ml-form-formContent {
+  background: transparent !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+/* o form vem em layout horizontal; empilhamos vertical (input em cima, botão full-width) */
+.newsletter-pop .ml-form-horizontalRow { display: block !important; }
+.newsletter-pop .ml-form-horizontalRow > div,
+.newsletter-pop .ml-input-horizontal,
+.newsletter-pop .ml-input-horizontal > div,
+.newsletter-pop .ml-field-group,
+.newsletter-pop .ml-button-horizontal {
+  width: 100% !important;
+  max-width: 100% !important;
+  float: none !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+.newsletter-pop .ml-embedded input[type="email"] {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 12px 14px !important;
+  margin: 0 0 12px !important;
+  background: var(--ink) !important;
+  border: 1px solid var(--rule) !important;
+  border-radius: 0 !important;
+  color: var(--bone) !important;
+  font-family: var(--f-mono) !important;
+  font-size: 12px !important;
+  letter-spacing: 0.08em !important;
+}
+.newsletter-pop .ml-embedded input[type="email"]:focus {
+  outline: none !important;
+  border-color: var(--oxide) !important;
+}
+/* botão full-width, no estilo .btn-oxide — hover cobre o botão inteiro */
+.newsletter-pop .ml-embedded button.primary {
+  display: block !important;
+  width: 100% !important;
+  padding: 13px 18px !important;
+  background: transparent !important;
+  color: var(--bone) !important;
+  border: 1px solid var(--oxide) !important;
+  border-radius: 0 !important;
+  font-family: var(--f-mono) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.25em !important;
+  text-transform: uppercase !important;
+  cursor: pointer;
+  transition: background .25s, color .25s, border-color .25s;
+}
+.newsletter-pop .ml-embedded button.primary:hover {
+  background: var(--oxide) !important;
+  color: var(--bone) !important;
+  border-color: var(--oxide) !important;
+}
 
 .lang-toggle {
   display: inline-flex;
