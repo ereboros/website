@@ -67,6 +67,12 @@ window.EREBOROS_DATA = {
     { caption: "Portrait / Thiago Barbosa",  placeholder: "Vocalista" },
   ],
 
+  merch: [
+    { src: "assets/merch-1.jpg", href: "https://ereboros.lojaintegrada.com.br/", alt: { pt: "Ereboros — coleção de roupas From Oblivion to the Grave", en: "Ereboros — From Oblivion to the Grave apparel" } },
+    { src: "assets/merch-2.jpg", href: "https://ereboros.lojaintegrada.com.br/", alt: { pt: "Ereboros — CD From Oblivion to the Grave", en: "Ereboros — From Oblivion to the Grave CD" } },
+    { src: "assets/merch-3.jpg", href: "https://ereboros.lojaintegrada.com.br/", alt: { pt: "Ereboros — vinil From Oblivion to the Grave", en: "Ereboros — From Oblivion to the Grave vinyl" } },
+  ],
+
   contact: {
     booking:  { label: { pt: "Contato geral", en: "General contact" }, email: "contact@ereboros.com" },
     press:    { label: { pt: "Imprensa", en: "Press" },                email: "press@ereboros.com" },

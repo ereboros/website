@@ -206,7 +206,7 @@ function Gallery({ lang, data, i18n }) {
   );
 }
 
-function Store({ lang, i18n }) {
+function Store({ lang, data, i18n }) {
   const s = i18n.sections.store;
   return (
     <section className="section" id="store">
@@ -214,19 +214,27 @@ function Store({ lang, i18n }) {
         <SectionHead num={s.num} title={pick(s.title, lang)} kicker={pick(s.kicker, lang)} />
         <Reveal>
           <div className="store-banner">
-            <div style={{ position: "relative", zIndex: 2 }}>
-              <h3 className="store-title">{pick(i18n.store.headline, lang)}</h3>
-              <div className="store-sub">{pick(i18n.store.sub, lang)}</div>
+            <div className="store-banner-top">
+              <div>
+                <h3 className="store-title">{pick(i18n.store.headline, lang)}</h3>
+                <div className="store-sub">{pick(i18n.store.sub, lang)}</div>
+              </div>
+              <a
+                href="https://ereboros.lojaintegrada.com.br/"
+                className="btn btn-oxide"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {pick(i18n.store.cta, lang)} →
+              </a>
             </div>
-            <a
-              href="https://ereboros.lojaintegrada.com.br/"
-              className="btn btn-oxide"
-              target="_blank"
-              rel="noreferrer"
-              style={{ position: "relative", zIndex: 2 }}
-            >
-              {pick(i18n.store.cta, lang)} →
-            </a>
+            <div className="store-merch">
+              {data.merch.map((m, i) => (
+                <a key={i} href={m.href} target="_blank" rel="noreferrer" className="store-merch-item">
+                  <img src={m.src} alt={pick(m.alt, lang)} loading="lazy" />
+                </a>
+              ))}
+            </div>
           </div>
         </Reveal>
       </div>

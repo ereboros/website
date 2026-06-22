@@ -926,11 +926,39 @@ a { color: inherit; text-decoration: none; }
   background:
     radial-gradient(ellipse 60% 80% at 20% 50%, rgba(107,40,32,0.15), transparent 60%),
     var(--ink-2);
+  overflow: hidden;
+}
+.store-banner-top {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 32px;
+}
+.store-merch {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 44px;
+}
+.store-merch-item {
+  display: block;
+  border: 1px solid var(--rule);
+  background: var(--ink);
   overflow: hidden;
+  transition: border-color .3s, transform .3s;
+}
+.store-merch-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.store-merch-item:hover {
+  border-color: var(--oxide);
+  transform: translateY(-3px);
 }
 .store-banner::before {
   content: "✝";
@@ -962,7 +990,9 @@ a { color: inherit; text-decoration: none; }
   margin: 14px 0 0;
 }
 @media (max-width: 720px) {
-  .store-banner { grid-template-columns: 1fr; padding: 48px 24px; }
+  .store-banner { padding: 48px 24px; }
+  .store-banner-top { grid-template-columns: 1fr; }
+  .store-merch { gap: 12px; margin-top: 32px; }
 }
 
 /* ---------- SECTION: BOOKING ---------- */
