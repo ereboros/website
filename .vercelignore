@@ -1,0 +1,8 @@
+# Arquivos que não devem ir para o deploy público
+docs/
+uploads/
+.playwright-mcp/
+agenda-bandsintown.png
+newsletter-popover.png
+CLAUDE.md
+.gitignore
