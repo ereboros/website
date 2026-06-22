@@ -127,7 +127,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 
 const ACCENTS = {
-  oxide:  { bright: "#8b3329", base: "#6b2820", label: "Oxide" },
+  oxide:  { bright: "#ad1010", base: "#850b0b", label: "Oxide" },
   bone:   { bright: "#ebe5d8", base: "#c6bda9", label: "Bone" },
   ember:  { bright: "#a24a1f", base: "#7a3414", label: "Ember" },
   frost:  { bright: "#6a7c8a", base: "#3f4a55", label: "Frost" },
@@ -260,15 +260,19 @@ function App() {
       e.preventDefault();
       const navH = (document.querySelector(".nav")?.getBoundingClientRect().height) || 0;
       const startY = window.scrollY || window.pageYOffset;
-      const targetY = el.getBoundingClientRect().top + startY - navH - 12;
-      const dist = targetY - startY;
-      const dur = Math.min(1400, Math.max(700, Math.abs(dist) * 0.6));
+      // posição-alvo recalculada ao vivo: topo absoluto do elemento menos a nav.
+      // Recalcular a cada frame corrige deslocamentos de layout durante o scroll
+      // (ex.: imagens lazy carregando), que antes faziam o scroll parar antes do ponto.
+      const targetAt = () =>
+        el.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - navH - 12;
+      const dur = Math.min(1400, Math.max(700, Math.abs(targetAt() - startY) * 0.6));
       const t0 = performance.now();
       const step = (now) => {
         const p = Math.min(1, (now - t0) / dur);
-        window.scrollTo(0, startY + dist * easeInOutCubic(p));
+        const targetY = targetAt();
+        window.scrollTo(0, startY + (targetY - startY) * easeInOutCubic(p));
         if (p < 1) requestAnimationFrame(step);
-        else history.replaceState(null, "", href);
+        else { window.scrollTo(0, targetAt()); history.replaceState(null, "", href); }
       };
       requestAnimationFrame(step);
     };
