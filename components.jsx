@@ -150,7 +150,7 @@ function SectionHead({ num, title, kicker }) {
     <Reveal className="section-head">
       <div className="section-num">{num}</div>
       <h2 className="section-title">{title}</h2>
-      <div className="section-kicker">{kicker}</div>
+      {kicker ? <div className="section-kicker">{kicker}</div> : null}
     </Reveal>
   );
 }
@@ -241,7 +241,7 @@ function About({ lang, data, i18n }) {
             ))}
           </Reveal>
           <Reveal delay={150}>
-            <div className="meta" style={{ marginBottom: 18 }}>{lang === "pt" ? "Invocadores" : "Summoners"}</div>
+            <div className="meta" style={{ marginBottom: 18 }}>{lang === "pt" ? "Formação" : "Lineup"}</div>
             <ul className="members-list">
               {data.members.map((m) => (
                 <li key={m.name}>

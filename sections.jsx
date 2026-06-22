@@ -1,5 +1,38 @@
 /* EREBOROS — sections II-VII + footer */
 
+/* ---------- Bandsintown (agenda ao vivo) ---------- */
+
+const BIT_APP_ID  = "30aa1582f3a295678506dda8cd4219d8";
+const BIT_ARTIST  = "id_15504303"; // Ereboros — https://www.bandsintown.com/a/15504303-ereboros
+
+const BIT_MONTHS = {
+  pt: ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"],
+  en: ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"],
+};
+// A API devolve o país por extenso; o layout usa sigla de 2 letras.
+const BIT_COUNTRY_ISO = {
+  "Brazil": "BR", "Argentina": "AR", "Chile": "CL", "Uruguay": "UY", "Paraguay": "PY",
+  "Colombia": "CO", "Peru": "PE", "Mexico": "MX", "United States": "US", "Canada": "CA",
+  "Portugal": "PT", "Spain": "ES", "France": "FR", "Germany": "DE", "Netherlands": "NL",
+  "Belgium": "BE", "United Kingdom": "UK", "Italy": "IT", "Switzerland": "CH",
+  "Austria": "AT", "Poland": "PL", "Czechia": "CZ", "Czech Republic": "CZ", "Sweden": "SE",
+  "Norway": "NO", "Finland": "FI", "Denmark": "DK",
+};
+
+function useBandsintown() {
+  const [state, setState] = useState({ status: "loading", events: [] });
+  useEffect(() => {
+    let alive = true;
+    const url = `https://rest.bandsintown.com/artists/${BIT_ARTIST}/events?app_id=${BIT_APP_ID}&date=upcoming`;
+    fetch(url, { headers: { Accept: "application/json" } })
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((data) => { if (alive) setState({ status: "ready", events: Array.isArray(data) ? data : [] }); })
+      .catch(() => { if (alive) setState({ status: "error", events: [] }); });
+    return () => { alive = false; };
+  }, []);
+  return state;
+}
+
 function Listen({ lang, data, i18n }) {
   const s = i18n.sections.listen;
   const rel = data.release;
@@ -77,39 +110,64 @@ function Videos({ lang, data, i18n }) {
   );
 }
 
-function Tour({ lang, data, i18n }) {
+function Tour({ lang, i18n }) {
   const s = i18n.sections.tour;
+  const { status, events } = useBandsintown();
+  const months = BIT_MONTHS[lang] || BIT_MONTHS.en;
+
+  const msg = (pt, en) => (
+    <div className="meta" style={{ padding: "48px 0", textAlign: "center", letterSpacing: "0.12em" }}>
+      {lang === "pt" ? pt : en}
+    </div>
+  );
+
   return (
     <section className="section" id="tour">
       <div className="wrap">
         <SectionHead num={s.num} title={pick(s.title, lang)} kicker={pick(s.kicker, lang)} />
         <Reveal>
-          <ul className="tour-list">
-            {data.tour.map((t, i) => {
-              const statusText = pick(i18n.status[t.status], lang);
-              const soldOut = t.status === "sold-out";
-              return (
-                <li key={i} className={`tour-row ${soldOut ? "sold-out" : ""}`}>
-                  <div className="tour-date">
-                    {t.month}
-                    <span className="day">{t.day}</span>
-                  </div>
-                  <div>
-                    <div className="tour-city">{t.city}</div>
-                    <div className="tour-venue">{t.venue}</div>
-                  </div>
-                  <div className="tour-country">{t.country}</div>
-                  <a
-                    href="#"
-                    className="btn"
-                    style={soldOut ? { pointerEvents: "none", opacity: 0.5 } : null}
-                  >
-                    {statusText}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
+          {status === "loading" && msg("Carregando agenda…", "Loading dates…")}
+          {status === "error" && msg("Não foi possível carregar a agenda agora.", "Couldn't load the dates right now.")}
+          {status === "ready" && events.length === 0 && msg("Nenhum show agendado no momento.", "No upcoming shows right now.")}
+          {status === "ready" && events.length > 0 && (
+            <ul className="tour-list">
+              {events.map((ev) => {
+                const d = new Date(ev.datetime);
+                const day = String(d.getDate()).padStart(2, "0");
+                const month = months[d.getMonth()];
+                const offer = (ev.offers || []).find((o) => o.type === "Tickets") || (ev.offers || [])[0];
+                const soldOut = offer ? /sold/i.test(offer.status || "") : false;
+                const href = (offer && offer.url) ? offer.url : ev.url;
+                const v = ev.venue || {};
+                const country = BIT_COUNTRY_ISO[v.country] || v.country || "";
+                const statusText = soldOut
+                  ? pick(i18n.status["sold-out"], lang)
+                  : pick(i18n.status["on-sale"], lang);
+                return (
+                  <li key={ev.id} className={`tour-row ${soldOut ? "sold-out" : ""}`}>
+                    <div className="tour-date">
+                      {month}
+                      <span className="day">{day}</span>
+                    </div>
+                    <div>
+                      <div className="tour-city">{v.city}</div>
+                      <div className="tour-venue">{v.name}</div>
+                    </div>
+                    <div className="tour-country">{country}</div>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn"
+                      style={soldOut ? { pointerEvents: "none", opacity: 0.5 } : null}
+                    >
+                      {statusText}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </Reveal>
       </div>
     </section>
@@ -195,7 +253,6 @@ function Booking({ lang, data, i18n }) {
         <SectionHead num={s.num} title={pick(s.title, lang)} kicker={pick(s.kicker, lang)} />
         <div className="booking-grid">
           <Reveal>
-            <p className="booking-intro">{pick(i18n.booking.intro, lang)}</p>
             <div className="contact-block">
               <div className="contact-row">
                 <div className="contact-label">{pick(data.contact.booking.label, lang)}</div>

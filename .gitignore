@@ -3,3 +3,7 @@
 # Artefatos temporários de análise (extrações da planilha de ajustes)
 docs/_extract.txt
 docs/_imgs/
+
+# Artefatos de teste do navegador (Playwright MCP)
+.playwright-mcp/
+agenda-bandsintown.png

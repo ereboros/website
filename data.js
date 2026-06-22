@@ -3,8 +3,8 @@ window.EREBOROS_DATA = {
   band: {
     name: "Ereboros",
     tagline: {
-      pt: "Blackened Death Metal — Rio de Janeiro",
-      en: "Blackened Death Metal — Rio de Janeiro",
+      pt: "Death Metal — Rio de Janeiro",
+      en: "Death Metal — Rio de Janeiro",
     },
     formed: "MMXXII",
     origin: "Rio de Janeiro · BR",
@@ -19,14 +19,14 @@ window.EREBOROS_DATA = {
 
   about: {
     pt: [
-      "Da união entre uma deidade ancestral e um símbolo do conhecimento milenar, ergue-se EREBOROS (Death Metal, Rio de Janeiro — RJ), em maio de 2022, atualmente com Thiago Barbosa (Voz & Guitarra) ex-Forceps, Juan Carlos (Guitarra) ex-Innocence Lost/Nadha, Paulo Doc (Baixo) ex-LAC e Victor Mendonça (Bateria) ex-LAC.",
-      "Somando um arsenal de dez discos e nove turnês nacionais e internacionais em trabalhos anteriores — duas sul-americanas, quatro europeias, uma pelo leste europeu e uma pelos Estados Unidos —, totalizando mais de 400 shows e dezenas de milhares de quilômetros de estrada em mais de 50 países, o quarteto experiente chega com muita bagagem.",
-      "Famintos por arte obscura, os músicos buscam referências em bandas de black metal que exploram a experiência instrumental atmosférica e em nomes clássicos do death metal — pioneiros de riffs agressivos e vocais viscerais.",
+      "Ereboros é uma banda brasileira de Death Metal formada na cidade do Rio de Janeiro, reunindo músicos veteranos da cena underground nacional. Sua sonoridade transita entre agressividade extrema, densidade atmosférica e construção melódica, criando uma estética intensa e contemporânea dentro da música extrema.",
+      "Desde seu primeiro lançamento, em 2023, a banda vem expandindo consistentemente sua atuação através de apresentações ao vivo pelo Brasil, Europa e México, fortalecendo sua presença no circuito underground internacional. A experiência de seus integrantes e a forte abordagem estética do grupo têm contribuído para o crescimento do nome Ereboros dentro da cena extrema contemporânea.",
+      "Em junho de 2026, a banda inicia um novo ciclo com o lançamento de um novo single, antecipando o álbum que será oficialmente lançado em outubro de 2026. O novo material aprofunda a proposta sonora e conceitual do grupo, reforçando sua identidade dentro do metal extremo moderno.",
     ],
     en: [
-      "From the union of an ancestral deity and a symbol of millenary knowledge, EREBOROS (Death Metal, Rio de Janeiro — RJ) rises, in May 2022, currently with Thiago Barbosa (Vox & Guitar) ex-Forceps, Juan Carlos (Guitar) ex-Innocence Lost/Nadha, Paulo Doc (Bass) ex-LAC and Victor Mendonça (Drums) ex-LAC.",
-      "Collecting an arsenal of ten records and nine national and international tours (two South American, four European, one in Eastern Europe, and one in the United States), adding up to a total that exceeds 400 shows and tens of thousands of kilometers of road in more than 50 countries in their previous works, the experienced quartet arrives with a lot of baggage.",
-      "Hungry for obscure art, the musicians seek references in black metal bands that explore the atmospheric instrumental experience and in classic death metal bands — pioneers of aggressive guitar riffs and visceral vocals.",
+      "Ereboros is a Brazilian Death Metal band formed in Rio de Janeiro, bringing together seasoned musicians from the national underground scene. Their sound blends extreme aggression, atmospheric density, and melodic composition, creating an intense and contemporary identity within extreme music.",
+      "Since their debut release in 2023, the band has steadily expanded its presence through live performances across Brazil, Europe, and Mexico, strengthening its position within the international underground circuit. The experience of its members, combined with the band’s strong artistic identity, has contributed to the growing recognition of the Ereboros name within the contemporary extreme metal scene.",
+      "In June 2026, the band begins a new chapter with the release of a new single, leading into the launch of their upcoming album, officially scheduled for October 2026. The new material further expands the group’s sonic and conceptual approach, reinforcing its identity within modern extreme metal.",
     ],
   },
 
@@ -53,23 +53,10 @@ window.EREBOROS_DATA = {
   ],
 
   videos: [
-    { id: "Y8xpjuan5lw", title: "Ereboros",                 meta: { pt: "YouTube", en: "YouTube" } },
-    { id: "5ksjK35SHmA", title: "Ereboros",                 meta: { pt: "YouTube", en: "YouTube" } },
-    { id: "yz8ewuEQXoI", title: "Ereboros",                 meta: { pt: "YouTube", en: "YouTube" } },
-    { id: "4gm5Yw7DHvs", title: "Ereboros",                 meta: { pt: "YouTube", en: "YouTube" } },
-    { id: "5Q5cEOzye9Q", title: "Ereboros",                 meta: { pt: "YouTube", en: "YouTube" } },
+    { id: "Fv17iU8Z5ho", title: "Ereboros — Depths",        meta: { pt: "YouTube", en: "YouTube" } },
   ],
 
-  tour: [
-    { date: "2026-05-09", day: "09", month: "MAI", city: "São Paulo",      venue: "Carioca Club",            country: "BR", status: "on-sale" },
-    { date: "2026-05-16", day: "16", month: "MAI", city: "Belo Horizonte", venue: "Autêntica",               country: "BR", status: "on-sale" },
-    { date: "2026-05-23", day: "23", month: "MAI", city: "Porto Alegre",   venue: "Opinião",                 country: "BR", status: "few" },
-    { date: "2026-06-04", day: "04", month: "JUN", city: "Buenos Aires",   venue: "Uniclub",                 country: "AR", status: "on-sale" },
-    { date: "2026-06-07", day: "07", month: "JUN", city: "Santiago",       venue: "Blondie",                 country: "CL", status: "on-sale" },
-    { date: "2026-09-12", day: "12", month: "SET", city: "Lisboa",         venue: "LAV",                     country: "PT", status: "on-sale" },
-    { date: "2026-09-18", day: "18", month: "SET", city: "Tilburg",        venue: "Roadburn Festival",       country: "NL", status: "sold-out" },
-    { date: "2026-09-24", day: "24", month: "SET", city: "Berlim",         venue: "Urban Spree",             country: "DE", status: "on-sale" },
-  ],
+  // Agenda: carregada ao vivo da API do Bandsintown (ver useBandsintown em sections.jsx).
 
   gallery: [
     { caption: "Live / São Paulo · 2025",   placeholder: "Foto ao vivo" },
@@ -91,20 +78,20 @@ window.EREBOROS_DATA = {
     nav: {
       about:  { pt: "Sobre",      en: "About" },
       listen: { pt: "Ouça",       en: "Listen" },
-      videos: { pt: "Vídeos",     en: "Videos" },
+      videos: { pt: "Galeria",    en: "Gallery" },
       tour:   { pt: "Agenda",     en: "Tour" },
-      store:  { pt: "Loja",       en: "Store" },
+      store:  { pt: "Merch",      en: "Merch" },
       booking:{ pt: "Contato",    en: "Booking" },
     },
-    heroScroll:     { pt: "Role para descer", en: "Scroll to descend" },
+    heroScroll:     { pt: "Desça para saber mais", en: "Keep Scrolling" },
     sections: {
-      about:   { num: "I",   title: { pt: "Da escuridão",  en: "Out of the dark" }, kicker: { pt: "Sobre a banda", en: "About the band" } },
+      about:   { num: "I",   title: { pt: "Biografia",      en: "Biography" } },
       listen:  { num: "II",  title: { pt: "Ouça",           en: "Listen" },          kicker: { pt: "Discografia",   en: "Discography" } },
-      videos:  { num: "III", title: { pt: "Imagens vivas",  en: "Living images" },   kicker: { pt: "Vídeos",        en: "Videos" } },
-      tour:    { num: "IV",  title: { pt: "Ofícios ao vivo",en: "Live rites" },      kicker: { pt: "Agenda",        en: "Tour dates" } },
-      gallery: { num: "V",   title: { pt: "Memória",        en: "Memoria" },         kicker: { pt: "Galeria",       en: "Gallery" } },
-      store:   { num: "VI",  title: { pt: "Relíquias",      en: "Relics" },          kicker: { pt: "Merchandise",   en: "Merchandise" } },
-      booking: { num: "VII", title: { pt: "Invoquem-nos",   en: "Summon us" },       kicker: { pt: "Booking",       en: "Booking" } },
+      videos:  { num: "III", title: { pt: "Galeria",        en: "Gallery" },         kicker: { pt: "Vídeos",        en: "Videos" } },
+      tour:    { num: "IV",  title: { pt: "Agenda",         en: "Tour Dates" },      kicker: { pt: "Agenda",        en: "Tour dates" } },
+      gallery: { num: "V",   title: { pt: "Fotos",          en: "Pictures" },        kicker: { pt: "Galeria",       en: "Gallery" } },
+      store:   { num: "VI",  title: { pt: "Merch",          en: "Merch" },           kicker: { pt: "Merchandise",   en: "Merchandise" } },
+      booking: { num: "VII", title: { pt: "Contato",        en: "Contact Us" },      kicker: { pt: "Booking",       en: "Booking" } },
     },
     listen: {
       tracklist: { pt: "Alinhamento", en: "Tracklist" },
@@ -124,10 +111,6 @@ window.EREBOROS_DATA = {
       sub: { pt: "Envios internacionais", en: "Worldwide shipping" },
     },
     booking: {
-      intro: {
-        pt: "Para propostas de shows, festivais e agendamentos de imprensa, entre em contato. Respondemos em até 72 horas.",
-        en: "For festival offers, tour dates and press requests, reach out. We reply within 72 hours.",
-      },
       form: {
         name:   { pt: "Nome",       en: "Name" },
         email:  { pt: "E-mail",     en: "Email" },
@@ -135,7 +118,7 @@ window.EREBOROS_DATA = {
         date:   { pt: "Data prevista", en: "Proposed date" },
         city:   { pt: "Cidade / país", en: "City / country" },
         msg:    { pt: "Mensagem",   en: "Message" },
-        send:   { pt: "Enviar invocação", en: "Send invocation" },
+        send:   { pt: "Enviar", en: "Send" },
         sent:   { pt: "Invocação recebida. Até 72 horas.", en: "Invocation received. Within 72 hours." },
       },
       kinds: {
