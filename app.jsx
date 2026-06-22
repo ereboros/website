@@ -259,12 +259,16 @@ function App() {
       if (!el) return;
       e.preventDefault();
       const navH = (document.querySelector(".nav")?.getBoundingClientRect().height) || 0;
+      const GAP = 28; // respiro abaixo da nav
+      // mira no conteúdo da seção (.wrap) e não na caixa: a seção tem um padding-top
+      // grande (clamp(80px,12vh,160px)) que, se não pulado, vira margem vazia enorme.
+      const anchor = el.querySelector(".wrap") || el;
       const startY = window.scrollY || window.pageYOffset;
-      // posição-alvo recalculada ao vivo: topo absoluto do elemento menos a nav.
+      // posição-alvo recalculada ao vivo: topo absoluto do alvo menos a nav e o respiro.
       // Recalcular a cada frame corrige deslocamentos de layout durante o scroll
       // (ex.: imagens lazy carregando), que antes faziam o scroll parar antes do ponto.
       const targetAt = () =>
-        el.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - navH - 12;
+        anchor.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - navH - GAP;
       const dur = Math.min(1400, Math.max(700, Math.abs(targetAt() - startY) * 0.6));
       const t0 = performance.now();
       const step = (now) => {
