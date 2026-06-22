@@ -255,6 +255,66 @@ a { color: inherit; text-decoration: none; }
 }
 .nav a.nav-link:hover { color: var(--bone); }
 
+/* Newsletter — botão na nav + popover */
+.newsletter { position: relative; display: inline-flex; }
+.newsletter-trigger {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: color .3s;
+}
+.newsletter-trigger:hover { color: var(--bone); }
+.newsletter-pop {
+  position: absolute;
+  top: calc(100% + 16px);
+  left: 0;
+  width: min(320px, calc(100vw - 32px));
+  background: var(--ink-2);
+  border: 1px solid var(--rule);
+  padding: 18px 16px 8px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity .25s ease, transform .25s ease;
+  z-index: 60;
+}
+.newsletter-pop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.newsletter-pop::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 22px;
+  width: 10px;
+  height: 10px;
+  background: var(--ink-2);
+  border-left: 1px solid var(--rule);
+  border-top: 1px solid var(--rule);
+  transform: rotate(45deg);
+}
+.newsletter-pop-head {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--oxide-bright);
+  text-align: center;
+  margin-bottom: 12px;
+}
+/* contém o form que o MailerLite injeta dentro do popover */
+.newsletter-pop .ml-embedded { min-height: 36px; }
+.newsletter-pop .ml-embedded * { max-width: 100% !important; box-sizing: border-box; }
+
 .lang-toggle {
   display: inline-flex;
   border: 1px solid var(--rule);

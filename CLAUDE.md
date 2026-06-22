@@ -52,7 +52,7 @@ Divisão dos arquivos:
 
 **Numerais das seções.** São algarismos romanos por padrão; o tweak `capitals: "arabic"` reescreve `i18n.sections.*.num` clonando o objeto i18n em runtime.
 
-**Cache-busting de CSS.** `index.html` referencia `styles.css?v=10`. **Ao editar `styles.css`, incremente esse número de versão** para invalidar o cache.
+**Cache-busting.** `index.html` referencia os assets com query de versão: `styles.css?v=11` e os scripts `data.js?v=11`, `components.jsx?v=11`, `sections.jsx?v=11`, `app.jsx?v=11`. **Ao editar qualquer um desses arquivos, incremente o número de versão** (de preferência todos juntos) para invalidar o cache do navegador — sem isso, o Babel/CSS pode rodar a versão antiga em cache, inclusive para visitantes recorrentes após o deploy.
 
 **Logo.** O wordmark é renderizado por CSS `mask-image` sobre `assets/ereboros-logo.png` (classe `.logo-mark`), colorido por `--oxide-bright` — não é uma `<img>` no hero/footer.
 

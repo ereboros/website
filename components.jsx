@@ -156,6 +156,49 @@ function SectionHead({ num, title, kicker }) {
 }
 
 /* ============================================================================
+   NEWSLETTER — botão na nav + popover com o form embed do MailerLite
+   ============================================================================ */
+
+function Newsletter({ lang }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+    const onDown = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("keydown", onKey);
+    // adia o listener de "clique fora" para o clique de abertura não fechar de imediato
+    const id = setTimeout(() => document.addEventListener("mousedown", onDown), 0);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      clearTimeout(id);
+      document.removeEventListener("mousedown", onDown);
+    };
+  }, [open]);
+
+  return (
+    <div className="newsletter" ref={ref}>
+      <button
+        type="button"
+        className="newsletter-trigger"
+        aria-expanded={open}
+        onClick={() => setOpen((o) => !o)}
+      >
+        {lang === "pt" ? "Newsletter" : "Newsletter"}
+      </button>
+      <div className={`newsletter-pop ${open ? "is-open" : ""}`} role="dialog" aria-hidden={!open}>
+        <div className="newsletter-pop-head">
+          {lang === "pt" ? "Entre na lista" : "Join the list"}
+        </div>
+        {/* O MailerLite Universal (carregado em app.jsx) hidrata este div. */}
+        <div className="ml-embedded" data-form="xEw6cK" />
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================================
    NAV
    ============================================================================ */
 
@@ -166,6 +209,7 @@ function Nav({ lang, setLang, i18n }) {
         <a href="#listen" className="nav-link">{pick(i18n.nav.listen, lang)}</a>
         <a href="#videos" className="nav-link">{pick(i18n.nav.videos, lang)}</a>
         <a href="#tour"   className="nav-link">{pick(i18n.nav.tour,   lang)}</a>
+        <Newsletter lang={lang} />
       </div>
       <a href="#top" className="nav-mark" aria-label="Ereboros">
         <img src="assets/ereboros-logo.png" alt="Ereboros" />
@@ -267,4 +311,4 @@ function About({ lang, data, i18n }) {
   );
 }
 
-Object.assign(window, { pick, useReveal, Reveal, Icon, iconByName, Ornament, SectionHead, Nav, Hero, About });
+Object.assign(window, { pick, useReveal, Reveal, Icon, iconByName, Ornament, SectionHead, Newsletter, Nav, Hero, About });

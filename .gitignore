@@ -7,3 +7,4 @@ docs/_imgs/
 # Artefatos de teste do navegador (Playwright MCP)
 .playwright-mcp/
 agenda-bandsintown.png
+newsletter-popover.png
