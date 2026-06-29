@@ -1,8 +1,14 @@
 # Arquivos que não devem ir para o deploy público
 docs/
 uploads/
-.playwright-mcp/
-agenda-bandsintown.png
-newsletter-popover.png
 CLAUDE.md
 .gitignore
+
+# Artefatos de teste do navegador (Playwright / screenshots de verificação)
+.playwright-mcp/
+agenda-bandsintown.png
+newsletter-*.png
+merch-box.png
+accent-*.png
+scroll-*.png
+contato*.png
