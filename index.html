@@ -44,11 +44,16 @@
   "image": "https://www.ereboros.com/assets/band-promo.jpg",
   "description": "Banda brasileira de Death Metal formada no Rio de Janeiro, reunindo músicos veteranos da cena underground nacional.",
   "member": [
-    { "@type": "Person", "name": "Thiago Barbosa" },
-    { "@type": "Person", "name": "Juan Carlos" },
-    { "@type": "Person", "name": "Paulo Doc" },
-    { "@type": "Person", "name": "Victor Mendonça" }
+    { "@type": "OrganizationRole", "roleName": ["Guitarra", "Vocais"], "member": { "@type": "Person", "name": "Thiago Barbosa" } },
+    { "@type": "OrganizationRole", "roleName": "Guitarra", "member": { "@type": "Person", "name": "Juan Carlos" } },
+    { "@type": "OrganizationRole", "roleName": "Baixo", "member": { "@type": "Person", "name": "Paulo Doc" } },
+    { "@type": "OrganizationRole", "roleName": "Bateria", "member": { "@type": "Person", "name": "Victor Mendonça" } }
   ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "booking",
+    "email": "contact@ereboros.com"
+  },
   "sameAs": [
     "https://open.spotify.com/artist/4j0EjyhqLFjcksGkgwE8mz",
     "https://ereboros.bandcamp.com",
@@ -79,6 +84,19 @@
 </head>
 <body>
 <div id="root"></div>
+
+<!-- Conteúdo estático para crawlers/scrapers que não executam JS -->
+<noscript>
+  <article>
+    <h1>Ereboros — Death Metal</h1>
+    <p>Death Metal — Rio de Janeiro, Brasil.</p>
+    <p>Ereboros é uma banda brasileira de Death Metal formada na cidade do Rio de Janeiro, reunindo músicos veteranos da cena underground nacional. Sua sonoridade transita entre agressividade extrema, densidade atmosférica e construção melódica, criando uma estética intensa e contemporânea dentro da música extrema.</p>
+    <p>Desde seu primeiro lançamento, em 2023, a banda vem expandindo consistentemente sua atuação através de apresentações ao vivo pelo Brasil, Europa e México, fortalecendo sua presença no circuito underground internacional.</p>
+    <p>Em junho de 2026, a banda inicia um novo ciclo com o lançamento de um novo single, antecipando o álbum que será oficialmente lançado em outubro de 2026.</p>
+    <p>Formação: Thiago Barbosa (Guitarra &amp; Vocais), Juan Carlos (Guitarra), Paulo Doc (Baixo), Victor Mendonça (Bateria).</p>
+    <p>Links oficiais: Spotify, Bandcamp, YouTube, Instagram, TikTok, Facebook e loja oficial em ereboros.lojaintegrada.com.br.</p>
+  </article>
+</noscript>
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
