@@ -57,6 +57,12 @@ function Listen({ lang, data, i18n }) {
                 loading="lazy"
                 style={{ borderRadius: 2, border: "1px solid var(--rule)", background: "var(--ink-2)" }}
               />
+              <p className="meta" style={{ marginTop: 14, lineHeight: 1.7 }}>
+                {lang === "pt" ? "Discografia" : "Discography"}:{" "}
+                {data.discography.map((d, i) => (
+                  <span key={d.title}>{i > 0 ? " · " : ""}{d.title} ({pick(d.type, lang)}, {d.year})</span>
+                ))}
+              </p>
             </div>
           </Reveal>
 

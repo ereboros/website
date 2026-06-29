@@ -31,18 +31,17 @@ window.EREBOROS_DATA = {
   },
 
   release: {
-    title: "Requiem for the Unlit",
-    subtitle: { pt: "Álbum · 2025", en: "Full-length · 2025" },
-    tracks: [
-      { n: "I",    title: "Prologue in Ash",                 time: "2:14", src: "https://cdn.pixabay.com/audio/2022/10/30/audio_347111d654.mp3" },
-      { n: "II",   title: "Of Black Water and Sulphur",      time: "6:41", src: "https://cdn.pixabay.com/audio/2022/03/10/audio_c3a3894263.mp3" },
-      { n: "III",  title: "Ereboros, the First Night",       time: "8:12", src: "https://cdn.pixabay.com/audio/2022/08/23/audio_d16737dc28.mp3" },
-      { n: "IV",   title: "Vespers Beneath the Soil",        time: "5:37", src: "https://cdn.pixabay.com/audio/2024/02/04/audio_a8f2f0bf49.mp3" },
-      { n: "V",    title: "An Unkindness of Saints",         time: "7:05", src: "https://cdn.pixabay.com/audio/2022/10/25/audio_92c4f8b5ad.mp3" },
-      { n: "VI",   title: "Requiem for the Unlit",           time: "9:48", src: "https://cdn.pixabay.com/audio/2022/08/02/audio_884fe92c21.mp3" },
-      { n: "VII",  title: "Coda — All Flame Returns",        time: "4:19", src: "https://cdn.pixabay.com/audio/2023/06/20/audio_77c32b4d26.mp3" },
-    ],
+    title: "From Oblivion to the Grave",
+    subtitle: { pt: "Álbum · 2026", en: "Full-length · 2026" },
   },
+
+  // Discografia (fonte: Encyclopaedia Metallum). Citação textual para SEO;
+  // a audição fica no embed do Spotify. Espelha a lista do JSON-LD em index.html.
+  discography: [
+    { title: "From Oblivion to the Grave", type: { pt: "álbum", en: "full-length" }, year: "2026" },
+    { title: "In the Depths of Misery",    type: { pt: "single", en: "single" },     year: "2026" },
+    { title: "Ereboros",                   type: { pt: "EP",     en: "EP" },         year: "2023" },
+  ],
 
   platforms: [
     { name: "Instagram", sub: { pt: "@ereborosofficial",     en: "@ereborosofficial" },     href: "https://www.instagram.com/ereborosofficial/", icon: "instagram" },
