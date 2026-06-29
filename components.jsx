@@ -280,8 +280,9 @@ function Hero({ lang, data, i18n }) {
         <div className="meta meta-oxide" style={{ marginBottom: 24 }}>
           {data.band.formed}  ·  {data.band.origin}
         </div>
-        <h1 className="hero-wordmark" aria-label="Ereboros">
-          <span className="logo-mark logo-mark-hero" role="img" aria-label="Ereboros" />
+        <h1 className="hero-wordmark">
+          <span className="sr-only">Ereboros — Death Metal · Rio de Janeiro</span>
+          <span className="logo-mark logo-mark-hero" aria-hidden="true" />
         </h1>
         <Ornament />
         <p className="hero-sub">{pick(data.band.tagline, lang)}</p>
