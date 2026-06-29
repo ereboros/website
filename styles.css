@@ -1001,25 +1001,18 @@ a { color: inherit; text-decoration: none; }
 
 .contact-block {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 64px;
+  gap: 22px;
   margin-top: 10px;
 }
 .contact-row {
   display: grid;
-  grid-template-columns: 140px 1fr;
+  grid-template-columns: 200px 1fr;
   gap: 24px;
   padding: 18px 0;
   border-top: 1px solid var(--rule);
   align-items: baseline;
 }
-/* fecha a base da última linha (os 2 últimos itens) no grid 2x2 */
-.contact-row:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
-@media (max-width: 720px) {
-  .contact-block { grid-template-columns: 1fr; }
-  .contact-row:nth-last-child(-n+2) { border-bottom: 0; }
-  .contact-row:last-of-type { border-bottom: 1px solid var(--rule); }
-}
+.contact-row:last-of-type { border-bottom: 1px solid var(--rule); }
 .contact-label {
   font-family: var(--f-mono);
   font-size: 10px;
