@@ -257,18 +257,6 @@ function Booking({ lang, data, i18n }) {
               </div>
             </div>
             <div className="contact-row">
-              <div className="contact-label">{pick(data.contact.press.label, lang)}</div>
-              <div className="contact-value">
-                <a href={`mailto:${data.contact.press.email}`}>{data.contact.press.email}</a>
-              </div>
-            </div>
-            <div className="contact-row">
-              <div className="contact-label">{pick(data.contact.merch.label, lang)}</div>
-              <div className="contact-value">
-                <a href={`mailto:${data.contact.merch.email}`}>{data.contact.merch.email}</a>
-              </div>
-            </div>
-            <div className="contact-row">
               <div className="contact-label">{pick(data.contact.store.label, lang)}</div>
               <div className="contact-value">
                 <a href={data.contact.store.url} target="_blank" rel="noreferrer">{data.contact.store.display}</a>

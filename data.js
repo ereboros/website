@@ -74,7 +74,7 @@ window.EREBOROS_DATA = {
   ],
 
   contact: {
-    booking:  { label: { pt: "Contato geral", en: "General contact" }, email: "contact@ereboros.com" },
+    booking:  { label: { pt: "Contato", en: "Contact" }, email: "contact@ereboros.com" },
     press:    { label: { pt: "Imprensa", en: "Press" },                email: "press@ereboros.com" },
     merch:    { label: { pt: "Merchandise", en: "Merchandise" },       email: "merch@ereboros.com" },
     store:    { label: { pt: "Loja oficial", en: "Official store" },   url: "https://ereboros.lojaintegrada.com.br/", display: "ereboros.lojaintegrada.com.br" },
