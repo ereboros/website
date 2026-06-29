@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "ereboros.com" }],
+      "destination": "https://www.ereboros.com/$1",
+      "permanent": true
+    }
+  ]
+}
