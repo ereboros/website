@@ -116,24 +116,6 @@ window.EREBOROS_DATA = {
       cta: { pt: "Entrar na loja", en: "Enter the store" },
       sub: { pt: "Envios internacionais", en: "Worldwide shipping" },
     },
-    booking: {
-      form: {
-        name:   { pt: "Nome",       en: "Name" },
-        email:  { pt: "E-mail",     en: "Email" },
-        kind:   { pt: "Assunto",    en: "Subject" },
-        date:   { pt: "Data prevista", en: "Proposed date" },
-        city:   { pt: "Cidade / país", en: "City / country" },
-        msg:    { pt: "Mensagem",   en: "Message" },
-        send:   { pt: "Enviar", en: "Send" },
-        sent:   { pt: "Invocação recebida. Até 72 horas.", en: "Invocation received. Within 72 hours." },
-      },
-      kinds: {
-        show:    { pt: "Show",                 en: "Show" },
-        festival:{ pt: "Festival",             en: "Festival" },
-        press:   { pt: "Imprensa",             en: "Press" },
-        other:   { pt: "Outro",                en: "Other" },
-      },
-    },
     footer: {
       rights: { pt: "Todos os direitos reservados.", en: "All rights reserved." },
       credits:{ pt: "Fotografia · Alessandra Tolc",  en: "Photography · Alessandra Tolc" },

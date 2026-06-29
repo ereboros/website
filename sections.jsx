@@ -244,96 +244,38 @@ function Store({ lang, data, i18n }) {
 
 function Booking({ lang, data, i18n }) {
   const s = i18n.sections.booking;
-  const f = i18n.booking.form;
-  const k = i18n.booking.kinds;
-  const [sent, setSent] = useState(false);
-
-  const submit = (e) => {
-    e.preventDefault();
-    setSent(true);
-    setTimeout(() => setSent(false), 5000);
-    e.target.reset();
-  };
-
   return (
     <section className="section" id="booking">
       <div className="wrap">
         <SectionHead num={s.num} title={pick(s.title, lang)} kicker={pick(s.kicker, lang)} />
-        <div className="booking-grid">
-          <Reveal>
-            <div className="contact-block">
-              <div className="contact-row">
-                <div className="contact-label">{pick(data.contact.booking.label, lang)}</div>
-                <div className="contact-value">
-                  <a href={`mailto:${data.contact.booking.email}`}>{data.contact.booking.email}</a>
-                </div>
-              </div>
-              <div className="contact-row">
-                <div className="contact-label">{pick(data.contact.press.label, lang)}</div>
-                <div className="contact-value">
-                  <a href={`mailto:${data.contact.press.email}`}>{data.contact.press.email}</a>
-                </div>
-              </div>
-              <div className="contact-row">
-                <div className="contact-label">{pick(data.contact.merch.label, lang)}</div>
-                <div className="contact-value">
-                  <a href={`mailto:${data.contact.merch.email}`}>{data.contact.merch.email}</a>
-                </div>
-              </div>
-              <div className="contact-row">
-                <div className="contact-label">{pick(data.contact.store.label, lang)}</div>
-                <div className="contact-value">
-                  <a href={data.contact.store.url} target="_blank" rel="noreferrer">{data.contact.store.display}</a>
-                </div>
+        <Reveal>
+          <div className="contact-block">
+            <div className="contact-row">
+              <div className="contact-label">{pick(data.contact.booking.label, lang)}</div>
+              <div className="contact-value">
+                <a href={`mailto:${data.contact.booking.email}`}>{data.contact.booking.email}</a>
               </div>
             </div>
-          </Reveal>
-
-          <Reveal delay={140}>
-            <form className="booking-form" onSubmit={submit}>
-              <div className="field-row">
-                <div className="field">
-                  <label>{pick(f.name, lang)}</label>
-                  <input type="text" required />
-                </div>
-                <div className="field">
-                  <label>{pick(f.email, lang)}</label>
-                  <input type="email" required />
-                </div>
+            <div className="contact-row">
+              <div className="contact-label">{pick(data.contact.press.label, lang)}</div>
+              <div className="contact-value">
+                <a href={`mailto:${data.contact.press.email}`}>{data.contact.press.email}</a>
               </div>
-              <div className="field-row">
-                <div className="field">
-                  <label>{pick(f.kind, lang)}</label>
-                  <select required defaultValue="">
-                    <option value="" disabled>—</option>
-                    <option>{pick(k.show, lang)}</option>
-                    <option>{pick(k.festival, lang)}</option>
-                    <option>{pick(k.press, lang)}</option>
-                    <option>{pick(k.other, lang)}</option>
-                  </select>
-                </div>
-                <div className="field">
-                  <label>{pick(f.date, lang)}</label>
-                  <input type="text" placeholder="AAAA-MM-DD" />
-                </div>
+            </div>
+            <div className="contact-row">
+              <div className="contact-label">{pick(data.contact.merch.label, lang)}</div>
+              <div className="contact-value">
+                <a href={`mailto:${data.contact.merch.email}`}>{data.contact.merch.email}</a>
               </div>
-              <div className="field">
-                <label>{pick(f.city, lang)}</label>
-                <input type="text" />
+            </div>
+            <div className="contact-row">
+              <div className="contact-label">{pick(data.contact.store.label, lang)}</div>
+              <div className="contact-value">
+                <a href={data.contact.store.url} target="_blank" rel="noreferrer">{data.contact.store.display}</a>
               </div>
-              <div className="field">
-                <label>{pick(f.msg, lang)}</label>
-                <textarea />
-              </div>
-              <button type="submit" className="btn btn-oxide form-submit">
-                {pick(f.send, lang)} →
-              </button>
-              {sent && (
-                <p className="form-status">✦ {pick(f.sent, lang)}</p>
-              )}
-            </form>
-          </Reveal>
-        </div>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

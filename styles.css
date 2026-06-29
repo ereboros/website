@@ -999,25 +999,11 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- SECTION: BOOKING ---------- */
 
-.booking-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-}
-@media (max-width: 860px) { .booking-grid { grid-template-columns: 1fr; gap: 40px; } }
-
-.booking-intro {
-  font-family: var(--f-display);
-  font-style: italic;
-  font-size: 24px;
-  line-height: 1.4;
-  color: var(--bone);
-  margin: 0 0 28px;
-}
 .contact-block {
   display: grid;
   gap: 22px;
   margin-top: 10px;
+  max-width: 720px;
 }
 .contact-row {
   display: grid;
@@ -1042,53 +1028,6 @@ a { color: inherit; text-decoration: none; }
 }
 .contact-value a { border-bottom: 1px solid transparent; transition: border-color .3s; }
 .contact-value a:hover { border-color: var(--oxide-bright); color: var(--oxide-bright); }
-
-.booking-form {
-  display: grid;
-  gap: 18px;
-}
-.field label {
-  display: block;
-  font-family: var(--f-mono);
-  font-size: 10px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--bone-dim);
-  margin-bottom: 8px;
-}
-.field input, .field textarea, .field select {
-  width: 100%;
-  padding: 14px 0;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--rule-strong);
-  color: var(--bone);
-  font-family: var(--f-display);
-  font-size: 20px;
-  font-style: italic;
-  outline: none;
-  transition: border-color .3s;
-}
-.field input:focus, .field textarea:focus, .field select:focus {
-  border-color: var(--oxide-bright);
-}
-.field textarea { min-height: 96px; resize: vertical; }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-@media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
-
-.form-submit {
-  margin-top: 8px;
-  justify-self: start;
-}
-
-.form-status {
-  font-family: var(--f-mono);
-  font-size: 10px;
-  letter-spacing: 0.28em;
-  color: var(--oxide-bright);
-  text-transform: uppercase;
-  margin: 0;
-}
 
 /* ---------- FOOTER ---------- */
 
