@@ -215,16 +215,9 @@ function App() {
   const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
   const [tweakOpen, setTweakOpen] = useState(false);
 
-  // MailerLite Universal — injetado após o mount para que o .ml-embedded já exista no DOM
-  useEffect(() => {
-    if (window.ml) return; // evita carregar duas vezes
-    (function (w, d, e, u, f, l, n) {
-      w[f] = w[f] || function () { (w[f].q = w[f].q || []).push(arguments); };
-      l = d.createElement(e); l.async = 1; l.src = u;
-      n = d.getElementsByTagName(e)[0]; n.parentNode.insertBefore(l, n);
-    })(window, document, "script", "https://assets.mailerlite.com/js/universal.js", "ml");
-    window.ml("account", "36660");
-  }, []);
+  // O MailerLite (universal.js) NÃO é mais carregado no boot — ele só é injetado
+  // quando o usuário abre o popover de newsletter (ver Newsletter em components.jsx).
+  // Isso tira JS + CSS de terceiro do carregamento inicial (melhora TBT/CSS não usado).
 
   // language persistence
   useEffect(() => {
@@ -258,7 +251,6 @@ function App() {
       const el = document.getElementById(href.slice(1));
       if (!el) return;
       e.preventDefault();
-      const navH = (document.querySelector(".nav")?.getBoundingClientRect().height) || 0;
       const GAP = 28; // respiro abaixo da nav
       // mira no conteúdo da seção (.wrap) e não na caixa: a seção tem um padding-top
       // grande (clamp(80px,12vh,160px)) que, se não pulado, vira margem vazia enorme.
@@ -267,8 +259,12 @@ function App() {
       // posição-alvo recalculada ao vivo: topo absoluto do alvo menos a nav e o respiro.
       // Recalcular a cada frame corrige deslocamentos de layout durante o scroll
       // (ex.: imagens lazy carregando), que antes faziam o scroll parar antes do ponto.
-      const targetAt = () =>
-        anchor.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - navH - GAP;
+      const targetAt = () => {
+        // navH recalculado a cada frame: a altura da nav muda quando o drawer do
+        // menu mobile (hambúrguer) fecha logo após o clique no link.
+        const navH = (document.querySelector(".nav")?.getBoundingClientRect().height) || 0;
+        return anchor.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - navH - GAP;
+      };
       const dur = Math.min(1400, Math.max(700, Math.abs(targetAt() - startY) * 0.6));
       const t0 = performance.now();
       const step = (now) => {
@@ -299,13 +295,15 @@ function App() {
     <>
       <Nav lang={lang} setLang={setLang} i18n={effI18n} />
       <Hero    lang={lang} data={data} i18n={effI18n} />
-      <About   lang={lang} data={data} i18n={effI18n} />
-      <Listen  lang={lang} data={data} i18n={effI18n} />
-      <Videos  lang={lang} data={data} i18n={effI18n} />
-      <Tour    lang={lang} data={data} i18n={effI18n} />
-      <Gallery lang={lang} data={data} i18n={effI18n} />
-      <Store   lang={lang} data={data} i18n={effI18n} />
-      <Booking lang={lang} data={data} i18n={effI18n} />
+      <main>
+        <About   lang={lang} data={data} i18n={effI18n} />
+        <Listen  lang={lang} data={data} i18n={effI18n} />
+        <Videos  lang={lang} data={data} i18n={effI18n} />
+        <Tour    lang={lang} data={data} i18n={effI18n} />
+        <Gallery lang={lang} data={data} i18n={effI18n} />
+        <Store   lang={lang} data={data} i18n={effI18n} />
+        <Booking lang={lang} data={data} i18n={effI18n} />
+      </main>
       <Footer  lang={lang} data={data} i18n={effI18n} />
 
       <Tweaks state={tweaks} setState={setTweaks} open={tweakOpen} setOpen={setTweakOpen} />

@@ -4,6 +4,10 @@ uploads/
 CLAUDE.md
 .gitignore
 
+# Fonte do build: o navegador carrega apenas os .js gerados (ver build.mjs)
+*.jsx
+build.mjs
+
 # Artefatos de teste do navegador (Playwright / screenshots de verificação)
 .playwright-mcp/
 agenda-bandsintown.png

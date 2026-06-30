@@ -4,18 +4,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## O que é
 
-Site institucional de página única da banda **Ereboros** (death metal, Rio de Janeiro), bilíngue PT/EN. É um site **estático, sem build e sem dependências instaladas**: React 18 e Babel são carregados via CDN (`unpkg`) e o JSX é transpilado **no navegador, em tempo de execução**. Não há `package.json`, `node_modules`, bundler, testes nem linter.
+Site institucional de página única da banda **Ereboros** (death metal, Rio de Janeiro), bilíngue PT/EN. É um site **estático e sem dependências instaladas** (não há `package.json`, `node_modules`, bundler, testes nem linter): React 18 é carregado via CDN (`unpkg`). O JSX **não** é mais transpilado no navegador — ele é **pré-compilado para JS por um passo de build leve** (`build.mjs`, esbuild via `npx`, sem instalar nada no projeto). O navegador carrega apenas os `.js` gerados, sem Babel. Os `.jsx` são a **fonte editável**; os `.js` são artefatos.
+
+> Histórico: até `?v=29` o site carregava `@babel/standalone` (~3 MB) e transpilava o JSX na main thread em runtime — era o maior gargalo de performance no mobile. Isso foi removido em favor da pré-compilação.
 
 ## Como rodar e publicar
 
 ```bash
-# Servir localmente (qualquer servidor estático na raiz do projeto)
+# 1. Compilar o JSX → JS (necessário após editar qualquer .jsx)
+node build.mjs
+
+# 2. Servir localmente (qualquer servidor estático na raiz do projeto)
 npx serve .
 # ou
 python -m http.server 8000
 ```
 
-Abra a porta servida. Não basta abrir `index.html` via `file://` — os scripts `type="text/babel"` e os assets locais exigem origem HTTP.
+`build.mjs` transpila `components.jsx`, `sections.jsx` e `app.jsx` para `components.js`, `sections.js` e `app.js` usando esbuild via `npx` (cache global do npm — nada é instalado no projeto). **Sempre rode `node build.mjs` depois de editar um `.jsx`** e incremente o `?v=` no `index.html` (ver Cache-busting). `data.js` e `styles.css` são servidos direto (sem compilação).
+
+Abra a porta servida. Não basta abrir `index.html` via `file://` — os scripts e os assets locais exigem origem HTTP.
 
 Deploy é via **Vercel** (projeto já vinculado em `.vercel/project.json`):
 
@@ -28,13 +35,13 @@ vercel --prod   # produção
 
 ## Arquitetura
 
-`index.html` carrega os scripts **nesta ordem, que é significativa** (não há módulos/imports — tudo é global):
+`index.html` carrega os scripts **nesta ordem, que é significativa** (não há módulos/imports — tudo é global). Todos usam `defer`, que preserva a ordem de execução e não bloqueia o parse do HTML:
 
-1. React + ReactDOM + Babel Standalone (CDN, com hashes SRI)
+1. React + ReactDOM (CDN, com hashes SRI) — **sem Babel**
 2. `data.js` — JS puro, define `window.EREBOROS_DATA`
-3. `components.jsx`, `sections.jsx`, `app.jsx` — todos `type="text/babel"`
+3. `components.js`, `sections.js`, `app.js` — **gerados** por `build.mjs` a partir dos `.jsx`
 
-**Padrão de globais:** cada `.jsx` define seus componentes/utilitários e os expõe com `Object.assign(window, {...})` no fim do arquivo; os arquivos seguintes os consomem como globais. Ao adicionar um componente novo, lembre de exportá-lo no `Object.assign` e de respeitar a ordem de carregamento (um componente só pode usar o que foi definido em arquivo anterior).
+**Padrão de globais:** cada `.jsx` define seus componentes/utilitários e os expõe com `Object.assign(window, {...})` no fim do arquivo; os arquivos seguintes os consomem como globais. Ao adicionar um componente novo, lembre de exportá-lo no `Object.assign` e de respeitar a ordem de carregamento (um componente só pode usar o que foi definido em arquivo anterior). O esbuild é rodado em modo `--minify-whitespace` (sem renomear identificadores), então os nomes globais são preservados intactos nos `.js`.
 
 Divisão dos arquivos:
 
@@ -52,8 +59,12 @@ Divisão dos arquivos:
 
 **Numerais das seções.** São algarismos romanos por padrão; o tweak `capitals: "arabic"` reescreve `i18n.sections.*.num` clonando o objeto i18n em runtime.
 
-**Cache-busting.** `index.html` referencia os assets com query de versão (atualmente `?v=29`): `styles.css`, `data.js`, `components.jsx`, `sections.jsx`, `app.jsx`. **Ao editar qualquer um desses arquivos, incremente o número de versão** (de preferência todos juntos) para invalidar o cache do navegador — sem isso, o Babel/CSS pode rodar a versão antiga em cache, inclusive para visitantes recorrentes após o deploy.
+**Cache-busting.** `index.html` referencia os assets com query de versão (atualmente `?v=33`): `styles.css`, `data.js`, `components.js`, `sections.js`, `app.js`. **Ao editar qualquer um desses arquivos (ou seu `.jsx` de origem), incremente o número de versão** (de preferência todos juntos) para invalidar o cache do navegador. Isso é ainda mais importante porque o `vercel.json` agora serve `.js`/`.css`/imagens com `Cache-Control: max-age=31536000, immutable` — o navegador não revalida, só refaz o fetch quando a URL (com `?v=`) muda. As imagens em `assets/` não usam `?v=` (o `immutable` vale pelo nome do arquivo); ao reotimizar uma imagem mantendo o nome, troque o nome ou adicione uma query.
 
-**Logo.** O wordmark é renderizado por CSS `mask-image` sobre `assets/ereboros-logo.png` (classe `.logo-mark`), colorido por `--oxide-bright` — não é uma `<img>` no hero/footer.
+**Logo.** O wordmark é renderizado por CSS `mask-image` sobre `assets/ereboros-logo.webp` (classe `.logo-mark`), colorido por `--oxide-bright` — não é uma `<img>` no hero/footer. O `.webp` é **lossless** (preserva o canal alpha que define a forma da máscara). A nav usa o mesmo `.webp` numa `<img>`.
 
-**Assets.** O código referencia somente `assets/` (`ereboros-logo.png`, `band-promo.jpg`). A pasta `uploads/` contém os arquivos-fonte originais (nomes com espaços) e **não é referenciada em runtime** — são as origens das versões em `assets/`.
+**Assets / imagens.** As imagens de conteúdo são servidas em **WebP** (`band-promo.webp`, `merch-1/2/3.webp`, `ereboros-logo.webp`). Os JPG/PNG originais permanecem no repositório como origem e fallback; **`band-promo.jpg` é mantido de propósito** porque é o `og:image` (alguns scrapers de redes sociais não processam WebP). Ao reotimizar, regenere o WebP com `npx sharp-cli -i <origem> -o assets/ -f webp -q 80` (logo: `--lossless`). As imagens acima da dobra (`band-promo.webp` e `ereboros-logo.webp`) têm `<link rel="preload" as="image">` no `index.html` por serem candidatas a LCP — mantenha a URL do preload idêntica à usada no CSS. A pasta `uploads/` contém os arquivos-fonte originais (nomes com espaços) e **não é referenciada em runtime**.
+
+**Performance — fontes e terceiros.** As fontes do Google são carregadas **sem bloquear a renderização** (`<link rel="preload" as="style" onload="...rel='stylesheet'">` + `<noscript>` fallback). O **MailerLite** (`universal.js`) **não** é carregado no boot: ele é injetado **sob demanda**, na primeira vez que o popover de newsletter abre (ver `Newsletter` em `components.jsx`) — isso tira JS e CSS de terceiro do carregamento inicial. Os embeds de Spotify/YouTube usam `loading="lazy"`.
+
+**Nav responsiva.** No desktop a barra é um grid `1fr auto 1fr` (links · logo · links); o `.nav-panel` usa `display: contents` para que os grupos `.nav-left`/`.nav-right` participem desse grid (ordenados por `order`). Em telas `≤720px` ela vira um **menu hambúrguer**: o `.nav-burger` aparece e o `.nav-panel` vira um drawer abaixo da barra, controlado pelo estado `menuOpen` em `Nav`. Ao mexer na nav, valide os dois breakpoints — e cuide para que nenhuma seção crie scroll horizontal no mobile (o caso clássico foi `.contact-row`, com coluna fixa + URL sem quebra).

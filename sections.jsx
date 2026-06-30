@@ -197,7 +197,7 @@ function Gallery({ lang, data, i18n }) {
                 {isHero ? (
                   <div
                     className="gallery-inner"
-                    style={{ backgroundImage: "url(assets/band-promo.jpg)" }}
+                    style={{ backgroundImage: "url(assets/band-promo.webp)" }}
                   />
                 ) : (
                   <div className="gallery-placeholder">{g.placeholder}</div>
@@ -237,7 +237,7 @@ function Store({ lang, data, i18n }) {
             <div className="store-merch">
               {data.merch.map((m, i) => (
                 <a key={i} href={m.href} target="_blank" rel="noreferrer" className="store-merch-item">
-                  <img src={m.src} alt={pick(m.alt, lang)} loading="lazy" />
+                  <img src={m.src} alt={pick(m.alt, lang)} loading="lazy" width="400" height="500" />
                 </a>
               ))}
             </div>

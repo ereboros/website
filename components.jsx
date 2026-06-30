@@ -169,6 +169,18 @@ function Newsletter({ lang }) {
   const ref = useRef(null);
   const embedRef = useRef(null);
 
+  // MailerLite Universal carregado SOB DEMANDA: só na primeira vez que o popover abre.
+  // Mantém JS + CSS de terceiro fora do carregamento inicial da página.
+  useEffect(() => {
+    if (!open || window.ml) return;
+    (function (w, d, e, u, f, l, n) {
+      w[f] = w[f] || function () { (w[f].q = w[f].q || []).push(arguments); };
+      l = d.createElement(e); l.async = 1; l.src = u;
+      n = d.getElementsByTagName(e)[0]; n.parentNode.insertBefore(l, n);
+    })(window, document, "script", "https://assets.mailerlite.com/js/universal.js", "ml");
+    window.ml("account", "36660");
+  }, [open]);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
@@ -214,7 +226,7 @@ function Newsletter({ lang }) {
       >
         {lang === "pt" ? "Newsletter" : "Newsletter"}
       </button>
-      <div className={`newsletter-pop ${open ? "is-open" : ""}`} role="dialog" aria-hidden={!open}>
+      <div className={`newsletter-pop ${open ? "is-open" : ""}`} role="dialog" aria-hidden={!open} inert={!open ? "" : undefined}>
         <div className="newsletter-pop-head">
           {lang === "pt" ? "Entre na lista" : "Join the list"}
         </div>
@@ -230,23 +242,36 @@ function Newsletter({ lang }) {
    ============================================================================ */
 
 function Nav({ lang, setLang, i18n }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const close = () => setMenuOpen(false);
   return (
-    <nav className="nav">
-      <div className="nav-left">
-        <a href="#listen" className="nav-link">{pick(i18n.nav.listen, lang)}</a>
-        <a href="#videos" className="nav-link">{pick(i18n.nav.videos, lang)}</a>
-        <a href="#tour"   className="nav-link">{pick(i18n.nav.tour,   lang)}</a>
-        <Newsletter lang={lang} />
-      </div>
-      <a href="#top" className="nav-mark" aria-label="Ereboros">
-        <img src="assets/ereboros-logo.png" alt="Ereboros" />
+    <nav className={`nav ${menuOpen ? "is-menu-open" : ""}`}>
+      <a href="#top" className="nav-mark" aria-label="Ereboros" onClick={close}>
+        <img src="assets/ereboros-logo.webp" alt="Ereboros" width="75" height="28" />
       </a>
-      <div className="nav-right">
-        <a href="#store"   className="nav-link">{pick(i18n.nav.store,   lang)}</a>
-        <a href="#booking" className="nav-link">{pick(i18n.nav.booking, lang)}</a>
-        <div className="lang-toggle" role="group" aria-label="Language">
-          <button className={lang === "pt" ? "active" : ""} onClick={() => setLang("pt")}>PT</button>
-          <button className={lang === "en" ? "active" : ""} onClick={() => setLang("en")}>EN</button>
+      <button
+        type="button"
+        className="nav-burger"
+        aria-label="Menu"
+        aria-expanded={menuOpen}
+        onClick={() => setMenuOpen((o) => !o)}
+      >
+        {menuOpen ? <Icon.Cross /> : <Icon.Menu />}
+      </button>
+      <div className="nav-panel">
+        <div className="nav-left">
+          <a href="#listen" className="nav-link" onClick={close}>{pick(i18n.nav.listen, lang)}</a>
+          <a href="#videos" className="nav-link" onClick={close}>{pick(i18n.nav.videos, lang)}</a>
+          <a href="#tour"   className="nav-link" onClick={close}>{pick(i18n.nav.tour,   lang)}</a>
+          <Newsletter lang={lang} />
+        </div>
+        <div className="nav-right">
+          <a href="#store"   className="nav-link" onClick={close}>{pick(i18n.nav.store,   lang)}</a>
+          <a href="#booking" className="nav-link" onClick={close}>{pick(i18n.nav.booking, lang)}</a>
+          <div className="lang-toggle" role="group" aria-label="Language">
+            <button className={lang === "pt" ? "active" : ""} onClick={() => setLang("pt")}>PT</button>
+            <button className={lang === "en" ? "active" : ""} onClick={() => setLang("en")}>EN</button>
+          </div>
         </div>
       </div>
     </nav>
