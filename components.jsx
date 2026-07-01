@@ -244,10 +244,17 @@ function Newsletter({ lang }) {
 function Nav({ lang, setLang, i18n }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const close = () => setMenuOpen(false);
+  // fecha o menu mobile com a tecla Esc
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e) => { if (e.key === "Escape") setMenuOpen(false); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
   return (
     <nav className={`nav ${menuOpen ? "is-menu-open" : ""}`}>
       <a href="#top" className="nav-mark" aria-label="Ereboros" onClick={close}>
-        <img src="assets/ereboros-logo.webp" alt="Ereboros" width="75" height="28" />
+        <img src="/assets/ereboros-logo.webp" alt="Ereboros" width="75" height="28" />
       </a>
       <button
         type="button"

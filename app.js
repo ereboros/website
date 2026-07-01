@@ -1,93 +1,3 @@
-function usePlayer(tracks) {
-  const [current, setCurrent] = useState(0);
-  const [playing, setPlaying] = useState(false);
-  const [opened, setOpened] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const audioRef = useRef(null);
-  useEffect(() => {
-    audioRef.current = new Audio();
-    audioRef.current.preload = "metadata";
-    const a = audioRef.current;
-    const onTime = () => setProgress(a.currentTime);
-    const onMeta = () => setDuration(a.duration || 0);
-    const onEnd = () => {
-      setCurrent((c) => c + 1 < tracks.length ? c + 1 : 0);
-    };
-    a.addEventListener("timeupdate", onTime);
-    a.addEventListener("loadedmetadata", onMeta);
-    a.addEventListener("ended", onEnd);
-    return () => {
-      a.pause();
-      a.removeEventListener("timeupdate", onTime);
-      a.removeEventListener("loadedmetadata", onMeta);
-      a.removeEventListener("ended", onEnd);
-    };
-  }, []);
-  useEffect(() => {
-    const a = audioRef.current;
-    if (!a) return;
-    a.src = tracks[current].src;
-    if (playing) {
-      a.play().catch(() => setPlaying(false));
-    }
-  }, [current]);
-  useEffect(() => {
-    const a = audioRef.current;
-    if (!a) return;
-    if (playing) a.play().catch(() => setPlaying(false));
-    else a.pause();
-  }, [playing]);
-  const playIndex = (i) => {
-    if (i === current) {
-      setPlaying((p) => !p);
-    } else {
-      setCurrent(i);
-      setPlaying(true);
-    }
-    setOpened(true);
-  };
-  const next = () => {
-    setCurrent((c) => (c + 1) % tracks.length);
-    setPlaying(true);
-    setOpened(true);
-  };
-  const prev = () => {
-    setCurrent((c) => (c - 1 + tracks.length) % tracks.length);
-    setPlaying(true);
-    setOpened(true);
-  };
-  const togglePlay = () => {
-    setPlaying((p) => !p);
-    setOpened(true);
-  };
-  const seek = (pct) => {
-    const a = audioRef.current;
-    if (a && duration) a.currentTime = pct * duration;
-  };
-  const close = () => {
-    setPlaying(false);
-    setOpened(false);
-  };
-  return { current, playing, opened, progress, duration, playIndex, next, prev, togglePlay, seek, close };
-}
-function fmtTime(s) {
-  if (!s || !isFinite(s)) return "0:00";
-  const m = Math.floor(s / 60);
-  const sec = Math.floor(s % 60).toString().padStart(2, "0");
-  return `${m}:${sec}`;
-}
-function PlayerBar({ player, tracks, lang, i18n }) {
-  const t = tracks[player.current];
-  const pct = player.duration ? player.progress / player.duration * 100 : 0;
-  const barRef = useRef(null);
-  const onBar = (e) => {
-    const r = barRef.current.getBoundingClientRect();
-    const p = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
-    player.seek(p);
-  };
-  return /* @__PURE__ */ React.createElement("div", { className: `player ${player.opened ? "is-open" : ""}` }, /* @__PURE__ */ React.createElement("div", { className: "player-now" }, /* @__PURE__ */ React.createElement("div", { className: "player-art" }, /* @__PURE__ */ React.createElement("span", { className: "player-art-cross" }, "✝")), /* @__PURE__ */ React.createElement("div", { className: "player-info" }, /* @__PURE__ */ React.createElement("div", { className: "player-track" }, t.title), /* @__PURE__ */ React.createElement("div", { className: "player-sub" }, "Ereboros · ", t.n))), /* @__PURE__ */ React.createElement("div", { className: "player-controls" }, /* @__PURE__ */ React.createElement("div", { className: "player-btns" }, /* @__PURE__ */ React.createElement("button", { className: "player-btn", onClick: player.prev, "aria-label": "Prev" }, /* @__PURE__ */ React.createElement(Icon.Prev, null)), /* @__PURE__ */ React.createElement("button", { className: "player-btn player-btn-main", onClick: player.togglePlay, "aria-label": "Play" }, player.playing ? /* @__PURE__ */ React.createElement(Icon.Pause, null) : /* @__PURE__ */ React.createElement(Icon.Play, null)), /* @__PURE__ */ React.createElement("button", { className: "player-btn", onClick: player.next, "aria-label": "Next" }, /* @__PURE__ */ React.createElement(Icon.Next, null))), /* @__PURE__ */ React.createElement("div", { className: "player-progress" }, /* @__PURE__ */ React.createElement("span", null, fmtTime(player.progress)), /* @__PURE__ */ React.createElement("div", { className: "player-bar", ref: barRef, onClick: onBar }, /* @__PURE__ */ React.createElement("div", { className: "player-bar-fill", style: { width: `${pct}%` } })), /* @__PURE__ */ React.createElement("span", null, fmtTime(player.duration)))), /* @__PURE__ */ React.createElement("div", { className: "player-right" }, /* @__PURE__ */ React.createElement("span", { className: "meta" }, pick(i18n.player.now, lang)), /* @__PURE__ */ React.createElement("button", { className: "player-close", onClick: player.close }, "×  ", lang === "pt" ? "Fechar" : "Close")));
-}
 const TWEAK_DEFAULTS = (
   /*EDITMODE-BEGIN*/
   {
@@ -151,16 +61,32 @@ function Tweaks({ state, setState, open, setOpen }) {
 function App() {
   const data = window.EREBOROS_DATA;
   const i18n = data.i18n;
-  const [lang, setLang] = useState("pt");
+  const [lang, setLang] = useState(window.EREBOROS_LANG === "en" ? "en" : "pt");
   const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
   const [tweakOpen, setTweakOpen] = useState(false);
+  const applyLang = (l) => {
+    setLang(l);
+    try {
+      document.documentElement.lang = l === "en" ? "en" : "pt-BR";
+    } catch (e) {
+    }
+  };
+  const setLangNav = (l) => {
+    if (l === lang) return;
+    applyLang(l);
+    const path = l === "en" ? "/en/" : "/";
+    try {
+      if (window.location.pathname !== path) {
+        window.history.pushState(null, "", path + window.location.hash);
+      }
+    } catch (e) {
+    }
+  };
   useEffect(() => {
-    const saved = localStorage.getItem("ereboros.lang");
-    if (saved) setLang(saved);
+    const onPop = () => applyLang(/^\/en(\/|$)/.test(window.location.pathname) ? "en" : "pt");
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
   }, []);
-  useEffect(() => {
-    localStorage.setItem("ereboros.lang", lang);
-  }, [lang]);
   useEffect(() => {
     const onMsg = (e) => {
       const t = e?.data?.type;
@@ -217,6 +143,6 @@ function App() {
     });
     return clone;
   }, [numerals, i18n]);
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Nav, { lang, setLang, i18n: effI18n }), /* @__PURE__ */ React.createElement(Hero, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement("main", null, /* @__PURE__ */ React.createElement(About, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Listen, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Videos, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Tour, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Gallery, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Store, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Booking, { lang, data, i18n: effI18n })), /* @__PURE__ */ React.createElement(Footer, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Tweaks, { state: tweaks, setState: setTweaks, open: tweakOpen, setOpen: setTweakOpen }));
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Nav, { lang, setLang: setLangNav, i18n: effI18n }), /* @__PURE__ */ React.createElement(Hero, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement("main", null, /* @__PURE__ */ React.createElement(About, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Listen, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Videos, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Tour, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Gallery, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Store, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Booking, { lang, data, i18n: effI18n })), /* @__PURE__ */ React.createElement(Footer, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Tweaks, { state: tweaks, setState: setTweaks, open: tweakOpen, setOpen: setTweakOpen }));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/* @__PURE__ */ React.createElement(App, null));

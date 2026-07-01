@@ -140,7 +140,15 @@ function Newsletter({ lang }) {
 function Nav({ lang, setLang, i18n }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const close = () => setMenuOpen(false);
-  return /* @__PURE__ */ React.createElement("nav", { className: `nav ${menuOpen ? "is-menu-open" : ""}` }, /* @__PURE__ */ React.createElement("a", { href: "#top", className: "nav-mark", "aria-label": "Ereboros", onClick: close }, /* @__PURE__ */ React.createElement("img", { src: "assets/ereboros-logo.webp", alt: "Ereboros", width: "75", height: "28" })), /* @__PURE__ */ React.createElement(
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
+  return /* @__PURE__ */ React.createElement("nav", { className: `nav ${menuOpen ? "is-menu-open" : ""}` }, /* @__PURE__ */ React.createElement("a", { href: "#top", className: "nav-mark", "aria-label": "Ereboros", onClick: close }, /* @__PURE__ */ React.createElement("img", { src: "/assets/ereboros-logo.webp", alt: "Ereboros", width: "75", height: "28" })), /* @__PURE__ */ React.createElement(
     "button",
     {
       type: "button",

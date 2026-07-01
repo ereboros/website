@@ -1,122 +1,4 @@
-/* EREBOROS — audio player + tweaks + app shell */
-
-function usePlayer(tracks) {
-  const [current, setCurrent] = useState(0);
-  const [playing, setPlaying] = useState(false);
-  const [opened, setOpened] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const audioRef = useRef(null);
-
-  useEffect(() => {
-    audioRef.current = new Audio();
-    audioRef.current.preload = "metadata";
-    const a = audioRef.current;
-    const onTime = () => setProgress(a.currentTime);
-    const onMeta = () => setDuration(a.duration || 0);
-    const onEnd  = () => {
-      setCurrent((c) => (c + 1 < tracks.length ? c + 1 : 0));
-    };
-    a.addEventListener("timeupdate", onTime);
-    a.addEventListener("loadedmetadata", onMeta);
-    a.addEventListener("ended", onEnd);
-    return () => {
-      a.pause();
-      a.removeEventListener("timeupdate", onTime);
-      a.removeEventListener("loadedmetadata", onMeta);
-      a.removeEventListener("ended", onEnd);
-    };
-  }, []);
-
-  useEffect(() => {
-    const a = audioRef.current;
-    if (!a) return;
-    a.src = tracks[current].src;
-    if (playing) {
-      a.play().catch(() => setPlaying(false));
-    }
-  }, [current]);
-
-  useEffect(() => {
-    const a = audioRef.current;
-    if (!a) return;
-    if (playing) a.play().catch(() => setPlaying(false));
-    else a.pause();
-  }, [playing]);
-
-  const playIndex = (i) => {
-    if (i === current) {
-      setPlaying((p) => !p);
-    } else {
-      setCurrent(i);
-      setPlaying(true);
-    }
-    setOpened(true);
-  };
-  const next = () => { setCurrent((c) => (c + 1) % tracks.length); setPlaying(true); setOpened(true); };
-  const prev = () => { setCurrent((c) => (c - 1 + tracks.length) % tracks.length); setPlaying(true); setOpened(true); };
-  const togglePlay = () => { setPlaying((p) => !p); setOpened(true); };
-  const seek = (pct) => {
-    const a = audioRef.current;
-    if (a && duration) a.currentTime = pct * duration;
-  };
-  const close = () => { setPlaying(false); setOpened(false); };
-
-  return { current, playing, opened, progress, duration, playIndex, next, prev, togglePlay, seek, close };
-}
-
-function fmtTime(s) {
-  if (!s || !isFinite(s)) return "0:00";
-  const m = Math.floor(s / 60);
-  const sec = Math.floor(s % 60).toString().padStart(2, "0");
-  return `${m}:${sec}`;
-}
-
-function PlayerBar({ player, tracks, lang, i18n }) {
-  const t = tracks[player.current];
-  const pct = player.duration ? (player.progress / player.duration) * 100 : 0;
-  const barRef = useRef(null);
-
-  const onBar = (e) => {
-    const r = barRef.current.getBoundingClientRect();
-    const p = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
-    player.seek(p);
-  };
-
-  return (
-    <div className={`player ${player.opened ? "is-open" : ""}`}>
-      <div className="player-now">
-        <div className="player-art"><span className="player-art-cross">✝</span></div>
-        <div className="player-info">
-          <div className="player-track">{t.title}</div>
-          <div className="player-sub">Ereboros · {t.n}</div>
-        </div>
-      </div>
-
-      <div className="player-controls">
-        <div className="player-btns">
-          <button className="player-btn" onClick={player.prev} aria-label="Prev"><Icon.Prev /></button>
-          <button className="player-btn player-btn-main" onClick={player.togglePlay} aria-label="Play">
-            {player.playing ? <Icon.Pause /> : <Icon.Play />}
-          </button>
-          <button className="player-btn" onClick={player.next} aria-label="Next"><Icon.Next /></button>
-        </div>
-        <div className="player-progress">
-          <span>{fmtTime(player.progress)}</span>
-          <div className="player-bar" ref={barRef} onClick={onBar}>
-            <div className="player-bar-fill" style={{ width: `${pct}%` }} />
-          </div>
-          <span>{fmtTime(player.duration)}</span>
-        </div>
-      </div>
-
-      <div className="player-right">
-        <span className="meta">{pick(i18n.player.now, lang)}</span>
-        <button className="player-close" onClick={player.close}>×  {lang === "pt" ? "Fechar" : "Close"}</button>
-      </div>
-    </div>
-  );
-}
+/* EREBOROS — tweaks + app shell */
 
 /* ---------- Tweaks ---------- */
 
@@ -210,7 +92,9 @@ function Tweaks({ state, setState, open, setOpen }) {
 function App() {
   const data = window.EREBOROS_DATA;
   const i18n = data.i18n;
-  const [lang, setLang] = useState("pt");
+  // Idioma inicial vem da URL da página: "/" serve PT, "/en/" serve EN (o build
+  // injeta window.EREBOROS_LANG em cada variante). Assim cada idioma é indexável.
+  const [lang, setLang] = useState(window.EREBOROS_LANG === "en" ? "en" : "pt");
 
   const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
   const [tweakOpen, setTweakOpen] = useState(false);
@@ -219,12 +103,28 @@ function App() {
   // quando o usuário abre o popover de newsletter (ver Newsletter em components.jsx).
   // Isso tira JS + CSS de terceiro do carregamento inicial (melhora TBT/CSS não usado).
 
-  // language persistence
+  // Idioma ligado à URL ("/" = PT, "/en/" = EN). O HTML de cada URL já chega no
+  // idioma certo; o toggle troca sem recarregar (History API) e o <html lang>
+  // acompanha. O botão Voltar do navegador é respeitado (popstate).
+  const applyLang = (l) => {
+    setLang(l);
+    try { document.documentElement.lang = l === "en" ? "en" : "pt-BR"; } catch (e) {}
+  };
+  const setLangNav = (l) => {
+    if (l === lang) return;
+    applyLang(l);
+    const path = l === "en" ? "/en/" : "/";
+    try {
+      if (window.location.pathname !== path) {
+        window.history.pushState(null, "", path + window.location.hash);
+      }
+    } catch (e) {}
+  };
   useEffect(() => {
-    const saved = localStorage.getItem("ereboros.lang");
-    if (saved) setLang(saved);
+    const onPop = () => applyLang(/^\/en(\/|$)/.test(window.location.pathname) ? "en" : "pt");
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
   }, []);
-  useEffect(() => { localStorage.setItem("ereboros.lang", lang); }, [lang]);
 
   // edit-mode protocol (Tweaks toolbar toggle)
   useEffect(() => {
@@ -293,7 +193,7 @@ function App() {
 
   return (
     <>
-      <Nav lang={lang} setLang={setLang} i18n={effI18n} />
+      <Nav lang={lang} setLang={setLangNav} i18n={effI18n} />
       <Hero    lang={lang} data={data} i18n={effI18n} />
       <main>
         <About   lang={lang} data={data} i18n={effI18n} />

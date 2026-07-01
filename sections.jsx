@@ -33,6 +33,63 @@ function useBandsintown() {
   return state;
 }
 
+/* ---------- Facades de embeds (clique-para-carregar) ----------
+   Os iframes de Spotify/YouTube só são injetados quando o usuário clica —
+   isso tira JS + cookies de terceiro do carregamento inicial da página. */
+
+function LiteYouTube({ id, title }) {
+  const [on, setOn] = useState(false);
+  if (on) {
+    return (
+      <iframe
+        src={`https://www.youtube.com/embed/${id}?rel=0&autoplay=1`}
+        title={title}
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+      />
+    );
+  }
+  return (
+    <button
+      type="button"
+      className="lite-embed lite-yt"
+      onClick={() => setOn(true)}
+      aria-label={`${title} — play`}
+      style={{ backgroundImage: `url(https://i.ytimg.com/vi/${id}/maxresdefault.jpg)` }}
+    >
+      <span className="lite-play"><Icon.Play /></span>
+    </button>
+  );
+}
+
+function LiteSpotify({ lang }) {
+  const [on, setOn] = useState(false);
+  if (on) {
+    return (
+      <iframe
+        data-testid="embed-iframe"
+        title="Ereboros on Spotify"
+        src="https://open.spotify.com/embed/artist/4j0EjyhqLFjcksGkgwE8mz?utm_source=generator&theme=0"
+        width="100%"
+        height="420"
+        frameBorder="0"
+        allowFullScreen=""
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        style={{ borderRadius: 2, border: "1px solid var(--rule)", background: "var(--ink-2)" }}
+      />
+    );
+  }
+  return (
+    <button type="button" className="lite-embed lite-spotify" onClick={() => setOn(true)}>
+      <Icon.Spotify className="lite-spotify-logo" />
+      <span className="lite-spotify-title">{lang === "pt" ? "Ouvir no Spotify" : "Play on Spotify"}</span>
+      <span className="lite-play"><Icon.Play /></span>
+    </button>
+  );
+}
+
 function Listen({ lang, data, i18n }) {
   const s = i18n.sections.listen;
   const rel = data.release;
@@ -45,18 +102,7 @@ function Listen({ lang, data, i18n }) {
           <Reveal>
             <div className="spotify-embed">
               <div className="meta meta-oxide" style={{ marginBottom: 14 }}>{pick(rel.subtitle, lang)}</div>
-              <iframe
-                data-testid="embed-iframe"
-                title="Ereboros on Spotify"
-                src="https://open.spotify.com/embed/artist/4j0EjyhqLFjcksGkgwE8mz?utm_source=generator&theme=0"
-                width="100%"
-                height="420"
-                frameBorder="0"
-                allowFullScreen=""
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-                style={{ borderRadius: 2, border: "1px solid var(--rule)", background: "var(--ink-2)" }}
-              />
+              <LiteSpotify lang={lang} />
               <p className="meta" style={{ marginTop: 14, lineHeight: 1.7 }}>
                 {lang === "pt" ? "Discografia" : "Discography"}:{" "}
                 {data.discography.map((d, i) => (
@@ -98,15 +144,7 @@ function Videos({ lang, data, i18n }) {
           {data.videos.map((v, i) => (
             <Reveal key={v.id} delay={i * 80} className="video-tile">
               <div className="video-embed">
-                <iframe
-                  src={`https://www.youtube.com/embed/${v.id}?rel=0`}
-                  title={v.title}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                  loading="lazy"
-                />
+                <LiteYouTube id={v.id} title={v.title} />
               </div>
             </Reveal>
           ))}
@@ -197,7 +235,7 @@ function Gallery({ lang, data, i18n }) {
                 {isHero ? (
                   <div
                     className="gallery-inner"
-                    style={{ backgroundImage: "url(assets/band-promo.webp)" }}
+                    style={{ backgroundImage: "url(/assets/band-promo.webp)" }}
                   />
                 ) : (
                   <div className="gallery-placeholder">{g.placeholder}</div>

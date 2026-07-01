@@ -49,39 +49,61 @@ function useBandsintown() {
   }, []);
   return state;
 }
+function LiteYouTube({ id, title }) {
+  const [on, setOn] = useState(false);
+  if (on) {
+    return /* @__PURE__ */ React.createElement(
+      "iframe",
+      {
+        src: `https://www.youtube.com/embed/${id}?rel=0&autoplay=1`,
+        title,
+        frameBorder: "0",
+        allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
+        referrerPolicy: "strict-origin-when-cross-origin",
+        allowFullScreen: true
+      }
+    );
+  }
+  return /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      type: "button",
+      className: "lite-embed lite-yt",
+      onClick: () => setOn(true),
+      "aria-label": `${title} — play`,
+      style: { backgroundImage: `url(https://i.ytimg.com/vi/${id}/maxresdefault.jpg)` }
+    },
+    /* @__PURE__ */ React.createElement("span", { className: "lite-play" }, /* @__PURE__ */ React.createElement(Icon.Play, null))
+  );
+}
+function LiteSpotify({ lang }) {
+  const [on, setOn] = useState(false);
+  if (on) {
+    return /* @__PURE__ */ React.createElement(
+      "iframe",
+      {
+        "data-testid": "embed-iframe",
+        title: "Ereboros on Spotify",
+        src: "https://open.spotify.com/embed/artist/4j0EjyhqLFjcksGkgwE8mz?utm_source=generator&theme=0",
+        width: "100%",
+        height: "420",
+        frameBorder: "0",
+        allowFullScreen: "",
+        allow: "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture",
+        style: { borderRadius: 2, border: "1px solid var(--rule)", background: "var(--ink-2)" }
+      }
+    );
+  }
+  return /* @__PURE__ */ React.createElement("button", { type: "button", className: "lite-embed lite-spotify", onClick: () => setOn(true) }, /* @__PURE__ */ React.createElement(Icon.Spotify, { className: "lite-spotify-logo" }), /* @__PURE__ */ React.createElement("span", { className: "lite-spotify-title" }, lang === "pt" ? "Ouvir no Spotify" : "Play on Spotify"), /* @__PURE__ */ React.createElement("span", { className: "lite-play" }, /* @__PURE__ */ React.createElement(Icon.Play, null)));
+}
 function Listen({ lang, data, i18n }) {
   const s = i18n.sections.listen;
   const rel = data.release;
-  return /* @__PURE__ */ React.createElement("section", { className: "section", id: "listen" }, /* @__PURE__ */ React.createElement("div", { className: "wrap" }, /* @__PURE__ */ React.createElement(SectionHead, { num: s.num, title: pick(s.title, lang), kicker: pick(s.kicker, lang) }), /* @__PURE__ */ React.createElement("div", { className: "listen-grid" }, /* @__PURE__ */ React.createElement(Reveal, null, /* @__PURE__ */ React.createElement("div", { className: "spotify-embed" }, /* @__PURE__ */ React.createElement("div", { className: "meta meta-oxide", style: { marginBottom: 14 } }, pick(rel.subtitle, lang)), /* @__PURE__ */ React.createElement(
-    "iframe",
-    {
-      "data-testid": "embed-iframe",
-      title: "Ereboros on Spotify",
-      src: "https://open.spotify.com/embed/artist/4j0EjyhqLFjcksGkgwE8mz?utm_source=generator&theme=0",
-      width: "100%",
-      height: "420",
-      frameBorder: "0",
-      allowFullScreen: "",
-      allow: "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture",
-      loading: "lazy",
-      style: { borderRadius: 2, border: "1px solid var(--rule)", background: "var(--ink-2)" }
-    }
-  ), /* @__PURE__ */ React.createElement("p", { className: "meta", style: { marginTop: 14, lineHeight: 1.7 } }, lang === "pt" ? "Discografia" : "Discography", ":", " ", data.discography.map((d, i) => /* @__PURE__ */ React.createElement("span", { key: d.title }, i > 0 ? " · " : "", d.title, " (", pick(d.type, lang), ", ", d.year, ")"))))), /* @__PURE__ */ React.createElement(Reveal, { delay: 120 }, /* @__PURE__ */ React.createElement("div", { className: "meta", style: { marginBottom: 14 } }, pick(i18n.listen.platforms, lang)), /* @__PURE__ */ React.createElement("div", { className: "platforms" }, data.platforms.map((p) => /* @__PURE__ */ React.createElement("a", { key: p.name, href: p.href, className: "platform-row", target: "_blank", rel: "noreferrer" }, iconByName(p.icon), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "platform-name" }, p.name), /* @__PURE__ */ React.createElement("div", { className: "platform-sub" }, pick(p.sub, lang))), /* @__PURE__ */ React.createElement("span", { className: "platform-arrow" }, "→"))))))));
+  return /* @__PURE__ */ React.createElement("section", { className: "section", id: "listen" }, /* @__PURE__ */ React.createElement("div", { className: "wrap" }, /* @__PURE__ */ React.createElement(SectionHead, { num: s.num, title: pick(s.title, lang), kicker: pick(s.kicker, lang) }), /* @__PURE__ */ React.createElement("div", { className: "listen-grid" }, /* @__PURE__ */ React.createElement(Reveal, null, /* @__PURE__ */ React.createElement("div", { className: "spotify-embed" }, /* @__PURE__ */ React.createElement("div", { className: "meta meta-oxide", style: { marginBottom: 14 } }, pick(rel.subtitle, lang)), /* @__PURE__ */ React.createElement(LiteSpotify, { lang }), /* @__PURE__ */ React.createElement("p", { className: "meta", style: { marginTop: 14, lineHeight: 1.7 } }, lang === "pt" ? "Discografia" : "Discography", ":", " ", data.discography.map((d, i) => /* @__PURE__ */ React.createElement("span", { key: d.title }, i > 0 ? " · " : "", d.title, " (", pick(d.type, lang), ", ", d.year, ")"))))), /* @__PURE__ */ React.createElement(Reveal, { delay: 120 }, /* @__PURE__ */ React.createElement("div", { className: "meta", style: { marginBottom: 14 } }, pick(i18n.listen.platforms, lang)), /* @__PURE__ */ React.createElement("div", { className: "platforms" }, data.platforms.map((p) => /* @__PURE__ */ React.createElement("a", { key: p.name, href: p.href, className: "platform-row", target: "_blank", rel: "noreferrer" }, iconByName(p.icon), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "platform-name" }, p.name), /* @__PURE__ */ React.createElement("div", { className: "platform-sub" }, pick(p.sub, lang))), /* @__PURE__ */ React.createElement("span", { className: "platform-arrow" }, "→"))))))));
 }
 function Videos({ lang, data, i18n }) {
   const s = i18n.sections.videos;
-  return /* @__PURE__ */ React.createElement("section", { className: "section", id: "videos" }, /* @__PURE__ */ React.createElement("div", { className: "wrap" }, /* @__PURE__ */ React.createElement(SectionHead, { num: s.num, title: pick(s.title, lang), kicker: pick(s.kicker, lang) }), /* @__PURE__ */ React.createElement("div", { className: "video-grid video-grid-5" }, data.videos.map((v, i) => /* @__PURE__ */ React.createElement(Reveal, { key: v.id, delay: i * 80, className: "video-tile" }, /* @__PURE__ */ React.createElement("div", { className: "video-embed" }, /* @__PURE__ */ React.createElement(
-    "iframe",
-    {
-      src: `https://www.youtube.com/embed/${v.id}?rel=0`,
-      title: v.title,
-      frameBorder: "0",
-      allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
-      referrerPolicy: "strict-origin-when-cross-origin",
-      allowFullScreen: true,
-      loading: "lazy"
-    }
-  )))))));
+  return /* @__PURE__ */ React.createElement("section", { className: "section", id: "videos" }, /* @__PURE__ */ React.createElement("div", { className: "wrap" }, /* @__PURE__ */ React.createElement(SectionHead, { num: s.num, title: pick(s.title, lang), kicker: pick(s.kicker, lang) }), /* @__PURE__ */ React.createElement("div", { className: "video-grid video-grid-5" }, data.videos.map((v, i) => /* @__PURE__ */ React.createElement(Reveal, { key: v.id, delay: i * 80, className: "video-tile" }, /* @__PURE__ */ React.createElement("div", { className: "video-embed" }, /* @__PURE__ */ React.createElement(LiteYouTube, { id: v.id, title: v.title })))))));
 }
 function Tour({ lang, i18n }) {
   const s = i18n.sections.tour;
@@ -121,7 +143,7 @@ function Gallery({ lang, data, i18n }) {
       "div",
       {
         className: "gallery-inner",
-        style: { backgroundImage: "url(assets/band-promo.webp)" }
+        style: { backgroundImage: "url(/assets/band-promo.webp)" }
       }
     ) : /* @__PURE__ */ React.createElement("div", { className: "gallery-placeholder" }, g.placeholder), /* @__PURE__ */ React.createElement("div", { className: "gallery-caption" }, g.caption));
   }))));
