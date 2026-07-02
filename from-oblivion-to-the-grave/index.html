@@ -192,6 +192,14 @@
 }
 .fo-card:hover .fo-buy { color: var(--bone); }
 
+/* Newsletter (MailerLite embutido) */
+.fo-news { margin-top: clamp(28px, 4vh, 44px); max-width: 480px; }
+.fo-news-head {
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.24em;
+  text-transform: uppercase; color: var(--bone-dim); margin-bottom: 12px;
+}
+.fo-news .ml-embedded { min-height: 60px; }
+
 .fo-footer { border-top: 1px solid var(--rule); padding: 32px 0 44px; }
 .fo-footer .fo-wrap { display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: space-between; }
 .fo-footer .meta a { border-bottom: 1px solid var(--rule); }
@@ -327,6 +335,11 @@
       <a class="fo-btn" href="https://open.spotify.com/artist/4j0EjyhqLFjcksGkgwE8mz" target="_blank" rel="noreferrer">Spotify</a>
       <a class="fo-btn" href="https://www.youtube.com/@Ereboros" target="_blank" rel="noreferrer">YouTube</a>
     </div>
+    <div class="fo-news">
+      <div class="fo-news-head">Ou receba por e-mail — aviso do lançamento em primeira mão</div>
+      <!-- Hidratado pelo MailerLite Universal (carregado sob demanda, ver script no fim) -->
+      <div class="ml-embedded" data-form="xEw6cK"></div>
+    </div>
   </section>
 
 </main>
@@ -380,6 +393,47 @@ document.querySelectorAll(".fo-facade").forEach(function (btn) {
     btn.parentNode.replaceChild(iframe, btn);
   });
 });
+
+// MailerLite sob demanda: carrega quando a seção "Acompanhe" se aproxima do viewport
+// (mesma conta/form do site principal; mantém JS de terceiro fora do carregamento inicial)
+(function () {
+  var loaded = false;
+  function loadML() {
+    if (loaded || window.ml) { loaded = true; return; }
+    loaded = true;
+    (function (w, d, e, u, f, l, n) {
+      w[f] = w[f] || function () { (w[f].q = w[f].q || []).push(arguments); };
+      l = d.createElement(e); l.async = 1; l.src = u;
+      n = d.getElementsByTagName(e)[0]; n.parentNode.insertBefore(l, n);
+    })(window, document, "script", "https://assets.mailerlite.com/js/universal.js", "ml");
+    window.ml("account", "36660");
+  }
+  var target = document.getElementById("follow");
+  if ("IntersectionObserver" in window && target) {
+    var io = new IntersectionObserver(function (entries) {
+      if (entries.some(function (e) { return e.isIntersecting; })) { loadML(); io.disconnect(); }
+    }, { rootMargin: "600px 0px" });
+    io.observe(target);
+  } else {
+    loadML();
+  }
+
+  // O form do MailerLite vem com textos fixos; localiza placeholder/botão/sucesso em PT
+  var embed = document.querySelector(".fo-news .ml-embedded");
+  if (embed) {
+    var apply = function () {
+      var input = embed.querySelector('input[type="email"]');
+      if (input && input.placeholder !== "Seu e-mail") input.placeholder = "Seu e-mail";
+      var btn = embed.querySelector("button.primary");
+      if (btn && btn.textContent.trim() !== "Inscrever-se") btn.textContent = "Inscrever-se";
+      var h = embed.querySelector(".ml-form-successBody h4");
+      if (h && h.textContent.trim() !== "Obrigado!") h.textContent = "Obrigado!";
+      var p = embed.querySelector(".ml-form-successBody p");
+      if (p && p.textContent.trim() !== "Você entrou na nossa lista com sucesso.") p.textContent = "Você entrou na nossa lista com sucesso.";
+    };
+    new MutationObserver(apply).observe(embed, { childList: true, subtree: true });
+  }
+})();
 </script>
 
 </body>
