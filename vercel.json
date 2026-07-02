@@ -7,6 +7,11 @@
       "permanent": true
     },
     {
+      "source": "/((?:epk|presskit)/?)",
+      "destination": "https://drive.google.com/drive/folders/1fnhbix2kV-xI4YeR_rCEGwD-GEggiM56",
+      "permanent": false
+    },
+    {
       "source": "/((?:biography|bio|about|sobre|banda)(?:/.*)?)",
       "destination": "/#about",
       "permanent": true

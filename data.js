@@ -76,6 +76,9 @@ window.EREBOROS_DATA = {
     booking:  { label: { pt: "Contato", en: "Contact" }, email: "contact@ereboros.com" },
     press:    { label: { pt: "Imprensa", en: "Press" },                email: "press@ereboros.com" },
     merch:    { label: { pt: "Merchandise", en: "Merchandise" },       email: "merch@ereboros.com" },
+    // A URL /epk é um redirect no vercel.json para a pasta do EPK no Google Drive —
+    // se o EPK mudar de lugar, atualize o destino lá (os links divulgados continuam valendo).
+    epk:      { label: { pt: "Press Kit", en: "Press Kit" }, url: "/epk", display: { pt: "Baixar EPK", en: "Download EPK" } },
     store:    { label: { pt: "Loja oficial", en: "Official store" },   url: "https://ereboros.lojaintegrada.com.br/", display: "ereboros.lojaintegrada.com.br" },
   },
 
