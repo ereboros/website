@@ -5,6 +5,51 @@
       "has": [{ "type": "host", "value": "ereboros.com" }],
       "destination": "https://www.ereboros.com/$1",
       "permanent": true
+    },
+    {
+      "source": "/((?:biography|bio|about|sobre|banda)(?:/.*)?)",
+      "destination": "/#about",
+      "permanent": true
+    },
+    {
+      "source": "/((?:product|product-category|shop|store|loja|cart|checkout)(?:/.*)?)",
+      "destination": "/#store",
+      "permanent": true
+    },
+    {
+      "source": "/((?:tour|shows|agenda|events|dates)(?:/.*)?)",
+      "destination": "/#tour",
+      "permanent": true
+    },
+    {
+      "source": "/((?:gallery|galeria|fotos|photos|media)(?:/.*)?)",
+      "destination": "/#gallery",
+      "permanent": true
+    },
+    {
+      "source": "/(videos?(?:/.*)?)",
+      "destination": "/#videos",
+      "permanent": true
+    },
+    {
+      "source": "/((?:music|musica|discography|discografia|listen|releases)(?:/.*)?)",
+      "destination": "/#listen",
+      "permanent": true
+    },
+    {
+      "source": "/((?:contact|contato|booking)(?:/.*)?)",
+      "destination": "/#booking",
+      "permanent": true
+    },
+    {
+      "source": "/en/(.+)",
+      "destination": "/en/",
+      "permanent": true
+    },
+    {
+      "source": "/((?!en/?$|assets/|google4e5ba0bd8f687548\\.html$)(?!.*\\.(?:js|css|xml|txt|png|jpe?g|webp|svg|ico|woff2?|json|webmanifest)$).+)",
+      "destination": "/",
+      "permanent": true
     }
   ],
   "headers": [
