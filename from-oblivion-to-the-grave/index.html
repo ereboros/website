@@ -17,15 +17,19 @@
 <meta property="og:title" content="From Oblivion to the Grave — novo álbum da Ereboros">
 <meta property="og:description" content="Lançamento em 23.10.2026. Primeiro single In the Depths of Misery já disponível. Merch oficial em tiragem limitada.">
 <meta property="og:url" content="https://www.ereboros.com/from-oblivion-to-the-grave/">
+<meta property="og:image" content="https://www.ereboros.com/assets/from-oblivion-to-the-grave-og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Capa do álbum From Oblivion to the Grave, da Ereboros">
+<!-- Fallback quadrado (WhatsApp/Instagram lidam bem com 1:1) -->
 <meta property="og:image" content="https://www.ereboros.com/assets/from-oblivion-to-the-grave.jpg">
 <meta property="og:image:width" content="750">
 <meta property="og:image:height" content="750">
-<meta property="og:image:alt" content="Capa do álbum From Oblivion to the Grave, da Ereboros">
 <meta property="og:locale" content="pt_BR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="From Oblivion to the Grave — Ereboros">
 <meta name="twitter:description" content="Novo álbum em 23.10.2026. Single In the Depths of Misery já disponível.">
-<meta name="twitter:image" content="https://www.ereboros.com/assets/from-oblivion-to-the-grave.jpg">
+<meta name="twitter:image" content="https://www.ereboros.com/assets/from-oblivion-to-the-grave-og.jpg">
 
 <!-- JSON-LD: MusicAlbum -->
 <script type="application/ld+json">
@@ -364,7 +368,7 @@
     <div class="fo-ctas" id="share-ctas">
       <button type="button" class="fo-btn fo-primary" data-share="web_share" hidden>Compartilhar</button>
       <a class="fo-btn" data-share="whatsapp" href="https://www.ereboros.com/from-oblivion-to-the-grave/" target="_blank" rel="noreferrer">WhatsApp</a>
-      <a class="fo-btn" data-share="twitter" href="https://www.ereboros.com/from-oblivion-to-the-grave/" target="_blank" rel="noreferrer">X (Twitter)</a>
+      <a class="fo-btn" data-share="x" href="https://www.ereboros.com/from-oblivion-to-the-grave/" target="_blank" rel="noreferrer">X (Twitter)</a>
       <a class="fo-btn" data-share="telegram" href="https://www.ereboros.com/from-oblivion-to-the-grave/" target="_blank" rel="noreferrer">Telegram</a>
       <button type="button" class="fo-btn" data-share="copy">Copiar link</button>
     </div>
@@ -484,12 +488,12 @@ document.querySelectorAll(".fo-facade").forEach(function (btn) {
   // Monta os hrefs dos canais diretos (encodeURIComponent evita erro de escape)
   var wa = bar.querySelector('[data-share="whatsapp"]');
   if (wa) wa.href = "https://wa.me/?text=" + encodeURIComponent(TEXT + " " + urlFor("whatsapp"));
-  var tw = bar.querySelector('[data-share="twitter"]');
-  if (tw) tw.href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(TEXT) + "&url=" + encodeURIComponent(urlFor("twitter"));
+  var tw = bar.querySelector('[data-share="x"]');
+  if (tw) tw.href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(TEXT) + "&url=" + encodeURIComponent(urlFor("x"));
   var tg = bar.querySelector('[data-share="telegram"]');
   if (tg) tg.href = "https://t.me/share/url?url=" + encodeURIComponent(urlFor("telegram")) + "&text=" + encodeURIComponent(TEXT);
 
-  ["whatsapp", "twitter", "telegram"].forEach(function (m) {
+  ["whatsapp", "x", "telegram"].forEach(function (m) {
     var a = bar.querySelector('[data-share="' + m + '"]');
     if (a) a.addEventListener("click", function () { track(m); });
   });
