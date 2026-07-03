@@ -140,6 +140,23 @@ function App() {
     return () => window.removeEventListener("message", onMsg);
   }, []);
 
+  // Instrumentação declarativa de cliques (GA4): qualquer elemento com data-ga-type
+  // dispara 'select_content' (mesmo esquema da landing). capture=true garante o
+  // disparo antes de a navegação do link acontecer. Ver docs-internos/ANALYTICS.md.
+  useEffect(() => {
+    const onClick = (e) => {
+      const el = e.target.closest && e.target.closest("[data-ga-type]");
+      if (!el || typeof gtag !== "function") return;
+      gtag("event", "select_content", {
+        content_type: el.getAttribute("data-ga-type"),
+        item_id: el.getAttribute("data-ga-item") || "",
+        location: el.getAttribute("data-ga-loc") || ""
+      });
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, []);
+
   // smooth scroll for hash links
   useEffect(() => {
     const easeInOutCubic = (t) => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3) / 2;

@@ -101,6 +101,19 @@ function App() {
     return () => window.removeEventListener("message", onMsg);
   }, []);
   useEffect(() => {
+    const onClick = (e) => {
+      const el = e.target.closest && e.target.closest("[data-ga-type]");
+      if (!el || typeof gtag !== "function") return;
+      gtag("event", "select_content", {
+        content_type: el.getAttribute("data-ga-type"),
+        item_id: el.getAttribute("data-ga-item") || "",
+        location: el.getAttribute("data-ga-loc") || ""
+      });
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, []);
+  useEffect(() => {
     const easeInOutCubic = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     const onClick = (e) => {
       const a = e.target.closest && e.target.closest('a[href^="#"]');

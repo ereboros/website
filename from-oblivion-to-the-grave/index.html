@@ -249,7 +249,7 @@
         <div><b id="cd-s">—</b><span>seg</span></div>
       </div>
       <div class="fo-ctas">
-        <a class="fo-btn fo-primary" href="https://www.youtube.com/watch?v=Fv17iU8Z5ho" target="_blank" rel="noreferrer">▶&nbsp; Ouvir o single</a>
+        <a class="fo-btn fo-primary" href="https://www.youtube.com/watch?v=Fv17iU8Z5ho" target="_blank" rel="noreferrer" data-ga-type="video" data-ga-item="single-youtube" data-ga-loc="landing_hero">▶&nbsp; Ouvir o single</a>
         <a class="fo-btn" href="#merch">Garantir o merch</a>
         <a class="fo-btn fo-btn-icon" href="#share" aria-label="Compartilhar esta página">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
@@ -300,7 +300,7 @@
       </p>
     </div>
     <div class="fo-merch-grid">
-      <a class="fo-card" href="https://ereboros.lojaintegrada.com.br/?utm_source=site&utm_medium=landing&utm_campaign=fotg&utm_content=camiseta" target="_blank" rel="noreferrer">
+      <a class="fo-card" href="https://ereboros.lojaintegrada.com.br/?utm_source=site&utm_medium=landing&utm_campaign=fotg&utm_content=camiseta" target="_blank" rel="noreferrer" data-ga-type="merch" data-ga-item="camiseta" data-ga-loc="landing_merch">
         <img src="/assets/merch-1.webp" alt="Camiseta da coleção From Oblivion to the Grave" loading="lazy">
         <div class="fo-card-body">
           <span class="fo-tag">Vestuário</span>
@@ -309,7 +309,7 @@
           <span class="fo-buy">Comprar na loja ↗</span>
         </div>
       </a>
-      <a class="fo-card" href="https://ereboros.lojaintegrada.com.br/?utm_source=site&utm_medium=landing&utm_campaign=fotg&utm_content=cd" target="_blank" rel="noreferrer">
+      <a class="fo-card" href="https://ereboros.lojaintegrada.com.br/?utm_source=site&utm_medium=landing&utm_campaign=fotg&utm_content=cd" target="_blank" rel="noreferrer" data-ga-type="merch" data-ga-item="cd" data-ga-loc="landing_merch">
         <img src="/assets/merch-2.webp" alt="CD From Oblivion to the Grave" loading="lazy">
         <div class="fo-card-body">
           <span class="fo-tag">CD Box Acrílico · 500 unidades · Cianeto Records</span>
@@ -319,7 +319,7 @@
           <span class="fo-buy">Comprar na loja ↗</span>
         </div>
       </a>
-      <a class="fo-card" href="https://wa.me/5519982713786?text=Ol%C3%A1!%20Quero%20garantir%20o%20vinil%20de%20From%20Oblivion%20to%20the%20Grave%20(Ereboros)%20na%20pr%C3%A9-venda." target="_blank" rel="noreferrer">
+      <a class="fo-card" href="https://wa.me/5519982713786?text=Ol%C3%A1!%20Quero%20garantir%20o%20vinil%20de%20From%20Oblivion%20to%20the%20Grave%20(Ereboros)%20na%20pr%C3%A9-venda." target="_blank" rel="noreferrer" data-ga-type="merch" data-ga-item="vinil" data-ga-loc="landing_merch">
         <img src="/assets/merch-3.webp" alt="Vinil From Oblivion to the Grave — pré-venda exclusiva Elessar Records, 300 cópias" loading="lazy">
         <div class="fo-card-body">
           <span class="fo-tag">Vinil · 300 cópias · Exclusivo Elessar Records</span>
@@ -343,9 +343,9 @@
       </p>
     </div>
     <div class="fo-ctas">
-      <a class="fo-btn fo-primary" href="https://www.instagram.com/ereborosofficial/" target="_blank" rel="noreferrer">Seguir no Instagram</a>
-      <a class="fo-btn" href="https://open.spotify.com/artist/4j0EjyhqLFjcksGkgwE8mz" target="_blank" rel="noreferrer">Spotify</a>
-      <a class="fo-btn" href="https://www.youtube.com/@Ereboros" target="_blank" rel="noreferrer">YouTube</a>
+      <a class="fo-btn fo-primary" href="https://www.instagram.com/ereborosofficial/" target="_blank" rel="noreferrer" data-ga-type="social" data-ga-item="instagram" data-ga-loc="landing_follow">Seguir no Instagram</a>
+      <a class="fo-btn" href="https://open.spotify.com/artist/4j0EjyhqLFjcksGkgwE8mz" target="_blank" rel="noreferrer" data-ga-type="social" data-ga-item="spotify" data-ga-loc="landing_follow">Spotify</a>
+      <a class="fo-btn" href="https://www.youtube.com/@Ereboros" target="_blank" rel="noreferrer" data-ga-type="social" data-ga-item="youtube" data-ga-loc="landing_follow">YouTube</a>
     </div>
     <div class="fo-news">
       <div class="fo-news-head">Ou receba por e-mail: aviso do lançamento em primeira mão</div>
@@ -411,8 +411,17 @@
 // Facades: o iframe só é injetado no clique (mesmo padrão do site principal)
 document.querySelectorAll(".fo-facade").forEach(function (btn) {
   btn.addEventListener("click", function () {
+    var isYt = btn.dataset.embed === "youtube";
+    // GA4: registra o play do embed (mesmo esquema select_content da instrumentação)
+    if (typeof gtag === "function") {
+      gtag("event", "select_content", {
+        content_type: isYt ? "video" : "audio",
+        item_id: isYt ? "single-youtube" : "spotify-artist",
+        location: "landing_single"
+      });
+    }
     var iframe = document.createElement("iframe");
-    if (btn.dataset.embed === "youtube") {
+    if (isYt) {
       iframe.src = "https://www.youtube.com/embed/Fv17iU8Z5ho?rel=0&autoplay=1";
       iframe.title = "Ereboros — In the Depths of Misery (vídeo oficial)";
       iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
@@ -425,6 +434,20 @@ document.querySelectorAll(".fo-facade").forEach(function (btn) {
     btn.parentNode.replaceChild(iframe, btn);
   });
 });
+
+// Instrumentação declarativa de cliques (GA4): qualquer elemento com data-ga-type
+// dispara um evento 'select_content'. Para medir um clique novo, basta marcar o
+// elemento no HTML com data-ga-type / data-ga-item / data-ga-loc (ver ANALYTICS.md).
+// capture=true garante o disparo antes de a navegação do link acontecer.
+document.addEventListener("click", function (e) {
+  var el = e.target.closest("[data-ga-type]");
+  if (!el || typeof gtag !== "function") return;
+  gtag("event", "select_content", {
+    content_type: el.getAttribute("data-ga-type"),
+    item_id: el.getAttribute("data-ga-item") || "",
+    location: el.getAttribute("data-ga-loc") || ""
+  });
+}, true);
 
 // MailerLite sob demanda: carrega quando a seção "Acompanhe" se aproxima do viewport
 // (mesma conta/form do site principal; mantém JS de terceiro fora do carregamento inicial)

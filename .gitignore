@@ -4,6 +4,9 @@
 docs/_extract.txt
 docs/_imgs/
 
+# Documentos internos da banda (relatórios/guias — não versionados nem publicados)
+docs-internos/
+
 # Artefatos de teste do navegador (Playwright MCP)
 .playwright-mcp/
 agenda-bandsintown.png

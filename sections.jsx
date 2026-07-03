@@ -55,7 +55,10 @@ function LiteYouTube({ id, title }) {
     <button
       type="button"
       className="lite-embed lite-yt"
-      onClick={() => setOn(true)}
+      onClick={() => {
+        if (typeof gtag === "function") gtag("event", "select_content", { content_type: "video", item_id: id, location: "home_videos" });
+        setOn(true);
+      }}
       aria-label={`${title} — play`}
       style={{ backgroundImage: `url(https://i.ytimg.com/vi/${id}/maxresdefault.jpg)` }}
     >
@@ -82,7 +85,7 @@ function LiteSpotify({ lang }) {
     );
   }
   return (
-    <button type="button" className="lite-embed lite-spotify" onClick={() => setOn(true)}>
+    <button type="button" className="lite-embed lite-spotify" onClick={() => { if (typeof gtag === "function") gtag("event", "select_content", { content_type: "audio", item_id: "spotify-artist", location: "home_listen" }); setOn(true); }}>
       <Icon.Spotify className="lite-spotify-logo" />
       <span className="lite-spotify-title">{lang === "pt" ? "Ouvir no Spotify" : "Play on Spotify"}</span>
       <span className="lite-play"><Icon.Play /></span>
@@ -116,7 +119,7 @@ function Listen({ lang, data, i18n }) {
             <div className="meta" style={{ marginBottom: 14 }}>{pick(i18n.listen.platforms, lang)}</div>
             <div className="platforms">
               {data.platforms.map((p) => (
-                <a key={p.name} href={p.href} className="platform-row" target="_blank" rel="noreferrer">
+                <a key={p.name} href={p.href} className="platform-row" target="_blank" rel="noreferrer" data-ga-type="platform" data-ga-item={p.icon} data-ga-loc="home_listen">
                   {iconByName(p.icon)}
                   <div>
                     <div className="platform-name">{p.name}</div>
@@ -203,6 +206,9 @@ function Tour({ lang, i18n }) {
                       target="_blank"
                       rel="noreferrer"
                       className="btn"
+                      data-ga-type="ticket"
+                      data-ga-item={v.city || ""}
+                      data-ga-loc="home_tour"
                       style={soldOut ? { pointerEvents: "none", opacity: 0.5 } : null}
                     >
                       {statusText}
@@ -268,13 +274,16 @@ function Store({ lang, data, i18n }) {
                 className="btn btn-oxide"
                 target="_blank"
                 rel="noreferrer"
+                data-ga-type="merch"
+                data-ga-item="loja"
+                data-ga-loc="home_store"
               >
                 {pick(i18n.store.cta, lang)} →
               </a>
             </div>
             <div className="store-merch">
               {data.merch.map((m, i) => (
-                <a key={i} href={m.href} target="_blank" rel="noreferrer" className="store-merch-item">
+                <a key={i} href={m.href} target="_blank" rel="noreferrer" className="store-merch-item" data-ga-type="merch" data-ga-item={`store-${i + 1}`} data-ga-loc="home_store">
                   <img src={m.src} alt={pick(m.alt, lang)} loading="lazy" width="400" height="500" />
                 </a>
               ))}
@@ -297,25 +306,25 @@ function Booking({ lang, data, i18n }) {
             <div className="contact-row">
               <div className="contact-label">{pick(data.contact.booking.label, lang)}</div>
               <div className="contact-value">
-                <a href={`mailto:${data.contact.booking.email}`}>{data.contact.booking.email}</a>
+                <a href={`mailto:${data.contact.booking.email}`} data-ga-type="contact" data-ga-item="booking" data-ga-loc="home_booking">{data.contact.booking.email}</a>
               </div>
             </div>
             <div className="contact-row">
               <div className="contact-label">{pick(data.contact.press.label, lang)}</div>
               <div className="contact-value">
-                <a href={`mailto:${data.contact.press.email}`}>{data.contact.press.email}</a>
+                <a href={`mailto:${data.contact.press.email}`} data-ga-type="contact" data-ga-item="press" data-ga-loc="home_booking">{data.contact.press.email}</a>
               </div>
             </div>
             <div className="contact-row">
               <div className="contact-label">{pick(data.contact.epk.label, lang)}</div>
               <div className="contact-value">
-                <a href={data.contact.epk.url} target="_blank" rel="noreferrer">{pick(data.contact.epk.display, lang)}</a>
+                <a href={data.contact.epk.url} target="_blank" rel="noreferrer" data-ga-type="epk" data-ga-item="epk" data-ga-loc="home_booking">{pick(data.contact.epk.display, lang)}</a>
               </div>
             </div>
             <div className="contact-row">
               <div className="contact-label">{pick(data.contact.store.label, lang)}</div>
               <div className="contact-value">
-                <a href={data.contact.store.url} target="_blank" rel="noreferrer">{data.contact.store.display}</a>
+                <a href={data.contact.store.url} target="_blank" rel="noreferrer" data-ga-type="merch" data-ga-item="loja" data-ga-loc="home_booking">{data.contact.store.display}</a>
               </div>
             </div>
           </div>
@@ -346,7 +355,7 @@ function Footer({ lang, data, i18n }) {
             </div>
             <div className="footer-col footer-right">
               <div className="meta">
-                <a href={`mailto:${data.contact.booking.email}`} className="link-u">{data.contact.booking.email}</a>
+                <a href={`mailto:${data.contact.booking.email}`} className="link-u" data-ga-type="contact" data-ga-item="booking" data-ga-loc="home_footer">{data.contact.booking.email}</a>
               </div>
               <div className="meta">{data.band.origin}</div>
             </div>
