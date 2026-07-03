@@ -123,11 +123,15 @@
   display: inline-flex; align-items: center; gap: 10px;
   font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.22em;
   text-transform: uppercase; padding: 15px 26px; border: 1px solid var(--rule-strong);
-  color: var(--bone); transition: background .2s, border-color .2s, color .2s;
+  color: var(--bone); background: transparent; cursor: pointer;
+  -webkit-appearance: none; appearance: none;
+  transition: background .2s, border-color .2s, color .2s;
 }
 .fo-btn:hover { border-color: var(--oxide-bright); }
 .fo-btn.fo-primary { background: var(--oxide); border-color: var(--oxide); }
 .fo-btn.fo-primary:hover { background: var(--oxide-bright); border-color: var(--oxide-bright); }
+.fo-btn-icon { padding-left: 16px; padding-right: 16px; }
+.fo-btn-icon svg { display: block; }
 
 /* Seções */
 .fo-section { padding: clamp(40px, 8vh, 96px) 0; border-top: 1px solid var(--rule); }
@@ -243,6 +247,9 @@
       <div class="fo-ctas">
         <a class="fo-btn fo-primary" href="https://www.youtube.com/watch?v=Fv17iU8Z5ho" target="_blank" rel="noreferrer">▶&nbsp; Ouvir o single</a>
         <a class="fo-btn" href="#merch">Garantir o merch</a>
+        <a class="fo-btn fo-btn-icon" href="#share" aria-label="Compartilhar esta página">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
+        </a>
       </div>
     </div>
   </header>
@@ -343,6 +350,26 @@
     </div>
   </section>
 
+  <!-- Espalhe -->
+  <section class="fo-section" id="share">
+    <div class="fo-head">
+      <span class="fo-num">IV — Espalhe a palavra</span>
+      <h2>Chame quem precisa ouvir isso</h2>
+      <p>
+        Death metal se propaga no boca a boca. Manda esta página pra quem vai
+        curtir o novo ciclo da Ereboros: é aqui que dá pra acompanhar tudo sobre
+        o lançamento do álbum.
+      </p>
+    </div>
+    <div class="fo-ctas" id="share-ctas">
+      <button type="button" class="fo-btn fo-primary" data-share="web_share" hidden>Compartilhar</button>
+      <a class="fo-btn" data-share="whatsapp" href="https://www.ereboros.com/from-oblivion-to-the-grave/" target="_blank" rel="noreferrer">WhatsApp</a>
+      <a class="fo-btn" data-share="twitter" href="https://www.ereboros.com/from-oblivion-to-the-grave/" target="_blank" rel="noreferrer">X (Twitter)</a>
+      <a class="fo-btn" data-share="telegram" href="https://www.ereboros.com/from-oblivion-to-the-grave/" target="_blank" rel="noreferrer">Telegram</a>
+      <button type="button" class="fo-btn" data-share="copy">Copiar link</button>
+    </div>
+  </section>
+
 </main>
 
 <footer class="fo-footer">
@@ -433,6 +460,76 @@ document.querySelectorAll(".fo-facade").forEach(function (btn) {
       if (p && p.textContent.trim() !== "Você entrou na nossa lista com sucesso.") p.textContent = "Você entrou na nossa lista com sucesso.";
     };
     new MutationObserver(apply).observe(embed, { childList: true, subtree: true });
+  }
+})();
+
+// Compartilhamento: Web Share API nativa (mobile) + fallbacks diretos + evento GA4 'share'
+(function () {
+  var LANDING = "https://www.ereboros.com/from-oblivion-to-the-grave/";
+  var TEXT = "Ereboros — From Oblivion to the Grave. Novo álbum em 23.10.2026. Ouça o single e garanta o merch.";
+
+  // URL com UTM por canal, pra separar o tráfego de compartilhamento no GA4
+  function urlFor(medium) {
+    return LANDING + "?utm_source=share&utm_medium=" + medium + "&utm_campaign=fotg";
+  }
+  function track(method) {
+    if (typeof gtag === "function") {
+      gtag("event", "share", { method: method, content_type: "landing", item_id: "from-oblivion-to-the-grave" });
+    }
+  }
+
+  var bar = document.getElementById("share-ctas");
+  if (!bar) return;
+
+  // Monta os hrefs dos canais diretos (encodeURIComponent evita erro de escape)
+  var wa = bar.querySelector('[data-share="whatsapp"]');
+  if (wa) wa.href = "https://wa.me/?text=" + encodeURIComponent(TEXT + " " + urlFor("whatsapp"));
+  var tw = bar.querySelector('[data-share="twitter"]');
+  if (tw) tw.href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(TEXT) + "&url=" + encodeURIComponent(urlFor("twitter"));
+  var tg = bar.querySelector('[data-share="telegram"]');
+  if (tg) tg.href = "https://t.me/share/url?url=" + encodeURIComponent(urlFor("telegram")) + "&text=" + encodeURIComponent(TEXT);
+
+  ["whatsapp", "twitter", "telegram"].forEach(function (m) {
+    var a = bar.querySelector('[data-share="' + m + '"]');
+    if (a) a.addEventListener("click", function () { track(m); });
+  });
+
+  // Web Share nativo: só aparece onde há suporte (mobile abre Instagram, WhatsApp, etc.)
+  var nativeBtn = bar.querySelector('[data-share="web_share"]');
+  if (nativeBtn && navigator.share) {
+    nativeBtn.hidden = false;
+    nativeBtn.addEventListener("click", function () {
+      navigator.share({ title: "From Oblivion to the Grave — Ereboros", text: TEXT, url: urlFor("web_share") })
+        .then(function () { track("web_share"); })
+        .catch(function () {});
+    });
+  }
+
+  // Copiar link
+  var copyBtn = bar.querySelector('[data-share="copy"]');
+  if (copyBtn) {
+    var label = copyBtn.textContent;
+    var done = function () {
+      track("copy");
+      copyBtn.textContent = "Link copiado!";
+      setTimeout(function () { copyBtn.textContent = label; }, 2000);
+    };
+    var fallbackCopy = function (text) {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", "");
+      ta.style.position = "absolute"; ta.style.left = "-9999px";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta); done();
+    };
+    copyBtn.addEventListener("click", function () {
+      var link = urlFor("copy");
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(link).then(done).catch(function () { fallbackCopy(link); });
+      } else {
+        fallbackCopy(link);
+      }
+    });
   }
 })();
 </script>

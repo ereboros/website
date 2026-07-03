@@ -12,6 +12,11 @@
       "permanent": false
     },
     {
+      "source": "/(fotg/?)",
+      "destination": "/from-oblivion-to-the-grave/",
+      "permanent": false
+    },
+    {
       "source": "/((?:biography|bio|about|sobre|banda)(?:/.*)?)",
       "destination": "/#about",
       "permanent": true
