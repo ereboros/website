@@ -885,7 +885,24 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
 }
 @media (max-width: 860px) {
-  .tour-row { grid-template-columns: 1fr; gap: 8px; padding: 20px 0; }
+  /* Compacto: data à esquerda, local no meio e ingressos à direita — tudo lado
+     a lado, para cada show ocupar uma linha baixa em vez de uma "torre". */
+  .tour-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 14px;
+    row-gap: 2px;
+    padding: 16px 0;
+  }
+  .tour-row:hover { padding-left: 0; }
+  .tour-date { grid-column: 1; grid-row: 1 / 3; align-self: center; }
+  .tour-date .day { font-size: 22px; margin-top: 2px; }
+  .tour-row > div:not(.tour-date):not(.tour-country) { grid-column: 2; grid-row: 1; min-width: 0; }
+  .tour-city { font-size: 19px; }
+  .tour-venue { white-space: normal; }
+  .tour-country { grid-column: 2; grid-row: 2; margin-top: 2px; }
+  .tour-row .btn { grid-column: 3; grid-row: 1 / 3; align-self: center; padding: 10px 18px; }
 }
 
 /* ---------- SECTION: GALLERY ---------- */
