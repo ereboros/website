@@ -137,6 +137,47 @@ function Newsletter({ lang }) {
     lang === "pt" ? "Newsletter" : "Newsletter"
   ), /* @__PURE__ */ React.createElement("div", { className: `newsletter-pop ${open ? "is-open" : ""}`, role: "dialog", "aria-hidden": !open, inert: !open ? "" : void 0 }, /* @__PURE__ */ React.createElement("div", { className: "newsletter-pop-head" }, lang === "pt" ? "Entre na lista" : "Join the list"), /* @__PURE__ */ React.createElement("div", { className: "ml-embedded", "data-form": "xEw6cK", ref: embedRef })));
 }
+function AnnounceBar({ lang, data }) {
+  const a = data.announce;
+  const [open, setOpen] = useState(true);
+  const ref = useRef(null);
+  useEffect(() => {
+    const root = document.documentElement;
+    if (!open) {
+      root.style.setProperty("--announce-h", "0px");
+      return;
+    }
+    const el = ref.current;
+    const setH = () => {
+      if (el) root.style.setProperty("--announce-h", el.offsetHeight + "px");
+    };
+    setH();
+    window.addEventListener("resize", setH);
+    return () => {
+      window.removeEventListener("resize", setH);
+      root.style.setProperty("--announce-h", "0px");
+    };
+  }, [open, lang]);
+  if (!open || !a) return null;
+  const onCta = () => {
+    try {
+      if (typeof gtag === "function") {
+        gtag("event", "select_content", { content_type: "album_landing", item_id: "fotg", location: "home_announce" });
+      }
+    } catch (e) {
+    }
+  };
+  return /* @__PURE__ */ React.createElement("div", { className: "announce", ref }, /* @__PURE__ */ React.createElement("a", { className: "announce-link", href: a.href, onClick: onCta }, /* @__PURE__ */ React.createElement("span", { className: "announce-tag" }, pick(a.tag, lang)), /* @__PURE__ */ React.createElement("span", { className: "announce-text" }, pick(a.text, lang)), /* @__PURE__ */ React.createElement("span", { className: "announce-cta" }, pick(a.cta, lang), " ", /* @__PURE__ */ React.createElement("span", { "aria-hidden": "true" }, "→"))), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      type: "button",
+      className: "announce-close",
+      "aria-label": lang === "pt" ? "Fechar aviso" : "Dismiss",
+      onClick: () => setOpen(false)
+    },
+    /* @__PURE__ */ React.createElement(Icon.Cross, { style: { transform: "rotate(45deg)" } })
+  ));
+}
 function Nav({ lang, setLang, i18n }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const close = () => setMenuOpen(false);
@@ -180,4 +221,4 @@ function About({ lang, data, i18n }) {
   const s = i18n.sections.about;
   return /* @__PURE__ */ React.createElement("section", { className: "section", id: "about" }, /* @__PURE__ */ React.createElement("div", { className: "wrap" }, /* @__PURE__ */ React.createElement(SectionHead, { num: s.num, title: pick(s.title, lang), kicker: pick(s.kicker, lang) }), /* @__PURE__ */ React.createElement("div", { className: "about-grid" }, /* @__PURE__ */ React.createElement(Reveal, { className: "about-body", delay: 0 }, data.about[lang].map((para, i) => /* @__PURE__ */ React.createElement("p", { key: i, className: i === 0 ? "drop-cap" : "" }, para))), /* @__PURE__ */ React.createElement(Reveal, { delay: 150 }, /* @__PURE__ */ React.createElement("div", { className: "meta", style: { marginBottom: 18 } }, lang === "pt" ? "Formação" : "Lineup"), /* @__PURE__ */ React.createElement("ul", { className: "members-list" }, data.members.map((m) => /* @__PURE__ */ React.createElement("li", { key: m.name }, /* @__PURE__ */ React.createElement("span", { className: "member-name" }, m.name), /* @__PURE__ */ React.createElement("span", { className: "member-role" }, pick(m.role, lang))))), /* @__PURE__ */ React.createElement("div", { style: { marginTop: 32, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 } }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "meta", style: { marginBottom: 6 } }, lang === "pt" ? "Formação" : "Formed"), /* @__PURE__ */ React.createElement("div", { className: "f-display", style: { fontSize: 26, fontStyle: "italic" } }, data.band.formed)), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "meta", style: { marginBottom: 6 } }, lang === "pt" ? "Origem" : "Origin"), /* @__PURE__ */ React.createElement("div", { className: "f-display", style: { fontSize: 26, fontStyle: "italic" } }, data.band.origin)))))));
 }
-Object.assign(window, { pick, useReveal, Reveal, Icon, iconByName, Ornament, SectionHead, Newsletter, Nav, Hero, About });
+Object.assign(window, { pick, useReveal, Reveal, Icon, iconByName, Ornament, SectionHead, Newsletter, AnnounceBar, Nav, Hero, About });

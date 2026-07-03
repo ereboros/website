@@ -232,9 +232,65 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- NAV ---------- */
-.nav {
+/* ---------- Announcement bar (lançamento do álbum) ----------
+   Fixa no topo, acima da nav. Publica a própria altura em --announce-h
+   (ver AnnounceBar em components.jsx) para a nav descer e o hero encolher. */
+.announce {
   position: fixed;
   top: 0; left: 0; right: 0;
+  z-index: 60;                 /* acima da nav (z-index: 50) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px calc(var(--gutter) + 26px);   /* respiro à direita para o botão fechar */
+  background: var(--oxide);
+  border-bottom: 1px solid rgba(0,0,0,0.28);
+}
+.announce-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+.announce-tag {
+  color: var(--bone);
+  background: rgba(0,0,0,0.22);
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+.announce-text {
+  color: rgba(235,229,216,0.85);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.announce-cta {
+  color: var(--bone);
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(235,229,216,0.55);
+  padding-bottom: 1px;
+}
+.announce-link:hover .announce-cta { border-color: var(--bone); }
+.announce-close {
+  position: absolute;
+  right: 8px; top: 50%; transform: translateY(-50%);
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; border: 0; padding: 7px;
+  color: var(--bone); opacity: 0.7; cursor: pointer;
+  transition: opacity .2s;
+}
+.announce-close:hover { opacity: 1; }
+@media (max-width: 600px) {
+  .announce-text { display: none; }   /* no mobile fica só a tag + o CTA */
+  .announce-link { gap: 10px; }
+}
+
+.nav {
+  position: fixed;
+  top: var(--announce-h, 0px); left: 0; right: 0;
   z-index: 50;
   padding: 18px var(--gutter);
   display: grid;
@@ -475,7 +531,7 @@ a { color: inherit; text-decoration: none; }
 
 .hero {
   position: relative;
-  min-height: 100vh;
+  min-height: calc(100vh - var(--announce-h, 0px));
   display: grid;
   place-items: center;
   overflow: hidden;

@@ -35,6 +35,15 @@ window.EREBOROS_DATA = {
     subtitle: { pt: "Álbum · 2026", en: "Full-length · 2026" },
   },
 
+  // Faixa de anúncio no topo da home (CTA para a landing do álbum). O link é
+  // INTERNO (mesmo domínio), então o clique é medido por evento GA4, não por UTM.
+  announce: {
+    tag:  { pt: "Novo álbum", en: "New album" },
+    text: { pt: "From Oblivion to the Grave · 23.10.2026", en: "From Oblivion to the Grave · 23.10.2026" },
+    cta:  { pt: "Ouça o single", en: "Hear the single" },
+    href: "/from-oblivion-to-the-grave/",
+  },
+
   // Discografia (fonte: Encyclopaedia Metallum). Citação textual para SEO;
   // a audição fica no embed do Spotify. Espelha a lista do JSON-LD em index.html.
   discography: [

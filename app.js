@@ -115,7 +115,8 @@ function App() {
       const startY = window.scrollY || window.pageYOffset;
       const targetAt = () => {
         const navH = document.querySelector(".nav")?.getBoundingClientRect().height || 0;
-        return anchor.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - navH - GAP;
+        const announceH = document.querySelector(".announce")?.getBoundingClientRect().height || 0;
+        return anchor.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - navH - announceH - GAP;
       };
       const dur = Math.min(1400, Math.max(700, Math.abs(targetAt() - startY) * 0.6));
       const t0 = performance.now();
@@ -143,6 +144,6 @@ function App() {
     });
     return clone;
   }, [numerals, i18n]);
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Nav, { lang, setLang: setLangNav, i18n: effI18n }), /* @__PURE__ */ React.createElement(Hero, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement("main", null, /* @__PURE__ */ React.createElement(About, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Listen, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Videos, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Tour, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Gallery, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Store, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Booking, { lang, data, i18n: effI18n })), /* @__PURE__ */ React.createElement(Footer, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Tweaks, { state: tweaks, setState: setTweaks, open: tweakOpen, setOpen: setTweakOpen }));
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(AnnounceBar, { lang, data }), /* @__PURE__ */ React.createElement(Nav, { lang, setLang: setLangNav, i18n: effI18n }), /* @__PURE__ */ React.createElement(Hero, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement("main", null, /* @__PURE__ */ React.createElement(About, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Listen, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Videos, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Tour, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Gallery, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Store, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Booking, { lang, data, i18n: effI18n })), /* @__PURE__ */ React.createElement(Footer, { lang, data, i18n: effI18n }), /* @__PURE__ */ React.createElement(Tweaks, { state: tweaks, setState: setTweaks, open: tweakOpen, setOpen: setTweakOpen }));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/* @__PURE__ */ React.createElement(App, null));

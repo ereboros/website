@@ -238,6 +238,62 @@ function Newsletter({ lang }) {
 }
 
 /* ============================================================================
+   ANNOUNCE BAR — faixa de lançamento no topo (CTA para a landing do álbum)
+   ============================================================================ */
+
+function AnnounceBar({ lang, data }) {
+  const a = data.announce;
+  const [open, setOpen] = useState(true);
+  const ref = useRef(null);
+
+  // A nav é fixed; a barra também. Publicamos a altura REAL da barra numa CSS var
+  // (--announce-h) para a nav descer o quanto certo e o smooth-scroll (app.jsx)
+  // descontar o topo fixo total. Ao fechar, a var volta a 0 e o layout se recompõe.
+  useEffect(() => {
+    const root = document.documentElement;
+    if (!open) { root.style.setProperty("--announce-h", "0px"); return; }
+    const el = ref.current;
+    const setH = () => { if (el) root.style.setProperty("--announce-h", el.offsetHeight + "px"); };
+    setH();
+    window.addEventListener("resize", setH);
+    return () => {
+      window.removeEventListener("resize", setH);
+      root.style.setProperty("--announce-h", "0px");
+    };
+  }, [open, lang]);
+
+  if (!open || !a) return null;
+
+  // Link INTERNO (mesmo domínio): medimos o clique por evento GA4, NUNCA por UTM
+  // (UTM em link interno reinicia a atribuição da sessão no GA4).
+  const onCta = () => {
+    try {
+      if (typeof gtag === "function") {
+        gtag("event", "select_content", { content_type: "album_landing", item_id: "fotg", location: "home_announce" });
+      }
+    } catch (e) {}
+  };
+
+  return (
+    <div className="announce" ref={ref}>
+      <a className="announce-link" href={a.href} onClick={onCta}>
+        <span className="announce-tag">{pick(a.tag, lang)}</span>
+        <span className="announce-text">{pick(a.text, lang)}</span>
+        <span className="announce-cta">{pick(a.cta, lang)} <span aria-hidden="true">→</span></span>
+      </a>
+      <button
+        type="button"
+        className="announce-close"
+        aria-label={lang === "pt" ? "Fechar aviso" : "Dismiss"}
+        onClick={() => setOpen(false)}
+      >
+        <Icon.Cross style={{ transform: "rotate(45deg)" }} />
+      </button>
+    </div>
+  );
+}
+
+/* ============================================================================
    NAV
    ============================================================================ */
 
@@ -371,4 +427,4 @@ function About({ lang, data, i18n }) {
   );
 }
 
-Object.assign(window, { pick, useReveal, Reveal, Icon, iconByName, Ornament, SectionHead, Newsletter, Nav, Hero, About });
+Object.assign(window, { pick, useReveal, Reveal, Icon, iconByName, Ornament, SectionHead, Newsletter, AnnounceBar, Nav, Hero, About });

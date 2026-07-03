@@ -163,7 +163,9 @@ function App() {
         // navH recalculado a cada frame: a altura da nav muda quando o drawer do
         // menu mobile (hambúrguer) fecha logo após o clique no link.
         const navH = (document.querySelector(".nav")?.getBoundingClientRect().height) || 0;
-        return anchor.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - navH - GAP;
+        // a barra de anúncio (quando presente) também é fixa acima da nav
+        const announceH = (document.querySelector(".announce")?.getBoundingClientRect().height) || 0;
+        return anchor.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - navH - announceH - GAP;
       };
       const dur = Math.min(1400, Math.max(700, Math.abs(targetAt() - startY) * 0.6));
       const t0 = performance.now();
@@ -193,6 +195,7 @@ function App() {
 
   return (
     <>
+      <AnnounceBar lang={lang} data={data} />
       <Nav lang={lang} setLang={setLangNav} i18n={effI18n} />
       <Hero    lang={lang} data={data} i18n={effI18n} />
       <main>
