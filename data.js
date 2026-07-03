@@ -11,10 +11,10 @@ window.EREBOROS_DATA = {
   },
 
   members: [
-    { name: "Thiago Barbosa", role: { pt: "Guitarra & Vocais", en: "Guitar & Vocals" } },
-    { name: "Juan Carlos",    role: { pt: "Guitarra",           en: "Guitar" } },
-    { name: "Paulo Doc",      role: { pt: "Baixo",              en: "Bass" } },
-    { name: "Victor Mendonça", role: { pt: "Bateria",            en: "Drums" } },
+    { name: "Thiago Barbosa", role: { pt: "Guitarra & Vocais", en: "Guitar & Vocals" }, instagram: "https://www.instagram.com/thbarbosaz/" },
+    { name: "Juan Carlos",    role: { pt: "Guitarra",           en: "Guitar" },          instagram: "https://www.instagram.com/juancarlosbs_/" },
+    { name: "Paulo Doc",      role: { pt: "Baixo",              en: "Bass" },            instagram: "https://www.instagram.com/paulodoc/" },
+    { name: "Victor Mendonça", role: { pt: "Bateria",            en: "Drums" },           instagram: "https://www.instagram.com/vhmendonca/" },
   ],
 
   about: {

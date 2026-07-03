@@ -405,7 +405,11 @@ function About({ lang, data, i18n }) {
             <ul className="members-list">
               {data.members.map((m) => (
                 <li key={m.name}>
-                  <span className="member-name">{m.name}</span>
+                  {m.instagram ? (
+                    <a className="member-name member-link" href={m.instagram} target="_blank" rel="noopener noreferrer" data-ga-type="social" data-ga-item={m.name} data-ga-loc="home_about">{m.name}</a>
+                  ) : (
+                    <span className="member-name">{m.name}</span>
+                  )}
                   <span className="member-role">{pick(m.role, lang)}</span>
                 </li>
               ))}
