@@ -208,6 +208,14 @@ a { color: inherit; text-decoration: none; }
 .btn:hover { background: var(--bone); color: var(--ink); border-color: var(--bone); }
 .btn-oxide { border-color: var(--oxide); color: var(--bone); }
 .btn-oxide:hover { background: var(--oxide); color: var(--bone); border-color: var(--oxide); }
+/* Botão principal preenchido + pulsar suave (mesmo espírito dos CTAs da landing) */
+.btn-primary { background: var(--oxide); border-color: var(--oxide); color: var(--bone); animation: btn-pulse 2.6s ease-in-out infinite; }
+.btn-primary:hover { background: var(--oxide-bright); border-color: var(--oxide-bright); color: var(--bone); animation-play-state: paused; }
+@keyframes btn-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(173, 16, 16, 0); filter: brightness(1); }
+  50%      { box-shadow: 0 0 18px 2px rgba(173, 16, 16, 0.5); filter: brightness(1.1); }
+}
+@media (prefers-reduced-motion: reduce) { .btn-primary { animation: none; } }
 
 .link-u {
   position: relative;
@@ -583,7 +591,7 @@ a { color: inherit; text-decoration: none; }
   text-align: center;
   width: 100%;
   max-width: 1100px;
-  transform: translateY(80px);
+  transform: translateY(40px);
 }
 .hero-wordmark {
   margin: 0;
@@ -657,6 +665,14 @@ a { color: inherit; text-decoration: none; }
 @keyframes drip {
   0%, 100% { opacity: 0.3; transform: scaleY(0.7); }
   50% { opacity: 1; transform: scaleY(1); }
+}
+/* Telas largas de altura reduzida (laptop/desktop landscape baixo): não cabe o
+   "desça para saber mais" (.hero-scroll, absoluto na base) sem colidir com os
+   botões, e subir o conteúdo o jogaria por cima dos rostos da foto. Como o hint é
+   decorativo, ocultamos só nesses casos, preservando a composição do hero.
+   Não afeta o mobile (retrato), que tem altura de sobra. */
+@media (max-height: 880px) and (min-width: 721px) {
+  .hero-scroll { display: none; }
 }
 
 /* ---------- SECTION: ABOUT ---------- */

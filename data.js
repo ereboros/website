@@ -101,6 +101,7 @@ window.EREBOROS_DATA = {
       booking:{ pt: "Contato",    en: "Booking" },
     },
     heroScroll:     { pt: "Desça para saber mais", en: "Keep Scrolling" },
+    heroCta:        { pt: "Ouça Agora",            en: "Listen Now" },
     sections: {
       about:   { num: "I",   title: { pt: "Biografia",      en: "Biography" } },
       listen:  { num: "II",  title: { pt: "Ouça",           en: "Listen" },          kicker: { pt: "Discografia",   en: "Discography" } },

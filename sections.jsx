@@ -37,14 +37,15 @@ function useBandsintown() {
    Os iframes de Spotify/YouTube só são injetados quando o usuário clica —
    isso tira JS + cookies de terceiro do carregamento inicial da página. */
 
-function LiteYouTube({ id, title }) {
+function LiteYouTube({ id, title, eager }) {
   const [on, setOn] = useState(false);
-  if (on) {
+  if (on || eager) {
     return (
       <iframe
-        src={`https://www.youtube.com/embed/${id}?rel=0&autoplay=1`}
+        src={`https://www.youtube.com/embed/${id}?rel=0${on ? "&autoplay=1" : ""}`}
         title={title}
         frameBorder="0"
+        loading="lazy"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerPolicy="strict-origin-when-cross-origin"
         allowFullScreen
@@ -147,7 +148,7 @@ function Videos({ lang, data, i18n }) {
           {data.videos.map((v, i) => (
             <Reveal key={v.id} delay={i * 80} className="video-tile">
               <div className="video-embed">
-                <LiteYouTube id={v.id} title={v.title} />
+                <LiteYouTube id={v.id} title={v.title} eager />
               </div>
             </Reveal>
           ))}

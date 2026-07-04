@@ -375,7 +375,7 @@ function Hero({ lang, data, i18n }) {
         <Ornament />
         <p className="hero-sub">{pick(data.band.tagline, lang)}</p>
         <div className="hero-meta">
-          <a href="#listen" className="btn btn-oxide">{pick(i18n.nav.listen, lang)}</a>
+          <a href="#listen" className="btn btn-primary">{pick(i18n.heroCta, lang)}</a>
           <a href="#tour" className="btn">{pick(i18n.nav.tour, lang)}</a>
         </div>
       </div>

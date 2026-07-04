@@ -49,15 +49,16 @@ function useBandsintown() {
   }, []);
   return state;
 }
-function LiteYouTube({ id, title }) {
+function LiteYouTube({ id, title, eager }) {
   const [on, setOn] = useState(false);
-  if (on) {
+  if (on || eager) {
     return /* @__PURE__ */ React.createElement(
       "iframe",
       {
-        src: `https://www.youtube.com/embed/${id}?rel=0&autoplay=1`,
+        src: `https://www.youtube.com/embed/${id}?rel=0${on ? "&autoplay=1" : ""}`,
         title,
         frameBorder: "0",
+        loading: "lazy",
         allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
         referrerPolicy: "strict-origin-when-cross-origin",
         allowFullScreen: true
@@ -109,7 +110,7 @@ function Listen({ lang, data, i18n }) {
 }
 function Videos({ lang, data, i18n }) {
   const s = i18n.sections.videos;
-  return /* @__PURE__ */ React.createElement("section", { className: "section", id: "videos" }, /* @__PURE__ */ React.createElement("div", { className: "wrap" }, /* @__PURE__ */ React.createElement(SectionHead, { num: s.num, title: pick(s.title, lang), kicker: pick(s.kicker, lang) }), /* @__PURE__ */ React.createElement("div", { className: "video-grid video-grid-5" }, data.videos.map((v, i) => /* @__PURE__ */ React.createElement(Reveal, { key: v.id, delay: i * 80, className: "video-tile" }, /* @__PURE__ */ React.createElement("div", { className: "video-embed" }, /* @__PURE__ */ React.createElement(LiteYouTube, { id: v.id, title: v.title })))))));
+  return /* @__PURE__ */ React.createElement("section", { className: "section", id: "videos" }, /* @__PURE__ */ React.createElement("div", { className: "wrap" }, /* @__PURE__ */ React.createElement(SectionHead, { num: s.num, title: pick(s.title, lang), kicker: pick(s.kicker, lang) }), /* @__PURE__ */ React.createElement("div", { className: "video-grid video-grid-5" }, data.videos.map((v, i) => /* @__PURE__ */ React.createElement(Reveal, { key: v.id, delay: i * 80, className: "video-tile" }, /* @__PURE__ */ React.createElement("div", { className: "video-embed" }, /* @__PURE__ */ React.createElement(LiteYouTube, { id: v.id, title: v.title, eager: true })))))));
 }
 function Tour({ lang, i18n }) {
   const s = i18n.sections.tour;
