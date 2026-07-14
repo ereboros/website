@@ -57,7 +57,7 @@
       "permanent": true
     },
     {
-      "source": "/((?!en/?$|from-oblivion-to-the-grave/?$|assets/|google4e5ba0bd8f687548\\.html$)(?!.*\\.(?:js|css|xml|txt|png|jpe?g|webp|svg|ico|woff2?|json|webmanifest)$).+)",
+      "source": "/((?!en/?$|from-oblivion-to-the-grave/?$|smartlink/?$|assets/|google4e5ba0bd8f687548\\.html$)(?!.*\\.(?:js|css|xml|txt|png|jpe?g|webp|svg|ico|woff2?|json|webmanifest)$).+)",
       "destination": "/",
       "permanent": true
     }
