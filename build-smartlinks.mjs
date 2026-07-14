@@ -39,9 +39,9 @@ const SINGLES = [
   {
     slug: "in-the-depths-of-misery",
     title: "In the Depths of Misery",
-    cover: "/assets/progenies-of-the-unseen.webp",      // provisório: capa da Progenies
-    coverOg: "/assets/progenies-of-the-unseen-og.jpg",
-    coverAlt: "In the Depths of Misery — Ereboros (temporary cover art)",
+    cover: "/assets/in-the-depths-of-misery.webp",
+    coverOg: "/assets/in-the-depths-of-misery-og.jpg",
+    coverAlt: "In the Depths of Misery — cover art of the Ereboros single",
     links: {
       spotify: "https://open.spotify.com/track/3yBTS9HT8FfQedOvXe8hz2",
       "apple-music": "https://music.apple.com/br/album/in-the-depths-of-misery/6774738103?i=6774738107",
