@@ -90,20 +90,7 @@
   display: flex; flex-direction: column;
 }
 
-/* Topo: logo + volta ao site */
-.sl-top {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 20px 0;
-}
-.sl-top img { height: 30px; width: auto; display: block; }
-.sl-top a.sl-back {
-  font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.22em;
-  text-transform: uppercase; color: var(--bone-dim);
-  border-bottom: 1px solid transparent; transition: color .2s, border-color .2s;
-}
-.sl-top a.sl-back:hover { color: var(--bone); border-color: var(--rule-strong); }
-
-.sl-main { flex: 1; padding: clamp(12px, 3vh, 28px) 0 clamp(28px, 5vh, 48px); }
+.sl-main { flex: 1; padding: clamp(32px, 7vh, 72px) 0 clamp(28px, 5vh, 48px); }
 
 /* Cabeçalho */
 .sl-head { text-align: center; margin-bottom: clamp(20px, 3.5vh, 32px); }
@@ -169,11 +156,6 @@
 <body>
 
 <div class="sl-shell">
-
-  <header class="sl-top">
-    <a href="/" aria-label="Ereboros — home"><img src="/assets/ereboros-logo.webp" alt="Ereboros"></a>
-    <a class="sl-back" href="/" data-ga-type="navigate" data-ga-item="home" data-ga-loc="smartlink">ereboros.com ↗</a>
-  </header>
 
   <main class="sl-main">
 
