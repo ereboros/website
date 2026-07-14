@@ -26,7 +26,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.ereboros.com/smartlink/</loc>
+    <loc>https://www.ereboros.com/sl/in-the-depths-of-misery/</loc>
+    <lastmod>2026-07-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.ereboros.com/sl/progenies-of-the-unseen/</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

@@ -33,6 +33,18 @@ vercel --prod   # produção
 
 `.vercel/` está no `.gitignore` e não deve ser commitado.
 
+## Smartlinks por single (`/sl/<slug>/`)
+
+As páginas de smartlink usadas em campanhas (Meta etc.) ficam em `/sl/<slug>/index.html` e são **geradas** por `build-smartlinks.mjs` a partir de UM template. **Não edite os HTML em `sl/` à mão** — edite a lista `SINGLES` (e, se preciso, o template/ícones) no `.mjs` e rode:
+
+```bash
+node build-smartlinks.mjs
+```
+
+Por single só variam: `title`, `cover`/`coverOg` (capa; `cover: null` mostra o placeholder "Artwork coming soon" e usa `band-promo.jpg` como og:image) e `links` (`null` = botões travados com badge "Soon"; objeto com as 5 URLs = botões ativos "Listen" + evento de conversão). O **Meta Pixel** (`META_PIXEL_ID`) e o **GA** ficam centralizados no `.mjs`. São páginas standalone (mesmo estilo da landing do álbum): usam `styles.css` do site + CSS inline com prefixo `.sl-`, sem depender de `data.js`/`components.js`. Rastreiam clique de streaming como `Lead`/`StreamingClick` (Pixel) e `select_content` (GA4).
+
+`/sl/` está nas exclusões do catch-all do `vercel.json` (senão as páginas seriam redirecionadas para a home). Ao criar/renomear slugs, mantenha a exclusão `sl/` e adicione as URLs relevantes ao `sitemap.xml`.
+
 ## Arquitetura
 
 `index.html` carrega os scripts **nesta ordem, que é significativa** (não há módulos/imports — tudo é global). Todos usam `defer`, que preserva a ordem de execução e não bloqueia o parse do HTML:
