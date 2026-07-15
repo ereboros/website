@@ -8,7 +8,7 @@
 //
 // Uso:  node build-products.mjs
 //
-// Por produto só variam: nome, imagem, preço e a grade de tamanhos (cada um
+// Por produto só variam: nome, imagens, preço e a grade de tamanhos (cada um
 // com seu id de variação na Loja Integrada). NÃO edite os HTML em /merch/ à mão,
 // edite a lista PRODUCTS aqui e rode o gerador.
 //
@@ -28,6 +28,8 @@ const META_PIXEL_ID = "1278514373103982";
 
 const ARROW = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>`;
 const BAG = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`;
+const CHEVRON_L = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>`;
+const CHEVRON_R = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>`;
 
 // ---- Lista dos produtos ----------------------------------------------------
 const PRODUCTS = [
@@ -35,24 +37,26 @@ const PRODUCTS = [
     slug: "camiseta-oblivion",
     name: "Camiseta Oblivion",
     kicker: "Camiseta oficial · Ereboros",
-    image: "/assets/camiseta-oblivion.webp",
+    // Carrossel: a 1ª é a capa (preload/LCP). imageOg é a imagem de compartilhamento.
+    images: [
+      { src: "/assets/camiseta-oblivion-modelo.webp", w: 921,  h: 1152, alt: "Camiseta Ereboros Oblivion vestida, frente" },
+      { src: "/assets/camiseta-oblivion.webp",        w: 1616, h: 1448, alt: "Camiseta Ereboros Oblivion, estampa From Oblivion to the Grave" },
+      { src: "/assets/camiseta-oblivion-costas.webp", w: 1117, h: 1015, alt: "Camiseta Ereboros Oblivion, costas com a tracklist" },
+    ],
     imageOg: "/assets/camiseta-oblivion-og.jpg",
-    imageW: 1616,
-    imageH: 1448,
-    imageAlt: "Camiseta Ereboros — Oblivion, estampa frontal",
     productUrl: "https://ereboros.lojaintegrada.com.br/camiseta-oblivion",
     cartBase: "https://ereboros.lojaintegrada.com.br/carrinho/produto",
     preorder: "Pré-venda · entrega prevista para outubro de 2026",
     installments: 4,
     // label | price (centavos) | id da variação na Loja Integrada  ⚠️ CONFERIR
     sizes: [
-      { label: "PP",  price: 9490, id: 401295039 },
+      { label: "PP",  price: 7990, id: 401295039 },
       { label: "P",   price: 7990, id: 401294930 },
       { label: "M",   price: 7990, id: 401294966 },
-      { label: "G",   price: 9490, id: 401295048 },
+      { label: "G",   price: 7990, id: 401295048 },
       { label: "GG",  price: 7990, id: 401294993 },
-      { label: "XG",  price: 7990, id: 401294980 },
-      { label: "XGG", price: 7990, id: 401294975 },
+      { label: "XG",  price: 9490, id: 401294980 },
+      { label: "XGG", price: 9490, id: 401294975 },
     ],
     details: [
       "100% algodão fio penteado premium",
@@ -80,13 +84,21 @@ function renderPage(p) {
   const installLow = Math.floor(low / p.installments);
   const url = `${SITE}/merch/${p.slug}/`;
   const ogImage = SITE + p.imageOg;
-  const desc = `${p.name} — camiseta oficial do Ereboros. ${p.preorder}. A partir de ${brl(low)} em até ${p.installments}x sem juros. Pix, cartão ou boleto, envio para todo o Brasil.`;
-  const priceRange =
-    low === high ? brl(low) : `${brl(low)}–${brl(high)}`;
+  const imagesAbs = p.images.map((im) => SITE + im.src);
+  const desc = `${p.name}, camiseta oficial do Ereboros. ${p.preorder}. A partir de ${brl(low)} em até ${p.installments}x sem juros. Pix, cartão ou boleto, envio para todo o Brasil.`;
 
   const sizes = p.sizes.map((s) => renderSize(p, s)).join("\n");
   const details = p.details
     .map((d) => `        <li>${d}</li>`)
+    .join("\n");
+  const hasGallery = p.images.length > 1;
+  const slides = p.images
+    .map((im, i) => `          <div class="p-slide">
+            <img src="${im.src}" alt="${im.alt}" width="${im.w}" height="${im.h}" ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"'}>
+          </div>`)
+    .join("\n");
+  const thumbs = p.images
+    .map((im, i) => `          <button type="button" class="p-thumb" data-thumb="${i}" aria-selected="${i === 0 ? "true" : "false"}" aria-label="Ver imagem ${i + 1}"><img src="${im.src}" alt="" width="${im.w}" height="${im.h}" loading="lazy"></button>`)
     .join("\n");
 
   return `<!doctype html>
@@ -111,7 +123,7 @@ function renderPage(p) {
 <meta property="og:description" content="${desc}">
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="${ogImage}">
-<meta property="og:image:alt" content="${p.imageAlt}">
+<meta property="og:image:alt" content="${p.images[0].alt}">
 <meta property="og:locale" content="pt_BR">
 <meta property="product:price:amount" content="${(low / 100).toFixed(2)}">
 <meta property="product:price:currency" content="BRL">
@@ -127,8 +139,8 @@ function renderPage(p) {
   "@context": "https://schema.org",
   "@type": "Product",
   "name": "${p.name}",
-  "image": "${ogImage}",
-  "description": "Camiseta oficial do Ereboros — ${p.name}.",
+  "image": ${JSON.stringify(imagesAbs)},
+  "description": "Camiseta oficial do Ereboros: ${p.name}.",
   "brand": { "@type": "Brand", "name": "Ereboros" },
   "offers": {
     "@type": "AggregateOffer",
@@ -145,7 +157,7 @@ function renderPage(p) {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<link rel="preload" as="image" href="${p.image}" type="image/webp" fetchpriority="high">
+<link rel="preload" as="image" href="${p.images[0].src}" type="image/webp" fetchpriority="high">
 
 <!-- Design system do site (tokens, grain, tipografia) -->
 <link rel="stylesheet" href="/styles.css?v=43">
@@ -204,12 +216,45 @@ function renderPage(p) {
   .p-media { position: sticky; top: 24px; }
 }
 
-/* Imagem */
-.p-media {
-  background: var(--ink-2);
-  box-shadow: 0 26px 70px rgba(0,0,0,.55);
+/* Galeria / carrossel */
+.p-media { display: block; }
+.p-gallery { position: relative; background: var(--ink-2); box-shadow: 0 26px 70px rgba(0,0,0,.55); }
+.p-slides {
+  display: flex; aspect-ratio: 4 / 5;
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  scrollbar-width: none; -ms-overflow-style: none;
 }
-.p-media img { display: block; width: 100%; height: auto; }
+.p-slides::-webkit-scrollbar { display: none; }
+.p-slide { flex: 0 0 100%; scroll-snap-align: center; }
+.p-slide img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+/* Setas */
+.p-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 42px; height: 42px; display: grid; place-items: center; cursor: pointer;
+  color: var(--bone); background: color-mix(in srgb, var(--ink) 55%, transparent);
+  border: 1px solid var(--rule-strong); transition: background .18s, border-color .18s;
+}
+.p-nav:hover { background: var(--ink); border-color: var(--oxide-bright); }
+.p-prev { left: 10px; }
+.p-next { right: 10px; }
+.p-count {
+  position: absolute; right: 10px; bottom: 10px; pointer-events: none;
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; color: var(--bone);
+  background: color-mix(in srgb, var(--ink) 60%, transparent); border: 1px solid var(--rule);
+  padding: 3px 9px;
+}
+
+/* Miniaturas */
+.p-thumbs { display: flex; gap: 10px; margin-top: 10px; }
+.p-thumb {
+  flex: 0 0 auto; width: 62px; aspect-ratio: 1 / 1; cursor: pointer; padding: 0;
+  background: var(--ink-2); border: 1px solid var(--rule); opacity: .55;
+  transition: opacity .18s, border-color .18s;
+}
+.p-thumb img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.p-thumb:hover { opacity: 1; }
+.p-thumb[aria-selected="true"] { opacity: 1; border-color: var(--oxide-bright); }
 
 /* Detalhes */
 .p-info { display: flex; flex-direction: column; }
@@ -299,9 +344,19 @@ function renderPage(p) {
 
     <div class="p-grid">
 
-      <!-- Imagem -->
+      <!-- Galeria -->
       <div class="p-media">
-        <img src="${p.image}" alt="${p.imageAlt}" width="${p.imageW}" height="${p.imageH}" fetchpriority="high">
+        <div class="p-gallery">
+          <div class="p-slides" data-slides>
+${slides}
+          </div>${hasGallery ? `
+          <button type="button" class="p-nav p-prev" data-prev aria-label="Imagem anterior">${CHEVRON_L}</button>
+          <button type="button" class="p-nav p-next" data-next aria-label="Próxima imagem">${CHEVRON_R}</button>
+          <div class="p-count" data-count>1/${p.images.length}</div>` : ""}
+        </div>${hasGallery ? `
+        <div class="p-thumbs">
+${thumbs}
+        </div>` : ""}
       </div>
 
       <!-- Detalhes -->
@@ -414,6 +469,45 @@ ${details}
       });
     }
   }, true);
+})();
+</script>
+
+<script>
+// Carrossel da galeria: setas, miniaturas e swipe (scroll-snap nativo).
+(function () {
+  var wrap = document.querySelector("[data-slides]");
+  if (!wrap) return;
+  var slides = Array.prototype.slice.call(wrap.children);
+  if (slides.length < 2) return;
+  var thumbs = Array.prototype.slice.call(document.querySelectorAll("[data-thumb]"));
+  var countEl = document.querySelector("[data-count]");
+  var prev = document.querySelector("[data-prev]");
+  var next = document.querySelector("[data-next]");
+  var current = 0, raf;
+
+  function setActive(i) {
+    current = i;
+    thumbs.forEach(function (t, idx) { t.setAttribute("aria-selected", idx === i ? "true" : "false"); });
+    if (countEl) countEl.textContent = (i + 1) + "/" + slides.length;
+  }
+  function go(i) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    wrap.scrollTo({ left: i * wrap.clientWidth, behavior: "smooth" });
+    setActive(i);
+  }
+
+  prev.addEventListener("click", function () { go(current - 1); });
+  next.addEventListener("click", function () { go(current + 1); });
+  thumbs.forEach(function (t, idx) { t.addEventListener("click", function () { go(idx); }); });
+
+  // Swipe/scroll manual: sincroniza miniatura e contador com a posição real.
+  wrap.addEventListener("scroll", function () {
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(function () {
+      var i = Math.round(wrap.scrollLeft / wrap.clientWidth);
+      if (i !== current) setActive(i);
+    });
+  });
 })();
 </script>
 
