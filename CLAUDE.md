@@ -45,6 +45,20 @@ Por single só variam: `title`, `cover`/`coverOg` (capa; `cover: null` mostra o 
 
 `/sl/` está nas exclusões do catch-all do `vercel.json` (senão as páginas seriam redirecionadas para a home). Ao criar/renomear slugs, mantenha a exclusão `sl/` e adicione as URLs relevantes ao `sitemap.xml`.
 
+## Páginas de produto (`/merch/<slug>/`)
+
+As landings de venda por produto ficam em `/merch/<slug>/index.html` e são **geradas** por `build-products.mjs` a partir de UM template (mesmo padrão dos smartlinks). **Não edite os HTML em `merch/` à mão**, edite a lista `PRODUCTS` no `.mjs` e rode:
+
+```bash
+node build-products.mjs
+```
+
+São páginas standalone em PT (o público da loja é BR): usam `styles.css` do site + CSS inline com prefixo `.p-`, sem depender de `data.js`/`components.js`. Cada produto tem `name`, `image`/`imageOg`, `productUrl` (página na Loja Integrada), `cartBase` e um array `sizes` (cada tamanho com `label`, `price` em centavos e o `id` da variação na Loja Integrada). O seletor de tamanho atualiza preço/parcelas e reaponta o botão **Comprar** para o carrinho daquele tamanho (deep link `cartBase/<id>/adicionar`); sem tamanho escolhido, o botão abre a `productUrl` (fallback seguro). Rastreia `ViewContent` no load e `AddToCart` no clique (Meta Pixel) + `add_to_cart`/`select_content` (GA4). O **Meta Pixel** e o **GA** ficam centralizados no `.mjs`.
+
+> ⚠️ `price` e `id` por tamanho são extraídos da página da loja e precisam ser conferidos: um `id` trocado adiciona o tamanho errado ao carrinho.
+
+`/merch/` está nas exclusões do catch-all do `vercel.json`. Ao criar/renomear slugs, mantenha a exclusão `merch/` e adicione as URLs ao `sitemap.xml`.
+
 ## Arquitetura
 
 `index.html` carrega os scripts **nesta ordem, que é significativa** (não há módulos/imports — tudo é global). Todos usam `defer`, que preserva a ordem de execução e não bloqueia o parse do HTML:
