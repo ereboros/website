@@ -10,6 +10,7 @@
 // - links: { ... }         -> botões ativos ("Listen") + evento de conversão
 // - cover: "/assets/x.webp"-> mostra a capa (com preload/LCP e og:image próprio)
 // - cover: null            -> placeholder "Artwork coming soon" (og:image = band-promo)
+// - videoUrl: "https://..." -> capa vira link (com botão de play) para o vídeo
 //
 // Depois de rodar, os arquivos gerados são commitados (a Vercel serve estático).
 // ---------------------------------------------------------------------------
@@ -42,6 +43,7 @@ const SINGLES = [
     cover: "/assets/in-the-depths-of-misery.webp",
     coverOg: "/assets/in-the-depths-of-misery-og.jpg",
     coverAlt: "In the Depths of Misery — cover art of the Ereboros single",
+    videoUrl: "https://www.youtube.com/watch?v=Fv17iU8Z5ho",
     links: {
       spotify: "https://open.spotify.com/track/3yBTS9HT8FfQedOvXe8hz2",
       "apple-music": "https://music.apple.com/br/album/in-the-depths-of-misery/6774738103?i=6774738107",
@@ -105,11 +107,19 @@ function renderPage(s) {
   const preload = s.cover
     ? `\n<link rel="preload" as="image" href="${s.cover}" type="image/webp" fetchpriority="high">\n`
     : "";
+  const playIcon = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>`;
+  const coverImg = `<img src="${s.cover}" alt="${s.coverAlt}" width="1000" height="1000" fetchpriority="high">`;
   const coverBlock = s.cover
-    ? `    <!-- Capa -->
+    ? (s.videoUrl
+      ? `    <!-- Capa (link para o vídeo) -->
+    <a class="sl-cover sl-cover-link" href="${s.videoUrl}" target="_blank" rel="noreferrer" data-ga-type="video" data-ga-item="youtube-video" data-ga-loc="sl-${s.slug}" aria-label="Watch the video for ${s.title} on YouTube">
+      ${coverImg}
+      <span class="sl-play" aria-hidden="true">${playIcon}</span>
+    </a>`
+      : `    <!-- Capa -->
     <div class="sl-cover">
-      <img src="${s.cover}" alt="${s.coverAlt}" width="1000" height="1000" fetchpriority="high">
-    </div>`
+      ${coverImg}
+    </div>`)
     : `    <!-- Capa (em breve) -->
     <div class="sl-empty">
       <img src="/assets/ereboros-logo.webp" alt="Ereboros">
@@ -214,12 +224,28 @@ ${preload}
 
 /* Capa do release */
 .sl-cover {
-  display: block; width: min(100%, 460px);
+  position: relative; display: block; width: min(100%, 460px);
   margin: 0 auto clamp(24px, 4vh, 38px);
   border: 1px solid var(--rule-strong); background: var(--ink-2);
   box-shadow: 0 26px 70px rgba(0,0,0,.55);
 }
 .sl-cover img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; }
+
+/* Capa clicável (link para o vídeo) com botão de play */
+.sl-cover-link { cursor: pointer; text-decoration: none; transition: border-color .2s; }
+.sl-cover-link:hover { border-color: var(--oxide-bright); }
+.sl-play {
+  position: absolute; inset: 0; margin: auto;
+  width: clamp(56px, 15%, 82px); height: clamp(56px, 15%, 82px);
+  display: grid; place-items: center;
+  border: 1px solid rgba(240,236,228,.55); border-radius: 999px;
+  background: rgba(10,9,8,.5); color: var(--bone);
+  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+  transition: background .2s, border-color .2s, transform .12s;
+}
+.sl-play svg { width: 42%; height: 42%; margin-left: 6%; }
+.sl-cover-link:hover .sl-play { background: var(--oxide); border-color: var(--oxide-bright); }
+.sl-cover-link:active .sl-play { transform: scale(.96); }
 
 /* Placeholder quando o single ainda não tem capa */
 .sl-empty {

@@ -95,12 +95,28 @@
 
 /* Capa do release */
 .sl-cover {
-  display: block; width: min(100%, 460px);
+  position: relative; display: block; width: min(100%, 460px);
   margin: 0 auto clamp(24px, 4vh, 38px);
   border: 1px solid var(--rule-strong); background: var(--ink-2);
   box-shadow: 0 26px 70px rgba(0,0,0,.55);
 }
 .sl-cover img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; }
+
+/* Capa clicável (link para o vídeo) com botão de play */
+.sl-cover-link { cursor: pointer; text-decoration: none; transition: border-color .2s; }
+.sl-cover-link:hover { border-color: var(--oxide-bright); }
+.sl-play {
+  position: absolute; inset: 0; margin: auto;
+  width: clamp(56px, 15%, 82px); height: clamp(56px, 15%, 82px);
+  display: grid; place-items: center;
+  border: 1px solid rgba(240,236,228,.55); border-radius: 999px;
+  background: rgba(10,9,8,.5); color: var(--bone);
+  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+  transition: background .2s, border-color .2s, transform .12s;
+}
+.sl-play svg { width: 42%; height: 42%; margin-left: 6%; }
+.sl-cover-link:hover .sl-play { background: var(--oxide); border-color: var(--oxide-bright); }
+.sl-cover-link:active .sl-play { transform: scale(.96); }
 
 /* Placeholder quando o single ainda não tem capa */
 .sl-empty {
