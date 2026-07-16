@@ -107,7 +107,7 @@ function renderPage(s) {
   const preload = s.cover
     ? `\n<link rel="preload" as="image" href="${s.cover}" type="image/webp" fetchpriority="high">\n`
     : "";
-  const playIcon = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>`;
+  const playIcon = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l12-7z"/></svg>`;
   const coverImg = `<img src="${s.cover}" alt="${s.coverAlt}" width="1000" height="1000" fetchpriority="high">`;
   const coverBlock = s.cover
     ? (s.videoUrl
@@ -243,7 +243,7 @@ ${preload}
   -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
   transition: background .2s, border-color .2s, transform .12s;
 }
-.sl-play svg { width: 42%; height: 42%; margin-left: 6%; }
+.sl-play svg { width: 42%; height: 42%; }
 .sl-cover-link:hover .sl-play { background: var(--oxide); border-color: var(--oxide-bright); }
 .sl-cover-link:active .sl-play { transform: scale(.96); }
 
