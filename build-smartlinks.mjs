@@ -45,8 +45,8 @@ const SINGLES = [
     coverAlt: "In the Depths of Misery — cover art of the Ereboros single",
     videoUrl: "https://www.youtube.com/watch?v=Fv17iU8Z5ho",
     links: {
-      spotify: "https://open.spotify.com/track/3yBTS9HT8FfQedOvXe8hz2",
-      "apple-music": "https://music.apple.com/br/album/in-the-depths-of-misery/6774738103?i=6774738107",
+      spotify: "https://open.spotify.com/playlist/0mYzYnXgMeH6x5pVYxrrRc",
+      "apple-music": "https://music.apple.com/br/playlist/ereboros-setlist-tour-set-list/pl.6ca74d6644804c23b22be160993b100c",
       "youtube-music": "https://music.youtube.com/watch?v=N_Q1oaQUVsg",
       "amazon-music": "https://music.amazon.com/tracks/B0H3CHRS2C",
       deezer: "https://www.deezer.com/album/994318011",
@@ -344,9 +344,10 @@ ${rows}
 </div>
 
 <script>
-// Instrumentação declarativa de cliques: qualquer elemento com data-ga-type dispara
-// um evento GA4 'select_content'. Cliques de streaming (data-ga-type="listen") também
-// disparam a conversão no Meta Pixel (Lead), para otimizar a campanha por plataforma.
+// Instrumentação declarativa de cliques: TODO elemento com data-ga-type é rastreado
+// nos dois: GA4 ('select_content') e Meta Pixel ('ContentClick' custom). Por cima
+// disso, no Meta os cliques de conversão disparam o evento padrão correspondente:
+// streaming (type="listen") vira Lead; clipe (type="video") vira ViewContent.
 document.addEventListener("click", function (e) {
   var el = e.target.closest("[data-ga-type]");
   if (!el) return;
@@ -357,9 +358,10 @@ document.addEventListener("click", function (e) {
   if (typeof gtag === "function") {
     gtag("event", "select_content", { content_type: type, item_id: item, location: loc });
   }
-  if (type === "listen" && window.fbq && /^\\d+$/.test(window.META_PIXEL_ID)) {
-    fbq("trackCustom", "StreamingClick", { platform: item });
-    fbq("track", "Lead", { content_name: item, content_category: "streaming" });
+  if (window.fbq && /^\\d+$/.test(window.META_PIXEL_ID)) {
+    fbq("trackCustom", "ContentClick", { content_type: type, item: item, location: loc });
+    if (type === "listen") fbq("track", "Lead", { content_name: item, content_category: "streaming" });
+    else if (type === "video") fbq("track", "ViewContent", { content_name: item, content_category: "video" });
   }
 }, true);
 </script>
