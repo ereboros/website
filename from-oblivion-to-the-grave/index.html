@@ -54,7 +54,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
 
-<link rel="preload" as="image" href="/assets/from-oblivion-to-the-grave.webp" type="image/webp" fetchpriority="high">
+<link rel="preload" as="image" href="/assets/progenies-of-the-unseen.webp" type="image/webp" fetchpriority="high">
 
 <!-- Design system do site (tokens, grain, tipografia) -->
 <link rel="stylesheet" href="/styles.css?v=43">
@@ -86,6 +86,53 @@ html { scroll-behavior: smooth; }
 .fo-nav a.fo-back:hover { color: var(--bone); border-color: var(--rule-strong); }
 
 .fo-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* Strip de contexto do álbum: primeira coisa da página, afirma que tudo aqui
+   é o ciclo de From Oblivion to the Grave e leva à seção do álbum */
+.fo-album-strip {
+  display: block; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  color: var(--bone-dim); transition: color .2s, background .2s;
+}
+.fo-album-strip:hover { color: var(--bone); background: var(--ink-2); }
+.fo-strip-in {
+  max-width: var(--maxw); margin: 0 auto; padding: 10px var(--gutter);
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+}
+.fo-strip-in img { width: 38px; height: 38px; display: block; border: 1px solid var(--rule-strong); flex: none; }
+.fo-strip-text { flex: 1; min-width: 0; }
+.fo-strip-in strong { color: var(--bone); font-weight: 500; }
+.fo-strip-days { color: var(--oxide-bright); white-space: nowrap; }
+.fo-strip-arrow { margin-left: auto; color: var(--ash-2); }
+.fo-album-strip:hover .fo-strip-arrow { color: var(--bone); }
+
+/* Timeline do ciclo do lançamento (seção do álbum) */
+.fo-timeline { list-style: none; margin: 0; padding: 0; }
+.fo-timeline li { position: relative; padding: 0 0 24px 28px; }
+.fo-timeline li::before {
+  content: ""; position: absolute; left: 0; top: 6px; width: 8px; height: 8px;
+  border-radius: 50%; background: var(--ink-2); border: 1px solid var(--ash-2);
+}
+.fo-timeline li::after {
+  content: ""; position: absolute; left: 4px; top: 22px; bottom: 4px;
+  width: 1px; background: var(--rule);
+}
+.fo-timeline li:last-child { padding-bottom: 0; }
+.fo-timeline li:last-child::after { display: none; }
+.fo-timeline li.is-done::before { background: var(--ash-2); }
+.fo-timeline li.is-now::before {
+  background: var(--oxide-bright); border-color: var(--oxide-bright);
+  box-shadow: 0 0 10px rgba(173, 16, 16, 0.55);
+}
+.fo-tl-date {
+  font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.24em;
+  text-transform: uppercase; color: var(--ash-2); display: block; margin-bottom: 4px;
+}
+.fo-timeline .is-now .fo-tl-date { color: var(--oxide-bright); }
+.fo-tl-title { font-family: var(--f-display); font-weight: 500; font-size: 20px; margin: 0 0 3px; color: var(--bone); }
+.fo-tl-desc { margin: 0; font-size: 15px; line-height: 1.5; color: var(--bone-dim); }
+.fo-tl-desc a { border-bottom: 1px solid var(--rule-strong); }
+.fo-tl-desc a:hover { color: var(--bone); }
 
 /* Hero */
 .fo-hero {
@@ -146,6 +193,17 @@ html { scroll-behavior: smooth; }
 
 /* CTAs */
 .fo-ctas { display: flex; flex-wrap: wrap; gap: 14px; }
+
+/* Ações secundárias do hero: presentes, mas sem competir com os CTAs */
+.fo-ctas-quiet { display: flex; flex-wrap: wrap; gap: 8px 26px; margin-top: 18px; }
+.fo-ctas-quiet a {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--bone-dim);
+  border-bottom: 1px solid transparent; transition: color .2s, border-color .2s;
+}
+.fo-ctas-quiet a:hover { color: var(--bone); border-color: var(--rule-strong); }
+.fo-ctas-quiet svg { display: block; }
 .fo-btn {
   display: inline-flex; align-items: center; gap: 10px;
   font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.22em;
@@ -258,6 +316,9 @@ html { scroll-behavior: smooth; }
 .fo-footer .meta a:hover { color: var(--bone); border-color: var(--rule-strong); }
 
 @media (max-width: 860px) {
+  .fo-strip-in { font-size: 10px; gap: 10px; padding-top: 9px; padding-bottom: 9px; }
+  .fo-strip-in img { width: 30px; height: 30px; }
+  .fo-strip-arrow { display: none; }
   .fo-hero {
     grid-template-columns: auto 1fr;
     grid-template-areas: "cover head" "actions actions";
@@ -272,6 +333,7 @@ html { scroll-behavior: smooth; }
   .fo-count { margin-bottom: 20px; }
   .fo-ctas { flex-direction: column; align-items: stretch; gap: 10px; }
   .fo-ctas .fo-btn { width: 100%; justify-content: center; }
+  .fo-ctas-quiet { justify-content: center; gap: 8px 22px; }
   .fo-scrolldown { display: block; }
   .fo-single { grid-template-columns: 1fr; }
   .fo-merch-grid { grid-template-columns: 1fr; }
@@ -285,24 +347,33 @@ html { scroll-behavior: smooth; }
   <a class="fo-back" href="/">ereboros.com ↗</a>
 </nav>
 
+<!-- Contexto do álbum: a página inteira é o ciclo de From Oblivion to the Grave -->
+<a class="fo-album-strip" href="#album" data-ga-type="navigate" data-ga-item="album-strip" data-ga-loc="landing_strip">
+  <span class="fo-strip-in">
+    <img src="/assets/from-oblivion-to-the-grave.webp" alt="" width="38" height="38">
+    <span class="fo-strip-text"><strong>From Oblivion to the Grave</strong> · o novo álbum · 23.10.2026 · <span class="fo-strip-days" id="strip-days">&nbsp;</span></span>
+    <span class="fo-strip-arrow">↓ o ciclo do álbum</span>
+  </span>
+</a>
+
 <main class="fo-wrap">
 
-  <!-- Hero -->
+  <!-- Hero: a novidade de agora -->
   <header class="fo-hero">
     <div class="fo-cover">
-      <img src="/assets/from-oblivion-to-the-grave.webp" alt="Capa do álbum From Oblivion to the Grave, da Ereboros" width="750" height="750" fetchpriority="high">
+      <img src="/assets/progenies-of-the-unseen.webp" alt="Capa do single Progenies of the Unseen, da Ereboros" width="1000" height="1000" fetchpriority="high">
     </div>
     <div class="fo-hero-head">
-      <p class="fo-kicker">Novo álbum · 23 de outubro de 2026</p>
-      <h1 class="fo-title">From Oblivion to the Grave</h1>
+      <p class="fo-kicker">Agora · Novo single · 24 de julho</p>
+      <h1 class="fo-title">Progenies of the Unseen</h1>
     </div>
     <div class="fo-hero-actions">
       <p class="fo-sub">
-        O novo capítulo da Ereboros. O novo single, <strong>“Progenies of the Unseen”</strong>,
-        está em pré-save e chega em 24 de julho. O primeiro single,
-        <strong>“In the Depths of Misery”</strong>, já está em todas as plataformas.
+        O novo single de <strong>From Oblivion to the Grave</strong> chega em 24 de julho.
+        Faça o pré-save para ouvir no dia do lançamento e ative o lembrete da premiere
+        do clipe no YouTube.
       </p>
-      <div class="fo-count" id="countdown" role="timer" aria-label="Contagem regressiva para o lançamento do álbum">
+      <div class="fo-count" id="countdown-single" role="timer" aria-label="Contagem regressiva para o lançamento do single Progenies of the Unseen">
         <div><b data-cd="d">—</b><span>dias</span></div>
         <div><b data-cd="h">—</b><span>horas</span></div>
         <div><b data-cd="m">—</b><span>min</span></div>
@@ -310,40 +381,61 @@ html { scroll-behavior: smooth; }
       </div>
       <div class="fo-ctas">
         <a class="fo-btn fo-primary" href="https://show.co/YKcLwJd" target="_blank" rel="noreferrer" data-ga-type="presave" data-ga-item="progenies-of-the-unseen" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>Pré-save do novo single</a>
-        <a class="fo-btn" href="#single" data-ga-type="navigate" data-ga-item="single" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6 3v18l14-9z"/></svg>Ouça o que saiu</a>
-        <a class="fo-btn" href="#merch" data-ga-type="navigate" data-ga-item="merch" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Garantir o merch</a>
-        <a class="fo-btn" href="#share" data-ga-type="navigate" data-ga-item="share" data-ga-loc="landing_hero">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>Compartilhe
-        </a>
+        <a class="fo-btn" href="https://youtu.be/4X5KjAnuQoA" target="_blank" rel="noreferrer" data-ga-type="premiere" data-ga-item="progenies-of-the-unseen" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6 3v18l14-9z"/></svg>Premiere do clipe no YouTube</a>
+        <a class="fo-btn" href="#single" data-ga-type="navigate" data-ga-item="single" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Ouça o que já saiu</a>
+      </div>
+      <div class="fo-ctas-quiet">
+        <a href="#merch" data-ga-type="navigate" data-ga-item="merch" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Garantir o merch</a>
+        <a href="#share" data-ga-type="navigate" data-ga-item="share" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>Compartilhe</a>
       </div>
     </div>
   </header>
 
-  <a class="fo-scrolldown" href="#novo-single" aria-label="Rolar para ver mais" data-ga-type="navigate" data-ga-item="scroll-hint" data-ga-loc="landing_hero">
+  <a class="fo-scrolldown" href="#album" aria-label="Rolar para ver mais" data-ga-type="navigate" data-ga-item="scroll-hint" data-ga-loc="landing_hero">
     <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
   </a>
 
-  <!-- Novo single (pré-save) -->
-  <section class="fo-section" id="novo-single">
+  <!-- O álbum: o destino do ciclo + a história até aqui -->
+  <section class="fo-section" id="album">
     <div class="fo-head">
-      <span class="fo-num">I — O novo single</span>
-      <h2>Progenies of the Unseen</h2>
+      <span class="fo-num">I — O álbum</span>
+      <h2>From Oblivion to the Grave</h2>
+      <p>
+        O novo álbum da Ereboros chega em <strong>23 de outubro de 2026</strong> em todas
+        as plataformas, com vinil e CD em edições limitadas. Esta página conta a história
+        do lançamento: cada single, clipe e novidade do ciclo aparece aqui primeiro.
+      </p>
     </div>
     <div class="fo-release">
       <div class="fo-release-cover">
-        <img src="/assets/progenies-of-the-unseen.webp" alt="Capa do single Progenies of the Unseen, da Ereboros" width="1000" height="1000" loading="lazy">
+        <img src="/assets/from-oblivion-to-the-grave.webp" alt="Capa do álbum From Oblivion to the Grave, da Ereboros" width="750" height="750" loading="lazy">
       </div>
       <div class="fo-release-body">
-        <p class="fo-streams-label">Lançamento em 24 de julho de 2026</p>
-        <div class="fo-count" id="countdown-single" role="timer" aria-label="Contagem regressiva para o lançamento do single Progenies of the Unseen">
+        <p class="fo-streams-label">Lançamento em 23 de outubro de 2026</p>
+        <div class="fo-count" id="countdown" role="timer" aria-label="Contagem regressiva para o lançamento do álbum">
           <div><b data-cd="d">—</b><span>dias</span></div>
           <div><b data-cd="h">—</b><span>horas</span></div>
           <div><b data-cd="m">—</b><span>min</span></div>
           <div><b data-cd="s">—</b><span>seg</span></div>
         </div>
-        <div class="fo-ctas">
-          <a class="fo-btn fo-primary" href="https://show.co/YKcLwJd" target="_blank" rel="noreferrer" data-ga-type="presave" data-ga-item="progenies-of-the-unseen" data-ga-loc="landing_novo_single"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>Pré-save agora</a>
-        </div>
+        <p class="fo-streams-label">A história até aqui</p>
+        <ol class="fo-timeline">
+          <li class="is-done">
+            <span class="fo-tl-date">19.06.2026</span>
+            <h3 class="fo-tl-title">In the Depths of Misery</h3>
+            <p class="fo-tl-desc">O primeiro single, já em todas as plataformas. <a href="#single" data-ga-type="navigate" data-ga-item="single" data-ga-loc="landing_album">Ouça abaixo</a>.</p>
+          </li>
+          <li class="is-now">
+            <span class="fo-tl-date">24.07.2026 · agora</span>
+            <h3 class="fo-tl-title">Progenies of the Unseen</h3>
+            <p class="fo-tl-desc">O novo single. <a href="https://show.co/YKcLwJd" target="_blank" rel="noreferrer" data-ga-type="presave" data-ga-item="progenies-of-the-unseen" data-ga-loc="landing_album">Faça o pré-save</a> e <a href="https://youtu.be/4X5KjAnuQoA" target="_blank" rel="noreferrer" data-ga-type="premiere" data-ga-item="progenies-of-the-unseen" data-ga-loc="landing_album">ative o lembrete da premiere no YouTube</a>.</p>
+          </li>
+          <li>
+            <span class="fo-tl-date">23.10.2026</span>
+            <h3 class="fo-tl-title">From Oblivion to the Grave</h3>
+            <p class="fo-tl-desc">O álbum completo. Vinil e CD em pré-venda limitada. <a href="#merch" data-ga-type="navigate" data-ga-item="merch" data-ga-loc="landing_album">Garanta o seu</a>.</p>
+          </li>
+        </ol>
       </div>
     </div>
   </section>
@@ -515,6 +607,14 @@ html { scroll-behavior: smooth; }
         '<div><b>Já disponível</b><span>em todas as plataformas</span></div>');
   start("countdown-single", "2026-07-24T00:00:00-03:00",
         '<div><b>Já disponível</b><span>ouça em todas as plataformas</span></div>');
+
+  // Dias restantes no strip do álbum (estático: não precisa de tick por segundo)
+  var strip = document.getElementById("strip-days");
+  if (strip) {
+    var diff = new Date("2026-10-23T00:00:00-03:00").getTime() - Date.now();
+    var days = Math.ceil(diff / 86400000);
+    strip.textContent = diff <= 0 ? "já disponível" : "faltam " + days + (days === 1 ? " dia" : " dias");
+  }
 })();
 
 // YouTube IFrame API (sob demanda): mede o 1º play de cada vídeo do single como
