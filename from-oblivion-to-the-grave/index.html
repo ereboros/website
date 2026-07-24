@@ -314,6 +314,21 @@ html { scroll-behavior: smooth; }
 .fo-footer .meta a { border-bottom: 1px solid var(--rule); }
 .fo-footer .meta a:hover { color: var(--bone); border-color: var(--rule-strong); }
 
+/* Alternador de idioma PT/EN (client-side; não muda a URL). O idioma inativo é
+   escondido por CSS; `revert` devolve cada elemento ao seu display natural. */
+.fo-nav-right { display: flex; align-items: center; gap: 16px; }
+.fo-lang {
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--bone-dim);
+  background: transparent; border: 1px solid var(--rule-strong); border-radius: 999px;
+  padding: 5px 12px; cursor: pointer; -webkit-appearance: none; appearance: none;
+  transition: color .2s, border-color .2s;
+}
+.fo-lang:hover { color: var(--bone); border-color: var(--oxide-bright); }
+.i-en { display: none; }
+html[lang="en"] .i-en { display: revert; }
+html[lang="en"] .i-pt { display: none; }
+
 @media (max-width: 860px) {
   .fo-strip-in { font-size: 10px; gap: 10px; padding-top: 9px; padding-bottom: 9px; }
   .fo-strip-in img { width: 30px; height: 30px; }
@@ -343,15 +358,18 @@ html { scroll-behavior: smooth; }
 
 <nav class="fo-nav">
   <a href="/" aria-label="Ereboros — página principal"><img src="/assets/ereboros-logo.webp" alt="Ereboros"></a>
-  <a class="fo-back" href="/">ereboros.com ↗</a>
+  <div class="fo-nav-right">
+    <button type="button" class="fo-lang" id="fo-lang" aria-label="Switch language / Alternar idioma"><span class="i-pt">EN</span><span class="i-en">PT</span></button>
+    <a class="fo-back" href="/">ereboros.com ↗</a>
+  </div>
 </nav>
 
 <!-- Contexto do álbum: a página inteira é o ciclo de From Oblivion to the Grave -->
 <a class="fo-album-strip" href="#album" data-ga-type="navigate" data-ga-item="album-strip" data-ga-loc="landing_strip">
   <span class="fo-strip-in">
     <img src="/assets/from-oblivion-to-the-grave.webp" alt="" width="38" height="38">
-    <span class="fo-strip-text"><strong>From Oblivion to the Grave</strong> · o novo álbum · 23.10.2026 · <span class="fo-strip-days" id="strip-days">&nbsp;</span></span>
-    <span class="fo-strip-arrow">↓ o ciclo do álbum</span>
+    <span class="fo-strip-text"><strong>From Oblivion to the Grave</strong> · <span class="i-pt">o novo álbum</span><span class="i-en">the new album</span> · 23.10.2026 · <span class="fo-strip-days" id="strip-days">&nbsp;</span></span>
+    <span class="fo-strip-arrow"><span class="i-pt">↓ o ciclo do álbum</span><span class="i-en">↓ the album cycle</span></span>
   </span>
 </a>
 
@@ -363,22 +381,26 @@ html { scroll-behavior: smooth; }
       <img src="/assets/progenies-of-the-unseen.webp" alt="Capa do single Progenies of the Unseen, da Ereboros" width="1000" height="1000" fetchpriority="high">
     </div>
     <div class="fo-hero-head">
-      <p class="fo-kicker">Agora · Novo single · Já disponível</p>
+      <p class="fo-kicker"><span class="i-pt">Agora · Novo single · Já disponível</span><span class="i-en">Now · New single · Out now</span></p>
       <h1 class="fo-title">Progenies of the Unseen</h1>
     </div>
     <div class="fo-hero-actions">
-      <p class="fo-sub">
+      <p class="fo-sub i-pt">
         O novo single de <strong>From Oblivion to the Grave</strong> já está no ar.
         Ouça agora no Spotify e assista ao clipe oficial no YouTube.
       </p>
+      <p class="fo-sub i-en">
+        The new single from <strong>From Oblivion to the Grave</strong> is out now.
+        Listen on Spotify and watch the official video on YouTube.
+      </p>
       <div class="fo-ctas">
-        <a class="fo-btn fo-primary" href="https://open.spotify.com/album/6LAaTjTY6FwcYr8hwsAJqD" target="_blank" rel="noreferrer" data-ga-type="listen" data-ga-item="spotify" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>Ouvir agora</a>
-        <a class="fo-btn" href="#new-single" data-ga-type="navigate" data-ga-item="new-single" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6 3v18l14-9z"/></svg>Assistir ao clipe</a>
-        <a class="fo-btn" href="#single" data-ga-type="navigate" data-ga-item="single" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Ouça outros lançamentos</a>
+        <a class="fo-btn fo-primary" href="https://open.spotify.com/album/6LAaTjTY6FwcYr8hwsAJqD" target="_blank" rel="noreferrer" data-ga-type="listen" data-ga-item="spotify" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg><span class="i-pt">Ouvir agora</span><span class="i-en">Listen now</span></a>
+        <a class="fo-btn" href="#new-single" data-ga-type="navigate" data-ga-item="new-single" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6 3v18l14-9z"/></svg><span class="i-pt">Assistir ao clipe</span><span class="i-en">Watch the video</span></a>
+        <a class="fo-btn" href="#single" data-ga-type="navigate" data-ga-item="single" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span class="i-pt">Ouça outros lançamentos</span><span class="i-en">Hear other releases</span></a>
       </div>
       <div class="fo-ctas-quiet">
-        <a href="#merch" data-ga-type="navigate" data-ga-item="merch" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Garantir o merch</a>
-        <a href="#share" data-ga-type="navigate" data-ga-item="share" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>Compartilhe</a>
+        <a href="#merch" data-ga-type="navigate" data-ga-item="merch" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="i-pt">Garantir o merch</span><span class="i-en">Get the merch</span></a>
+        <a href="#share" data-ga-type="navigate" data-ga-item="share" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg><span class="i-pt">Compartilhe</span><span class="i-en">Share</span></a>
       </div>
     </div>
   </header>
@@ -390,12 +412,17 @@ html { scroll-behavior: smooth; }
   <!-- O álbum: o destino do ciclo + a história até aqui -->
   <section class="fo-section" id="album">
     <div class="fo-head">
-      <span class="fo-num">I — O álbum</span>
+      <span class="fo-num"><span class="i-pt">I — O álbum</span><span class="i-en">I — The album</span></span>
       <h2>From Oblivion to the Grave</h2>
-      <p>
+      <p class="i-pt">
         O novo álbum da Ereboros chega em <strong>23 de outubro de 2026</strong> em todas
         as plataformas, com vinil e CD em edições limitadas. Esta página conta a história
         do lançamento: cada single, clipe e novidade do ciclo aparece aqui primeiro.
+      </p>
+      <p class="i-en">
+        Ereboros’s new album arrives on <strong>October 23, 2026</strong> on every
+        platform, with vinyl and CD in limited editions. This page tells the story of the
+        release: every single, video and update from the cycle shows up here first.
       </p>
     </div>
     <div class="fo-release">
@@ -403,29 +430,32 @@ html { scroll-behavior: smooth; }
         <img src="/assets/from-oblivion-to-the-grave.webp" alt="Capa do álbum From Oblivion to the Grave, da Ereboros" width="750" height="750" loading="lazy">
       </div>
       <div class="fo-release-body">
-        <p class="fo-streams-label">Lançamento em 23 de outubro de 2026</p>
+        <p class="fo-streams-label"><span class="i-pt">Lançamento em 23 de outubro de 2026</span><span class="i-en">Out October 23, 2026</span></p>
         <div class="fo-count" id="countdown" role="timer" aria-label="Contagem regressiva para o lançamento do álbum">
-          <div><b data-cd="d">—</b><span>dias</span></div>
-          <div><b data-cd="h">—</b><span>horas</span></div>
-          <div><b data-cd="m">—</b><span>min</span></div>
-          <div><b data-cd="s">—</b><span>seg</span></div>
+          <div><b data-cd="d">—</b><span><span class="i-pt">dias</span><span class="i-en">days</span></span></div>
+          <div><b data-cd="h">—</b><span><span class="i-pt">horas</span><span class="i-en">hours</span></span></div>
+          <div><b data-cd="m">—</b><span><span class="i-pt">min</span><span class="i-en">min</span></span></div>
+          <div><b data-cd="s">—</b><span><span class="i-pt">seg</span><span class="i-en">sec</span></span></div>
         </div>
-        <p class="fo-streams-label">A história até aqui</p>
+        <p class="fo-streams-label"><span class="i-pt">A história até aqui</span><span class="i-en">The story so far</span></p>
         <ol class="fo-timeline">
           <li class="is-done">
             <span class="fo-tl-date">19.06.2026</span>
             <h3 class="fo-tl-title">In the Depths of Misery</h3>
-            <p class="fo-tl-desc">O primeiro single, já em todas as plataformas. <a href="#single" data-ga-type="navigate" data-ga-item="single" data-ga-loc="landing_album">Ouça abaixo</a>.</p>
+            <p class="fo-tl-desc i-pt">O primeiro single, já em todas as plataformas. <a href="#single" data-ga-type="navigate" data-ga-item="single" data-ga-loc="landing_album">Ouça abaixo</a>.</p>
+            <p class="fo-tl-desc i-en">The first single, out on every platform. <a href="#single" data-ga-type="navigate" data-ga-item="single" data-ga-loc="landing_album">Listen below</a>.</p>
           </li>
           <li class="is-now">
-            <span class="fo-tl-date">24.07.2026 · agora</span>
+            <span class="fo-tl-date"><span class="i-pt">24.07.2026 · agora</span><span class="i-en">24.07.2026 · now</span></span>
             <h3 class="fo-tl-title">Progenies of the Unseen</h3>
-            <p class="fo-tl-desc">O novo single, já disponível. <a href="https://open.spotify.com/album/6LAaTjTY6FwcYr8hwsAJqD" target="_blank" rel="noreferrer" data-ga-type="listen" data-ga-item="spotify" data-ga-loc="landing_album">Ouça no Spotify</a> e <a href="#new-single" data-ga-type="navigate" data-ga-item="new-single" data-ga-loc="landing_album">assista ao clipe</a>.</p>
+            <p class="fo-tl-desc i-pt">O novo single, já disponível. <a href="https://open.spotify.com/album/6LAaTjTY6FwcYr8hwsAJqD" target="_blank" rel="noreferrer" data-ga-type="listen" data-ga-item="spotify" data-ga-loc="landing_album">Ouça no Spotify</a> e <a href="#new-single" data-ga-type="navigate" data-ga-item="new-single" data-ga-loc="landing_album">assista ao clipe</a>.</p>
+            <p class="fo-tl-desc i-en">The new single, out now. <a href="https://open.spotify.com/album/6LAaTjTY6FwcYr8hwsAJqD" target="_blank" rel="noreferrer" data-ga-type="listen" data-ga-item="spotify" data-ga-loc="landing_album">Listen on Spotify</a> and <a href="#new-single" data-ga-type="navigate" data-ga-item="new-single" data-ga-loc="landing_album">watch the video</a>.</p>
           </li>
           <li>
             <span class="fo-tl-date">23.10.2026</span>
             <h3 class="fo-tl-title">From Oblivion to the Grave</h3>
-            <p class="fo-tl-desc">O álbum completo. Vinil e CD em pré-venda limitada. <a href="#merch" data-ga-type="navigate" data-ga-item="merch" data-ga-loc="landing_album">Garanta o seu</a>.</p>
+            <p class="fo-tl-desc i-pt">O álbum completo. Vinil e CD em pré-venda limitada. <a href="#merch" data-ga-type="navigate" data-ga-item="merch" data-ga-loc="landing_album">Garanta o seu</a>.</p>
+            <p class="fo-tl-desc i-en">The full album. Vinyl and CD in limited pre-order. <a href="#merch" data-ga-type="navigate" data-ga-item="merch" data-ga-loc="landing_album">Get yours</a>.</p>
           </li>
         </ol>
       </div>
@@ -435,15 +465,19 @@ html { scroll-behavior: smooth; }
   <!-- O novo single: Progenies of the Unseen (clipe + streaming) -->
   <section class="fo-section" id="new-single">
     <div class="fo-head">
-      <span class="fo-num">II — O novo single</span>
+      <span class="fo-num"><span class="i-pt">II — O novo single</span><span class="i-en">II — The new single</span></span>
       <h2>Progenies of the Unseen</h2>
-      <p>
+      <p class="i-pt">
         O segundo capítulo de <em>From Oblivion to the Grave</em> já está no ar.
         Ouça no Spotify e assista ao clipe oficial abaixo.
       </p>
+      <p class="i-en">
+        The second chapter of <em>From Oblivion to the Grave</em> is out now.
+        Listen on Spotify and watch the official video below.
+      </p>
     </div>
     <div class="fo-streams-wrap">
-      <p class="fo-streams-label">Ouça o single em todas as plataformas</p>
+      <p class="fo-streams-label"><span class="i-pt">Ouça o single em todas as plataformas</span><span class="i-en">Listen to the single on every platform</span></p>
       <div class="fo-streams">
         <a class="fo-btn" href="https://open.spotify.com/album/6LAaTjTY6FwcYr8hwsAJqD" target="_blank" rel="noreferrer" data-ga-type="listen" data-ga-item="spotify" data-ga-loc="landing_new_single">
           <svg class="fo-ico" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>Spotify</a>
@@ -460,7 +494,7 @@ html { scroll-behavior: smooth; }
       </div>
     </div>
     <div class="fo-single">
-      <p class="fo-video-label">Clipe oficial</p>
+      <p class="fo-video-label"><span class="i-pt">Clipe oficial</span><span class="i-en">Official video</span></p>
       <div class="fo-embed">
         <iframe id="yt-progenies" src="https://www.youtube.com/embed/4X5KjAnuQoA?rel=0&enablejsapi=1" title="Ereboros — Progenies of the Unseen (clipe oficial)" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
       </div>
@@ -470,7 +504,7 @@ html { scroll-behavior: smooth; }
   <!-- Single -->
   <section class="fo-section" id="single">
     <div class="fo-head">
-      <span class="fo-num">III — O primeiro single</span>
+      <span class="fo-num"><span class="i-pt">III — O primeiro single</span><span class="i-en">III — The first single</span></span>
       <h2>In the Depths of Misery</h2>
     </div>
     <div class="fo-release">
@@ -478,16 +512,22 @@ html { scroll-behavior: smooth; }
         <img src="/assets/in-the-depths-of-misery.webp" alt="Capa do single In the Depths of Misery, da Ereboros" width="1000" height="1000" loading="lazy">
       </div>
       <div class="fo-release-body">
-        <p class="fo-single-desc">
+        <p class="fo-single-desc i-pt">
           Desigualdade social, controle psicológico e a prisão que o medo e a ignorância
           constroem dentro da mente humana. O primeiro single apresenta os temas centrais
           do álbum: riffs pesados, atmosferas opressivas e o peso melódico que marca o novo
           material da banda.
         </p>
+        <p class="fo-single-desc i-en">
+          Social inequality, psychological control and the prison that fear and ignorance
+          build inside the human mind. The first single lays out the album’s central themes:
+          heavy riffs, oppressive atmospheres and the melodic weight that marks the band’s
+          new material.
+        </p>
       </div>
     </div>
     <div class="fo-streams-wrap">
-      <p class="fo-streams-label">Ouça o single em todas as plataformas</p>
+      <p class="fo-streams-label"><span class="i-pt">Ouça o single em todas as plataformas</span><span class="i-en">Listen to the single on every platform</span></p>
       <div class="fo-streams">
         <a class="fo-btn" href="https://open.spotify.com/track/3yBTS9HT8FfQedOvXe8hz2" target="_blank" rel="noreferrer" data-ga-type="listen" data-ga-item="spotify" data-ga-loc="landing_single">
           <svg class="fo-ico" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>Spotify</a>
@@ -502,7 +542,7 @@ html { scroll-behavior: smooth; }
       </div>
     </div>
     <div class="fo-single">
-      <p class="fo-video-label">Vídeo oficial</p>
+      <p class="fo-video-label"><span class="i-pt">Vídeo oficial</span><span class="i-en">Official video</span></p>
       <div class="fo-embed">
         <iframe id="yt-official" src="https://www.youtube.com/embed/Fv17iU8Z5ho?rel=0&enablejsapi=1" title="Ereboros — In the Depths of Misery (vídeo oficial)" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
       </div>
@@ -516,43 +556,50 @@ html { scroll-behavior: smooth; }
   <!-- Merch -->
   <section class="fo-section" id="merch">
     <div class="fo-head">
-      <span class="fo-num">IV — Merch oficial</span>
-      <h2>Vista o novo ciclo</h2>
-      <p>
+      <span class="fo-num"><span class="i-pt">IV — Merch oficial</span><span class="i-en">IV — Official merch</span></span>
+      <h2><span class="i-pt">Vista o novo ciclo</span><span class="i-en">Wear the new cycle</span></h2>
+      <p class="i-pt">
         A coleção <em>From Oblivion to the Grave</em> tem camiseta e CD na loja oficial.
         Até o lançamento do álbum, o vinil é vendido com <strong>exclusividade pela
         <a href="https://www.instagram.com/p/DaQ64kWCL29/" target="_blank" rel="noreferrer">Elessar Records</a></strong>,
         em edição limitada a 300 cópias. Quando esgotar, esgotou.
+      </p>
+      <p class="i-en">
+        The <em>From Oblivion to the Grave</em> collection has a t-shirt and CD in the
+        official store. Until the album drops, the vinyl is sold <strong>exclusively through
+        <a href="https://www.instagram.com/p/DaQ64kWCL29/" target="_blank" rel="noreferrer">Elessar Records</a></strong>,
+        limited to 300 copies. When it’s gone, it’s gone.
       </p>
     </div>
     <div class="fo-merch-grid">
       <a class="fo-card" href="https://ereboros.lojaintegrada.com.br/?utm_source=site&utm_medium=landing&utm_campaign=fotg&utm_content=camiseta" target="_blank" rel="noreferrer" data-ga-type="merch" data-ga-item="camiseta" data-ga-loc="landing_merch">
         <img src="/assets/merch-1.webp" alt="Camiseta da coleção From Oblivion to the Grave" loading="lazy">
         <div class="fo-card-body">
-          <span class="fo-tag">Vestuário</span>
-          <h3>Camiseta — From Oblivion to the Grave</h3>
-          <p class="fo-specs">Também temos casaco, short, boné e cropped · clique no link para ver as promoções</p>
-          <span class="fo-buy">Comprar na loja ↗</span>
+          <span class="fo-tag"><span class="i-pt">Vestuário</span><span class="i-en">Apparel</span></span>
+          <h3><span class="i-pt">Camiseta — From Oblivion to the Grave</span><span class="i-en">T-shirt — From Oblivion to the Grave</span></h3>
+          <p class="fo-specs"><span class="i-pt">Também temos casaco, short, boné e cropped · clique no link para ver as promoções</span><span class="i-en">We also have a hoodie, shorts, cap and cropped tee · tap the link to see the deals</span></p>
+          <span class="fo-buy"><span class="i-pt">Comprar na loja ↗</span><span class="i-en">Buy in the store ↗</span></span>
         </div>
       </a>
       <a class="fo-card" href="https://ereboros.lojaintegrada.com.br/?utm_source=site&utm_medium=landing&utm_campaign=fotg&utm_content=cd" target="_blank" rel="noreferrer" data-ga-type="merch" data-ga-item="cd" data-ga-loc="landing_merch">
         <img src="/assets/merch-2.webp" alt="CD From Oblivion to the Grave" loading="lazy">
         <div class="fo-card-body">
-          <span class="fo-tag">CD Box Acrílico · 500 unidades · Cianeto Records</span>
+          <span class="fo-tag"><span class="i-pt">CD Box Acrílico · 500 unidades · Cianeto Records</span><span class="i-en">Acrylic CD Box · 500 units · Cianeto Records</span></span>
           <h3>CD — From Oblivion to the Grave</h3>
-          <p class="fo-specs">Box acrílico limitado a 500 unidades · 10 músicas</p>
-          <p class="fo-price">20% de desconto na pré-venda</p>
-          <span class="fo-buy">Comprar na loja ↗</span>
+          <p class="fo-specs"><span class="i-pt">Box acrílico limitado a 500 unidades · 10 músicas</span><span class="i-en">Acrylic box limited to 500 units · 10 tracks</span></p>
+          <p class="fo-price"><span class="i-pt">20% de desconto na pré-venda</span><span class="i-en">20% off in pre-order</span></p>
+          <span class="fo-buy"><span class="i-pt">Comprar na loja ↗</span><span class="i-en">Buy in the store ↗</span></span>
         </div>
       </a>
       <a class="fo-card" href="https://wa.me/5519982713786?text=Ol%C3%A1!%20Quero%20garantir%20o%20vinil%20de%20From%20Oblivion%20to%20the%20Grave%20(Ereboros)%20na%20pr%C3%A9-venda." target="_blank" rel="noreferrer" data-ga-type="merch" data-ga-item="vinil" data-ga-loc="landing_merch">
         <img src="/assets/merch-3.webp" alt="Vinil From Oblivion to the Grave — pré-venda exclusiva Elessar Records, 300 cópias" loading="lazy">
         <div class="fo-card-body">
-          <span class="fo-tag">Vinil · 300 cópias · Exclusivo Elessar Records</span>
-          <h3>Vinil — From Oblivion to the Grave</h3>
-          <p class="fo-specs">Black Smoked · capa gatefold envernizada · faixa bônus exclusiva do LP · patch bordado oficial nas 100 primeiras unidades</p>
-          <p class="fo-price">R$ 199,90 no PIX · R$ 212,90 no cartão <span>(+ frete)</span></p>
-          <span class="fo-buy">Garantir pelo WhatsApp ↗</span>
+          <span class="fo-tag"><span class="i-pt">Vinil · 300 cópias · Exclusivo Elessar Records</span><span class="i-en">Vinyl · 300 copies · Elessar Records exclusive</span></span>
+          <h3><span class="i-pt">Vinil — From Oblivion to the Grave</span><span class="i-en">Vinyl — From Oblivion to the Grave</span></h3>
+          <p class="fo-specs"><span class="i-pt">Black Smoked · capa gatefold envernizada · faixa bônus exclusiva do LP · patch bordado oficial nas 100 primeiras unidades</span><span class="i-en">Black Smoked · varnished gatefold sleeve · LP-exclusive bonus track · official embroidered patch on the first 100 units</span></p>
+          <p class="fo-price i-pt">R$ 199,90 no PIX · R$ 212,90 no cartão <span>(+ frete)</span></p>
+          <p class="fo-price i-en">R$ 199,90 via PIX · R$ 212,90 on card <span>(+ shipping)</span></p>
+          <span class="fo-buy"><span class="i-pt">Garantir pelo WhatsApp ↗</span><span class="i-en">Get it via WhatsApp ↗</span></span>
         </div>
       </a>
     </div>
@@ -561,20 +608,24 @@ html { scroll-behavior: smooth; }
   <!-- Acompanhe -->
   <section class="fo-section" id="follow">
     <div class="fo-head">
-      <span class="fo-num">V — Não perca o lançamento</span>
-      <h2>Acompanhe o ciclo do álbum</h2>
-      <p>
+      <span class="fo-num"><span class="i-pt">V — Não perca o lançamento</span><span class="i-en">V — Don’t miss the release</span></span>
+      <h2><span class="i-pt">Acompanhe o ciclo do álbum</span><span class="i-en">Follow the album cycle</span></h2>
+      <p class="i-pt">
         Acompanhe os bastidores, os teasers e todas as novidades do álbum no Instagram.
         É lá que tudo acontece primeiro.
       </p>
+      <p class="i-en">
+        Follow the behind-the-scenes, the teasers and all the album news on Instagram.
+        That’s where everything happens first.
+      </p>
     </div>
     <div class="fo-ctas">
-      <a class="fo-btn fo-primary" href="https://www.instagram.com/ereborosofficial/" target="_blank" rel="noreferrer" data-ga-type="social" data-ga-item="instagram" data-ga-loc="landing_follow"><svg class="fo-ico" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg>Seguir no Instagram</a>
+      <a class="fo-btn fo-primary" href="https://www.instagram.com/ereborosofficial/" target="_blank" rel="noreferrer" data-ga-type="social" data-ga-item="instagram" data-ga-loc="landing_follow"><svg class="fo-ico" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg><span class="i-pt">Seguir no Instagram</span><span class="i-en">Follow on Instagram</span></a>
       <a class="fo-btn" href="https://www.facebook.com/ereborosofficial" target="_blank" rel="noreferrer" data-ga-type="social" data-ga-item="facebook" data-ga-loc="landing_follow"><svg class="fo-ico" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg>Facebook</a>
       <a class="fo-btn" href="https://www.tiktok.com/@ereborosofficial/" target="_blank" rel="noreferrer" data-ga-type="social" data-ga-item="tiktok" data-ga-loc="landing_follow"><svg class="fo-ico" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>TikTok</a>
     </div>
     <div class="fo-news">
-      <div class="fo-news-head">Ou receba por e-mail: aviso do lançamento em primeira mão</div>
+      <div class="fo-news-head"><span class="i-pt">Ou receba por e-mail: aviso do lançamento em primeira mão</span><span class="i-en">Or get it by email: first word on the release</span></div>
       <!-- Hidratado pelo MailerLite Universal (carregado sob demanda, ver script no fim) -->
       <div class="ml-embedded" data-form="xEw6cK"></div>
     </div>
@@ -583,20 +634,25 @@ html { scroll-behavior: smooth; }
   <!-- Espalhe -->
   <section class="fo-section" id="share">
     <div class="fo-head">
-      <span class="fo-num">VI — Espalhe a palavra</span>
-      <h2>Chame quem precisa ouvir isso</h2>
-      <p>
+      <span class="fo-num"><span class="i-pt">VI — Espalhe a palavra</span><span class="i-en">VI — Spread the word</span></span>
+      <h2><span class="i-pt">Chame quem precisa ouvir isso</span><span class="i-en">Call in who needs to hear this</span></h2>
+      <p class="i-pt">
         Death metal se propaga no boca a boca. Manda esta página pra quem vai
         curtir o novo ciclo da Ereboros: é aqui que dá pra acompanhar tudo sobre
         o lançamento do álbum.
       </p>
+      <p class="i-en">
+        Death metal spreads by word of mouth. Send this page to whoever will dig
+        Ereboros’s new cycle: this is where you can follow everything about the
+        album release.
+      </p>
     </div>
     <div class="fo-ctas" id="share-ctas">
-      <button type="button" class="fo-btn fo-primary" data-share="web_share" hidden><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>Compartilhar</button>
+      <button type="button" class="fo-btn fo-primary" data-share="web_share" hidden><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg><span class="i-pt">Compartilhar</span><span class="i-en">Share</span></button>
       <a class="fo-btn" data-share="whatsapp" href="https://www.ereboros.com/from-oblivion-to-the-grave/" target="_blank" rel="noreferrer"><svg class="fo-ico" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>WhatsApp</a>
       <a class="fo-btn" data-share="x" href="https://www.ereboros.com/from-oblivion-to-the-grave/" target="_blank" rel="noreferrer"><svg class="fo-ico" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>X (Twitter)</a>
       <a class="fo-btn" data-share="telegram" href="https://www.ereboros.com/from-oblivion-to-the-grave/" target="_blank" rel="noreferrer"><svg class="fo-ico" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>Telegram</a>
-      <button type="button" class="fo-btn" data-share="copy"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span class="fo-btn-label">Copiar link</span></button>
+      <button type="button" class="fo-btn" data-share="copy"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span class="fo-btn-label"><span class="i-pt">Copiar link</span><span class="i-en">Copy link</span></span></button>
     </div>
   </section>
 
@@ -610,6 +666,50 @@ html { scroll-behavior: smooth; }
 </footer>
 
 <script>
+// ---- i18n client-side (PT/EN) ----------------------------------------------
+// A página é servida em PT; o botão da nav alterna para EN sem recarregar nem mudar
+// a URL. Textos estáticos trocam via CSS (.i-pt/.i-en); os gerados por JS (strip,
+// countdown, copiar, compartilhar) usam FO_T + foLang().
+var FO_T = {
+  stripSoon: { pt: "já disponível", en: "out now" },
+  stripDays: {
+    pt: function (n) { return "faltam " + n + (n === 1 ? " dia" : " dias"); },
+    en: function (n) { return n + (n === 1 ? " day left" : " days left"); }
+  },
+  countdownDone: {
+    pt: '<div><b>Já disponível</b><span>em todas as plataformas</span></div>',
+    en: '<div><b>Out now</b><span>on every platform</span></div>'
+  },
+  copyDone: { pt: "Link copiado!", en: "Link copied!" },
+  shareText: {
+    pt: "Saca só o som do Ereboros, uma banda de metal do Rio de Janeiro que acabou de lançar o clipe do single do novo disco.",
+    en: "Check out Ereboros, a metal band from Rio de Janeiro that just dropped the video for the new single."
+  }
+};
+function foLang() { return document.documentElement.lang === "en" ? "en" : "pt"; }
+
+// Alternador de idioma: troca o lang do documento e reprocessa os textos dinâmicos.
+(function () {
+  var btn = document.getElementById("fo-lang");
+  function apply(lang) {
+    var en = lang === "en";
+    document.documentElement.lang = en ? "en" : "pt-BR";
+    document.title = en
+      ? "From Oblivion to the Grave — Ereboros | New album out Oct 23, 2026"
+      : "From Oblivion to the Grave — Ereboros | Novo álbum 23.10.2026";
+    if (typeof window.foRenderStrip === "function") window.foRenderStrip();
+    if (typeof window.foRenderShare === "function") window.foRenderShare();
+  }
+  try { if (localStorage.getItem("fotg_lang") === "en") apply("en"); } catch (e) {}
+  if (btn) {
+    btn.addEventListener("click", function () {
+      var en = document.documentElement.lang === "en";
+      apply(en ? "pt" : "en");
+      try { localStorage.setItem("fotg_lang", en ? "pt" : "en"); } catch (e) {}
+    });
+  }
+})();
+
 // Countdown (horário de Brasília) do álbum (23.10.2026).
 // Cada container .fo-count tem quatro caixas marcadas com data-cd (d/h/m/s).
 (function () {
@@ -622,7 +722,7 @@ html { scroll-behavior: smooth; }
         m = box.querySelector('[data-cd="m"]'), s = box.querySelector('[data-cd="s"]');
     (function tick() {
       var diff = target - Date.now();
-      if (diff <= 0) { box.innerHTML = doneHTML; return; }
+      if (diff <= 0) { box.innerHTML = (typeof doneHTML === "function" ? doneHTML() : doneHTML); return; }
       d.textContent = Math.floor(diff / 86400000);
       h.textContent = pad(Math.floor(diff / 3600000) % 24);
       m.textContent = pad(Math.floor(diff / 60000) % 60);
@@ -631,15 +731,17 @@ html { scroll-behavior: smooth; }
     })();
   }
   start("countdown", "2026-10-23T00:00:00-03:00",
-        '<div><b>Já disponível</b><span>em todas as plataformas</span></div>');
+        function () { return FO_T.countdownDone[foLang()]; });
 
-  // Dias restantes no strip do álbum (estático: não precisa de tick por segundo)
-  var strip = document.getElementById("strip-days");
-  if (strip) {
+  // Dias restantes no strip do álbum (recalculável ao trocar de idioma)
+  window.foRenderStrip = function () {
+    var strip = document.getElementById("strip-days");
+    if (!strip) return;
     var diff = new Date("2026-10-23T00:00:00-03:00").getTime() - Date.now();
-    var days = Math.ceil(diff / 86400000);
-    strip.textContent = diff <= 0 ? "já disponível" : "faltam " + days + (days === 1 ? " dia" : " dias");
-  }
+    var L = foLang();
+    strip.textContent = diff <= 0 ? FO_T.stripSoon[L] : FO_T.stripDays[L](Math.ceil(diff / 86400000));
+  };
+  window.foRenderStrip();
 })();
 
 // YouTube IFrame API (sob demanda): mede o 1º play de cada vídeo (novo single +
@@ -755,7 +857,7 @@ document.addEventListener("click", function (e) {
 // Compartilhamento: Web Share API nativa (mobile) + fallbacks diretos + evento GA4 'share'
 (function () {
   var LANDING = "https://www.ereboros.com/from-oblivion-to-the-grave/";
-  var TEXT = "Saca só o som do Ereboros, uma banda de metal do Rio de Janeiro que acabou de lançar o clipe do single do novo disco.";
+  function shareText() { return FO_T.shareText[foLang()]; }
 
   // URL com UTM por canal, pra separar o tráfego de compartilhamento no GA4
   function urlFor(medium) {
@@ -770,13 +872,17 @@ document.addEventListener("click", function (e) {
   var bar = document.getElementById("share-ctas");
   if (!bar) return;
 
-  // Monta os hrefs dos canais diretos (encodeURIComponent evita erro de escape)
-  var wa = bar.querySelector('[data-share="whatsapp"]');
-  if (wa) wa.href = "https://wa.me/?text=" + encodeURIComponent(TEXT + " " + urlFor("whatsapp"));
-  var tw = bar.querySelector('[data-share="x"]');
-  if (tw) tw.href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(TEXT) + "&url=" + encodeURIComponent(urlFor("x"));
-  var tg = bar.querySelector('[data-share="telegram"]');
-  if (tg) tg.href = "https://t.me/share/url?url=" + encodeURIComponent(urlFor("telegram")) + "&text=" + encodeURIComponent(TEXT);
+  // Remonta os hrefs dos canais diretos no idioma atual (reexecutado ao trocar idioma)
+  window.foRenderShare = function () {
+    var T = shareText();
+    var wa = bar.querySelector('[data-share="whatsapp"]');
+    if (wa) wa.href = "https://wa.me/?text=" + encodeURIComponent(T + " " + urlFor("whatsapp"));
+    var tw = bar.querySelector('[data-share="x"]');
+    if (tw) tw.href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(T) + "&url=" + encodeURIComponent(urlFor("x"));
+    var tg = bar.querySelector('[data-share="telegram"]');
+    if (tg) tg.href = "https://t.me/share/url?url=" + encodeURIComponent(urlFor("telegram")) + "&text=" + encodeURIComponent(T);
+  };
+  window.foRenderShare();
 
   ["whatsapp", "x", "telegram"].forEach(function (m) {
     var a = bar.querySelector('[data-share="' + m + '"]');
@@ -788,21 +894,21 @@ document.addEventListener("click", function (e) {
   if (nativeBtn && navigator.share) {
     nativeBtn.hidden = false;
     nativeBtn.addEventListener("click", function () {
-      navigator.share({ title: "From Oblivion to the Grave — Ereboros", text: TEXT, url: urlFor("web_share") })
+      navigator.share({ title: "From Oblivion to the Grave — Ereboros", text: shareText(), url: urlFor("web_share") })
         .then(function () { track("web_share"); })
         .catch(function () {});
     });
   }
 
-  // Copiar link
+  // Copiar link (o rótulo tem spans PT/EN; guardo o HTML e restauro após o feedback)
   var copyBtn = bar.querySelector('[data-share="copy"]');
   if (copyBtn) {
-    var labelEl = copyBtn.querySelector(".fo-btn-label") || copyBtn;
-    var label = labelEl.textContent;
+    var labelEl = copyBtn.querySelector(".fo-btn-label");
+    var labelHTML = labelEl ? labelEl.innerHTML : null;
     var done = function () {
       track("copy");
-      labelEl.textContent = "Link copiado!";
-      setTimeout(function () { labelEl.textContent = label; }, 2000);
+      if (labelEl) labelEl.textContent = FO_T.copyDone[foLang()];
+      setTimeout(function () { if (labelEl) labelEl.innerHTML = labelHTML; }, 2000);
     };
     var fallbackCopy = function (text) {
       var ta = document.createElement("textarea");
