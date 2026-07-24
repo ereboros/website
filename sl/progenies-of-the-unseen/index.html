@@ -182,6 +182,25 @@
 .sl-foot .meta a { border-bottom: 1px solid var(--rule); }
 .sl-foot .meta a:hover { color: var(--bone); border-color: var(--rule-strong); }
 
+/* Indicador de rolagem: só aparece quando há conteúdo abaixo da dobra (ver script) */
+.sl-scrolldown {
+  position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%);
+  z-index: 5; display: grid; place-items: center; width: 40px; height: 40px;
+  padding: 0; border: 1px solid var(--rule-strong); border-radius: 999px;
+  background: rgba(10,9,8,.6); color: var(--bone-dim); cursor: pointer;
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  animation: sl-bounce 1.8s ease-in-out infinite;
+  transition: opacity .35s, color .2s, border-color .2s;
+}
+.sl-scrolldown:hover { color: var(--bone); border-color: var(--oxide-bright); }
+.sl-scrolldown svg { display: block; width: 20px; height: 20px; }
+.sl-scrolldown.is-hidden { opacity: 0; pointer-events: none; }
+@keyframes sl-bounce {
+  0%, 100% { transform: translate(-50%, 0); }
+  50%      { transform: translate(-50%, 5px); }
+}
+@media (prefers-reduced-motion: reduce) { .sl-scrolldown { animation: none; } }
+
 @media (max-width: 520px) {
   .sl-link .sl-go span { display: none; } /* no mobile deixa só a seta, menos poluído */
   .sl-link { padding: 15px 18px; }
@@ -254,6 +273,10 @@
     <span class="meta"><a href="/" data-ga-type="navigate" data-ga-item="home-footer" data-ga-loc="sl-progenies-of-the-unseen">ereboros.com</a> · <a href="mailto:contact@ereboros.com">contact@ereboros.com</a></span>
   </footer>
 
+  <button type="button" class="sl-scrolldown is-hidden" aria-label="Rolar para ver as plataformas">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+
 </div>
 
 <script>
@@ -277,6 +300,26 @@ document.addEventListener("click", function (e) {
     else if (type === "video") fbq("track", "ViewContent", { content_name: item, content_category: "video" });
   }
 }, true);
+
+// Indicador de rolagem: aparece só se há conteúdo abaixo da dobra; some ao chegar no fim.
+// Clicar rola suave até a lista de plataformas (revela os botões no tráfego de ad).
+(function () {
+  var el = document.querySelector(".sl-scrolldown");
+  if (!el) return;
+  var links = document.querySelector(".sl-links");
+  el.addEventListener("click", function () {
+    (links || document.body).scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  function update() {
+    var scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    var nearBottom = window.scrollY >= scrollable - 24;
+    el.classList.toggle("is-hidden", scrollable <= 24 || nearBottom);
+  }
+  window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update);
+  window.addEventListener("load", update);
+  update();
+})();
 </script>
 
 </body>
