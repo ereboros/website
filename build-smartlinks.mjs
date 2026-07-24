@@ -6,8 +6,9 @@
 //
 // Uso:  node build-smartlinks.mjs
 //
-// - links: null           -> botões travados com badge "Soon"
-// - links: { ... }         -> botões ativos ("Listen") + evento de conversão
+// - links: null                -> todos os botões travados com badge "Soon"
+// - links: { spotify: "…" }     -> só as plataformas presentes viram "Listen" (+ conversão);
+//                                  as demais ficam "Soon" — dá pra ativar aos poucos, sem esperar todas
 // - cover: "/assets/x.webp"-> mostra a capa (com preload/LCP e og:image próprio)
 // - cover: null            -> placeholder "Artwork coming soon" (og:image = band-promo)
 // - videoUrl: "https://..." -> capa vira link (com botão de play) para o vídeo
@@ -58,7 +59,11 @@ const SINGLES = [
     cover: "/assets/progenies-of-the-unseen.webp",
     coverOg: "/assets/progenies-of-the-unseen-og.jpg",
     coverAlt: "Progenies of the Unseen — cover art of the new Ereboros single",
-    links: null,
+    videoUrl: "https://www.youtube.com/watch?v=4X5KjAnuQoA",
+    // Spotify já no ar; as demais plataformas entram aqui conforme saem (viram botão ativo).
+    links: {
+      spotify: "https://open.spotify.com/album/6LAaTjTY6FwcYr8hwsAJqD",
+    },
   },
   {
     slug: "at-the-gallows-of-doom",
@@ -75,10 +80,20 @@ const SINGLES = [
 ];
 
 // ---- Template --------------------------------------------------------------
-function renderRow(slug, id, hasLinks, href) {
+// Junta nomes em texto natural: ["Spotify"] -> "Spotify"; ["Spotify","Deezer"]
+// -> "Spotify and Deezer"; 3+ -> "A, B and C".
+function andList(names) {
+  if (names.length <= 1) return names.join("");
+  return names.slice(0, -1).join(", ") + " and " + names[names.length - 1];
+}
+
+// Cada plataforma decide sozinha: com href vira botão "Listen" (+ evento de
+// conversão); sem href fica travada com badge "Soon". Assim dá pra ativar as
+// plataformas aos poucos (ex.: só Spotify no lançamento) sem esperar todas.
+function renderRow(slug, id, href) {
   const ic = ICONS[id];
   const icon = `<svg class="sl-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="${ic.path}"/></svg>`;
-  if (hasLinks) {
+  if (href) {
     return `      <a class="sl-link" href="${href}" target="_blank" rel="noreferrer" data-ga-type="listen" data-ga-item="${id}" data-ga-loc="sl-${slug}">
         ${icon}
         <span class="sl-name">${ic.name}</span>
@@ -93,13 +108,20 @@ function renderRow(slug, id, hasLinks, href) {
 }
 
 function renderPage(s) {
-  const hasLinks = !!s.links;
+  const links = s.links || {};
+  const activeNames = ORDER.filter((id) => links[id]).map((id) => ICONS[id].name);
+  const hasLinks = activeNames.length > 0;
+  const allActive = activeNames.length === ORDER.length;
   const url = `${SITE}/sl/${s.slug}/`;
   const ogImage = SITE + (s.cover ? s.coverOg : FALLBACK_OG);
   const desc = hasLinks
-    ? `${s.title}, a single by Ereboros. Listen on Spotify, Apple Music, YouTube Music, Amazon Music and Deezer.`
+    ? `${s.title}, a single by Ereboros. Listen on ${andList(activeNames)}.`
     : `${s.title}, the new single from Ereboros. Coming soon to all platforms.`;
-  const listenLabel = hasLinks ? "Listen on every platform" : "Coming soon to every platform";
+  const listenLabel = !hasLinks
+    ? "Coming soon to every platform"
+    : allActive
+      ? "Listen on every platform"
+      : "Out now";
 
   const ogDims = s.cover
     ? `\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="1200">`
@@ -125,7 +147,7 @@ function renderPage(s) {
       <img src="/assets/ereboros-logo.webp" alt="Ereboros">
       <span>Artwork coming soon</span>
     </div>`;
-  const rows = ORDER.map((id) => renderRow(s.slug, id, hasLinks, hasLinks ? s.links[id] : null)).join("\n\n");
+  const rows = ORDER.map((id) => renderRow(s.slug, id, links[id])).join("\n\n");
 
   return `<!doctype html>
 <html lang="en">
@@ -376,6 +398,8 @@ for (const s of SINGLES) {
   const outDir = `${dir}/sl/${s.slug}`;
   mkdirSync(outDir, { recursive: true });
   writeFileSync(`${outDir}/index.html`, renderPage(s), "utf8");
-  console.log(`✓ /sl/${s.slug}/  (${s.cover ? "capa" : "sem capa"}, ${s.links ? "links" : "soon"})`);
+  const active = s.links ? ORDER.filter((id) => s.links[id]).length : 0;
+  const linkInfo = active === 0 ? "soon" : active === ORDER.length ? "todos os links" : `${active}/${ORDER.length} links`;
+  console.log(`✓ /sl/${s.slug}/  (${s.cover ? "capa" : "sem capa"}, ${linkInfo})`);
 }
 console.log(`\n${SINGLES.length} smartlinks gerados.`);
