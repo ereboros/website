@@ -14,6 +14,10 @@
 // - videoUrl: "https://..." -> capa vira link (com botão de play) para o vídeo
 // - order: [ids...]          -> sobrescreve a lista/ordem de plataformas deste single
 //                              (ex.: acrescentar "bandcamp" sem afetar os outros)
+// - presave: "https://…"    -> CTA de pré-save no Spotify acima da lista de plataformas.
+//                              Só aparece ENQUANTO o single não tem nenhum link ativo:
+//                              no dia do lançamento, basta preencher "links" que o CTA some.
+// - releaseDate: "AAAA-MM-DD" -> data do lançamento (rótulos "Out August 28, 2026" e JSON-LD)
 //
 // Depois de rodar, os arquivos gerados são commitados (a Vercel serve estático).
 // ---------------------------------------------------------------------------
@@ -78,7 +82,12 @@ const SINGLES = [
   {
     slug: "at-the-gallows-of-doom",
     title: "At the Gallows of Doom",
-    cover: null,
+    cover: "/assets/at-the-gallows-of-doom.webp",
+    coverOg: "/assets/at-the-gallows-of-doom-og.jpg",
+    coverAlt: "At the Gallows of Doom — cover art of the new Ereboros single",
+    releaseDate: "2026-08-28",
+    // Pré-save no Spotify (show.co). Sai sozinho do ar quando "links" for preenchido.
+    presave: "https://show.co/qSB0KOp",
     links: null,
   },
   {
@@ -117,6 +126,15 @@ function renderRow(slug, id, href) {
       </a>`;
 }
 
+// "2026-08-28" -> "August 28, 2026" / "August 28" (a página é em inglês; UTC para
+// não escorregar de dia). A forma curta é para rótulos que precisam caber no mobile.
+function longDate(iso, withYear = true) {
+  return new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", {
+    month: "long", day: "numeric", timeZone: "UTC",
+    ...(withYear ? { year: "numeric" } : {}),
+  });
+}
+
 function renderPage(s) {
   const links = s.links || {};
   const order = s.order || ORDER;
@@ -125,11 +143,20 @@ function renderPage(s) {
   const allActive = activeNames.length === order.length;
   const url = `${SITE}/sl/${s.slug}/`;
   const ogImage = SITE + (s.cover ? s.coverOg : FALLBACK_OG);
+  const outDate = s.releaseDate ? longDate(s.releaseDate) : null;
+  const outDateShort = s.releaseDate ? longDate(s.releaseDate, false) : null;
+  // O CTA de pré-save só faz sentido antes do lançamento: some sozinho quando
+  // a primeira plataforma vira link ativo.
+  const presave = !hasLinks && s.presave ? s.presave : null;
   const desc = hasLinks
     ? `${s.title}, a single by Ereboros. Listen on ${andList(activeNames)}.`
-    : `${s.title}, the new single from Ereboros. Coming soon to all platforms.`;
+    : presave
+      ? `${s.title}, the new single from Ereboros${outDate ? `, out ${outDate}` : ""}. Pre-save it on Spotify.`
+      : `${s.title}, the new single from Ereboros. Coming soon to all platforms.`;
   const listenLabel = !hasLinks
-    ? "Coming soon to every platform"
+    ? outDateShort
+      ? `Every platform on ${outDateShort}`
+      : "Coming soon to every platform"
     : allActive
       ? "Listen on every platform"
       : "Out now";
@@ -159,6 +186,20 @@ function renderPage(s) {
       <span>Artwork coming soon</span>
     </div>`;
   const rows = order.map((id) => renderRow(s.slug, id, links[id])).join("\n\n");
+
+  // CTA de pré-save: bloco em destaque acima da lista (que segue toda em "Soon").
+  const presaveBlock = presave
+    ? `    <!-- Pré-save no Spotify (show.co) -->
+    <div class="sl-presave">
+      ${outDate ? `<p class="sl-presave-date">Out ${outDate}</p>\n      ` : ""}<a class="sl-presave-btn" href="${presave}" target="_blank" rel="noreferrer" data-ga-type="presave" data-ga-item="spotify" data-ga-loc="sl-${s.slug}">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="${ICONS.spotify.path}"/></svg>
+        <span>Pre-save on Spotify</span>
+      </a>
+      <p class="sl-presave-note">It lands in your library the moment it drops.</p>
+    </div>
+
+`
+    : "";
 
   return `<!doctype html>
 <html lang="en">
@@ -195,7 +236,7 @@ function renderPage(s) {
   "@context": "https://schema.org",
   "@type": "MusicRecording",
   "name": "${s.title}",
-  "image": "${ogImage}",
+  "image": "${ogImage}",${s.releaseDate ? `\n  "datePublished": "${s.releaseDate}",` : ""}
   "byArtist": { "@type": "MusicGroup", "name": "Ereboros", "url": "https://www.ereboros.com/" }
 }
 </script>
@@ -293,6 +334,36 @@ ${preload}
   text-transform: uppercase; color: var(--ash-2);
 }
 
+/* Pré-save: CTA em destaque antes do lançamento (some quando os links entram) */
+.sl-presave { text-align: center; margin: 0 0 clamp(26px, 4.2vh, 40px); }
+.sl-presave-date {
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.26em;
+  text-transform: uppercase; color: var(--oxide-bright); margin: 0 0 14px;
+}
+.sl-presave-btn {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  padding: 18px 24px; border: 1px solid var(--oxide); background: var(--oxide);
+  color: var(--bone); font-family: var(--f-mono); font-size: 13px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  transition: background .2s, border-color .2s, transform .12s;
+  animation: sl-pulse 2.6s ease-in-out infinite;
+}
+.sl-presave-btn:hover {
+  background: var(--oxide-bright); border-color: var(--oxide-bright);
+  animation-play-state: paused;
+}
+.sl-presave-btn:active { transform: scale(.99); }
+.sl-presave-btn svg { flex: none; width: 22px; height: 22px; display: block; }
+.sl-presave-note {
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.12em;
+  color: var(--ash-2); margin: 12px 0 0;
+}
+@keyframes sl-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(173, 16, 16, 0); filter: brightness(1); }
+  50%      { box-shadow: 0 0 18px 2px rgba(173, 16, 16, .5); filter: brightness(1.1); }
+}
+@media (prefers-reduced-motion: reduce) { .sl-presave-btn { animation: none; } }
+
 /* Lista de streamings (estilo smartlink: linhas grandes e tocáveis) */
 .sl-listen-label {
   font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.26em;
@@ -378,7 +449,7 @@ ${preload}
 
 ${coverBlock}
 
-    <!-- Streamings -->
+${presaveBlock}    <!-- Streamings -->
     <p class="sl-listen-label">${listenLabel}</p>
     <div class="sl-links">
 
@@ -403,7 +474,8 @@ ${rows}
 // Instrumentação declarativa de cliques: TODO elemento com data-ga-type é rastreado
 // nos dois: GA4 ('select_content') e Meta Pixel ('ContentClick' custom). Por cima
 // disso, no Meta os cliques de conversão disparam o evento padrão correspondente:
-// streaming (type="listen") vira Lead; clipe (type="video") vira ViewContent.
+// streaming (type="listen") e pré-save (type="presave") viram Lead; clipe
+// (type="video") vira ViewContent.
 document.addEventListener("click", function (e) {
   var el = e.target.closest("[data-ga-type]");
   if (!el) return;
@@ -416,7 +488,7 @@ document.addEventListener("click", function (e) {
   }
   if (window.fbq && /^\\d+$/.test(window.META_PIXEL_ID)) {
     fbq("trackCustom", "ContentClick", { content_type: type, item: item, location: loc });
-    if (type === "listen") fbq("track", "Lead", { content_name: item, content_category: "streaming" });
+    if (type === "listen" || type === "presave") fbq("track", "Lead", { content_name: item, content_category: type === "presave" ? "presave" : "streaming" });
     else if (type === "video") fbq("track", "ViewContent", { content_name: item, content_category: "video" });
   }
 }, true);

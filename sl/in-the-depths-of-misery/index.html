@@ -135,6 +135,36 @@
   text-transform: uppercase; color: var(--ash-2);
 }
 
+/* Pré-save: CTA em destaque antes do lançamento (some quando os links entram) */
+.sl-presave { text-align: center; margin: 0 0 clamp(26px, 4.2vh, 40px); }
+.sl-presave-date {
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.26em;
+  text-transform: uppercase; color: var(--oxide-bright); margin: 0 0 14px;
+}
+.sl-presave-btn {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  padding: 18px 24px; border: 1px solid var(--oxide); background: var(--oxide);
+  color: var(--bone); font-family: var(--f-mono); font-size: 13px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  transition: background .2s, border-color .2s, transform .12s;
+  animation: sl-pulse 2.6s ease-in-out infinite;
+}
+.sl-presave-btn:hover {
+  background: var(--oxide-bright); border-color: var(--oxide-bright);
+  animation-play-state: paused;
+}
+.sl-presave-btn:active { transform: scale(.99); }
+.sl-presave-btn svg { flex: none; width: 22px; height: 22px; display: block; }
+.sl-presave-note {
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.12em;
+  color: var(--ash-2); margin: 12px 0 0;
+}
+@keyframes sl-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(173, 16, 16, 0); filter: brightness(1); }
+  50%      { box-shadow: 0 0 18px 2px rgba(173, 16, 16, .5); filter: brightness(1.1); }
+}
+@media (prefers-reduced-motion: reduce) { .sl-presave-btn { animation: none; } }
+
 /* Lista de streamings (estilo smartlink: linhas grandes e tocáveis) */
 .sl-listen-label {
   font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.26em;
@@ -277,7 +307,8 @@
 // Instrumentação declarativa de cliques: TODO elemento com data-ga-type é rastreado
 // nos dois: GA4 ('select_content') e Meta Pixel ('ContentClick' custom). Por cima
 // disso, no Meta os cliques de conversão disparam o evento padrão correspondente:
-// streaming (type="listen") vira Lead; clipe (type="video") vira ViewContent.
+// streaming (type="listen") e pré-save (type="presave") viram Lead; clipe
+// (type="video") vira ViewContent.
 document.addEventListener("click", function (e) {
   var el = e.target.closest("[data-ga-type]");
   if (!el) return;
@@ -290,7 +321,7 @@ document.addEventListener("click", function (e) {
   }
   if (window.fbq && /^\d+$/.test(window.META_PIXEL_ID)) {
     fbq("trackCustom", "ContentClick", { content_type: type, item: item, location: loc });
-    if (type === "listen") fbq("track", "Lead", { content_name: item, content_category: "streaming" });
+    if (type === "listen" || type === "presave") fbq("track", "Lead", { content_name: item, content_category: type === "presave" ? "presave" : "streaming" });
     else if (type === "video") fbq("track", "ViewContent", { content_name: item, content_category: "video" });
   }
 }, true);

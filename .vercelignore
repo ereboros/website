@@ -4,6 +4,9 @@ uploads/
 CLAUDE.md
 .gitignore
 
+# Ferramenta interna de arte para redes sociais (cartazes do carrossel do IG)
+docs-internos/cartazes-ig/
+
 # Fonte do build: o navegador carrega apenas os .js gerados (ver build.mjs)
 *.jsx
 build.mjs
