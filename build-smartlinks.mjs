@@ -89,8 +89,8 @@ const SINGLES = [
     videoUrl: "https://www.youtube.com/watch?v=r17RmYloCEw",
     // Pré-save no Spotify (show.co). Sai sozinho do ar quando "links" for preenchido.
     presave: "https://show.co/qSB0KOp",
-    // Fora desde 28.08.2026. O Bandcamp ainda não tem a faixa: fica "Soon" até
-    // subir, então a lista deste single acrescenta "bandcamp" ao ORDER padrão.
+    // Fora desde 28.08.2026, inclusive no Bandcamp (que a ordem própria acrescenta
+    // ao ORDER padrão, como em Progenies).
     order: ["spotify", "apple-music", "youtube-music", "amazon-music", "deezer", "bandcamp"],
     links: {
       spotify: "https://open.spotify.com/album/4AKmw4BZFQVCrzUWY0o4je",
@@ -98,6 +98,7 @@ const SINGLES = [
       "youtube-music": "https://music.youtube.com/playlist?list=OLAK5uy_nCZb3tJYLxS6fir4QvcEu3R1zJd3_Hz70",
       "amazon-music": "https://music.amazon.com/albums/B0HBS1WMFQ",
       deezer: "https://www.deezer.com/album/1039495192",
+      bandcamp: "https://ereboros.bandcamp.com/track/at-the-gallows-of-doom",
     },
   },
   {
