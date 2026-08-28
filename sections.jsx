@@ -148,7 +148,7 @@ function Videos({ lang, data, i18n }) {
           {data.videos.map((v, i) => (
             <Reveal key={v.id} delay={i * 80} className="video-tile">
               <div className="video-embed">
-                <LiteYouTube id={v.id} title={v.title} eager />
+                <LiteYouTube id={v.id} title={v.title} eager={i === 0} />
               </div>
             </Reveal>
           ))}

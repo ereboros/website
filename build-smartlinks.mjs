@@ -53,8 +53,8 @@ const SINGLES = [
     coverAlt: "In the Depths of Misery — cover art of the Ereboros single",
     videoUrl: "https://www.youtube.com/watch?v=Fv17iU8Z5ho",
     links: {
-      spotify: "https://open.spotify.com/playlist/0mYzYnXgMeH6x5pVYxrrRc",
-      "apple-music": "https://music.apple.com/br/playlist/ereboros-setlist-tour-set-list/pl.6ca74d6644804c23b22be160993b100c",
+      spotify: "https://open.spotify.com/album/7tH62Q7NAncEgTADsWFy0W",
+      "apple-music": "https://music.apple.com/us/album/in-the-depths-of-misery-single/6774738103",
       "youtube-music": "https://music.youtube.com/watch?v=N_Q1oaQUVsg",
       "amazon-music": "https://music.amazon.com/tracks/B0H3CHRS2C",
       deezer: "https://www.deezer.com/album/994318011",
@@ -86,9 +86,19 @@ const SINGLES = [
     coverOg: "/assets/at-the-gallows-of-doom-og.jpg",
     coverAlt: "At the Gallows of Doom — cover art of the new Ereboros single",
     releaseDate: "2026-08-28",
+    videoUrl: "https://www.youtube.com/watch?v=r17RmYloCEw",
     // Pré-save no Spotify (show.co). Sai sozinho do ar quando "links" for preenchido.
     presave: "https://show.co/qSB0KOp",
-    links: null,
+    // Fora desde 28.08.2026. O Bandcamp ainda não tem a faixa: fica "Soon" até
+    // subir, então a lista deste single acrescenta "bandcamp" ao ORDER padrão.
+    order: ["spotify", "apple-music", "youtube-music", "amazon-music", "deezer", "bandcamp"],
+    links: {
+      spotify: "https://open.spotify.com/album/4AKmw4BZFQVCrzUWY0o4je",
+      "apple-music": "https://music.apple.com/us/album/at-the-gallows-of-doom-ep/6795282898",
+      "youtube-music": "https://music.youtube.com/playlist?list=OLAK5uy_nCZb3tJYLxS6fir4QvcEu3R1zJd3_Hz70",
+      "amazon-music": "https://music.amazon.com/albums/B0HBS1WMFQ",
+      deezer: "https://www.deezer.com/album/1039495192",
+    },
   },
   {
     slug: "distorted-man-made-concept",

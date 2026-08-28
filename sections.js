@@ -110,7 +110,7 @@ function Listen({ lang, data, i18n }) {
 }
 function Videos({ lang, data, i18n }) {
   const s = i18n.sections.videos;
-  return /* @__PURE__ */ React.createElement("section", { className: "section", id: "videos" }, /* @__PURE__ */ React.createElement("div", { className: "wrap" }, /* @__PURE__ */ React.createElement(SectionHead, { num: s.num, title: pick(s.title, lang), kicker: pick(s.kicker, lang) }), /* @__PURE__ */ React.createElement("div", { className: "video-grid video-grid-5" }, data.videos.map((v, i) => /* @__PURE__ */ React.createElement(Reveal, { key: v.id, delay: i * 80, className: "video-tile" }, /* @__PURE__ */ React.createElement("div", { className: "video-embed" }, /* @__PURE__ */ React.createElement(LiteYouTube, { id: v.id, title: v.title, eager: true })))))));
+  return /* @__PURE__ */ React.createElement("section", { className: "section", id: "videos" }, /* @__PURE__ */ React.createElement("div", { className: "wrap" }, /* @__PURE__ */ React.createElement(SectionHead, { num: s.num, title: pick(s.title, lang), kicker: pick(s.kicker, lang) }), /* @__PURE__ */ React.createElement("div", { className: "video-grid video-grid-5" }, data.videos.map((v, i) => /* @__PURE__ */ React.createElement(Reveal, { key: v.id, delay: i * 80, className: "video-tile" }, /* @__PURE__ */ React.createElement("div", { className: "video-embed" }, /* @__PURE__ */ React.createElement(LiteYouTube, { id: v.id, title: v.title, eager: i === 0 })))))));
 }
 function Tour({ lang, i18n }) {
   const s = i18n.sections.tour;

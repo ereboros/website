@@ -48,6 +48,8 @@ window.EREBOROS_DATA = {
   // a audição fica no embed do Spotify. Espelha a lista do JSON-LD em index.html.
   discography: [
     { title: "From Oblivion to the Grave", type: { pt: "álbum", en: "full-length" }, year: "2026" },
+    { title: "At the Gallows of Doom",     type: { pt: "single", en: "single" },     year: "2026" },
+    { title: "Progenies of the Unseen",    type: { pt: "single", en: "single" },     year: "2026" },
     { title: "In the Depths of Misery",    type: { pt: "single", en: "single" },     year: "2026" },
     { title: "Ereboros",                   type: { pt: "EP",     en: "EP" },         year: "2023" },
   ],
@@ -60,8 +62,13 @@ window.EREBOROS_DATA = {
     { name: "Loja oficial", sub: { pt: "Camisetas, vinis & mais", en: "Shirts, vinyl & more" }, href: "https://ereboros.lojaintegrada.com.br/", icon: "store" },
   ],
 
+  // Clipes na seção "Galeria". O primeiro da lista carrega o iframe direto (é o
+  // destaque); os demais entram como facade clicável, para não somar players de
+  // terceiro ao carregamento inicial (ver LiteYouTube em sections.jsx).
   videos: [
-    { id: "Fv17iU8Z5ho", title: "Ereboros — Depths",        meta: { pt: "YouTube", en: "YouTube" } },
+    { id: "r17RmYloCEw", title: "Ereboros — At the Gallows of Doom", meta: { pt: "YouTube", en: "YouTube" } },
+    { id: "4X5KjAnuQoA", title: "Ereboros — Progenies of the Unseen", meta: { pt: "YouTube", en: "YouTube" } },
+    { id: "Fv17iU8Z5ho", title: "Ereboros — In the Depths of Misery", meta: { pt: "YouTube", en: "YouTube" } },
   ],
 
   // Agenda: carregada ao vivo da API do Bandsintown (ver useBandsintown em sections.jsx).
