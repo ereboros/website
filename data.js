@@ -39,7 +39,7 @@ window.EREBOROS_DATA = {
   // INTERNO (mesmo domínio), então o clique é medido por evento GA4, não por UTM.
   announce: {
     tag:  { pt: "Novo álbum", en: "New album" },
-    text: { pt: "From Oblivion to the Grave · 23.10.2026", en: "From Oblivion to the Grave · 23.10.2026" },
+    text: { pt: "From Oblivion to the Grave · 30.10.2026", en: "From Oblivion to the Grave · 30.10.2026" },
     cta:  { pt: "Ouça o single", en: "Hear the single" },
     href: "/from-oblivion-to-the-grave/",
   },
