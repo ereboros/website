@@ -11,7 +11,16 @@
 //                                  as demais ficam "Soon" — dá pra ativar aos poucos, sem esperar todas
 // - cover: "/assets/x.webp"-> mostra a capa (com preload/LCP e og:image próprio)
 // - cover: null            -> placeholder "Artwork coming soon" (og:image = band-promo)
-// - videoUrl: "https://..." -> capa vira link (com botão de play) para o vídeo
+// - (sem link para o clipe) A capa é só imagem, de propósito. O smartlink tem um
+//                              único trabalho: levar ao streaming. Em ago/2026 a capa
+//                              linkava o clipe e disparava ViewContent no Pixel; a
+//                              campanha do Gallows otimizou por esse evento e a taxa
+//                              de clique em streaming caiu de ~16% para 2 a 5%. O clipe
+//                              fica na landing do álbum e no YouTube. Desde 04.09.2026
+//                              o clique de streaming dispara Lead E ViewContent: assim a
+//                              campanha em curso (otimizada por ViewContent) passa a
+//                              mirar streaming sem trocar o evento no conjunto, o que
+//                              reiniciaria o aprendizado.
 // - order: [ids...]          -> sobrescreve a lista/ordem de plataformas deste single
 //                              (ex.: acrescentar "bandcamp" sem afetar os outros)
 // - presave: "https://…"    -> CTA de pré-save no Spotify acima da lista de plataformas.
@@ -51,7 +60,6 @@ const SINGLES = [
     cover: "/assets/in-the-depths-of-misery.webp",
     coverOg: "/assets/in-the-depths-of-misery-og.jpg",
     coverAlt: "In the Depths of Misery — cover art of the Ereboros single",
-    videoUrl: "https://www.youtube.com/watch?v=Fv17iU8Z5ho",
     links: {
       spotify: "https://open.spotify.com/album/7tH62Q7NAncEgTADsWFy0W",
       "apple-music": "https://music.apple.com/us/album/in-the-depths-of-misery-single/6774738103",
@@ -66,7 +74,6 @@ const SINGLES = [
     cover: "/assets/progenies-of-the-unseen.webp",
     coverOg: "/assets/progenies-of-the-unseen-og.jpg",
     coverAlt: "Progenies of the Unseen — cover art of the new Ereboros single",
-    videoUrl: "https://www.youtube.com/watch?v=4X5KjAnuQoA",
     // Progenies também está no Bandcamp; a ordem própria acrescenta essa plataforma
     // só neste single (os demais mantêm as 5 DSPs padrão do ORDER).
     order: ["spotify", "apple-music", "youtube-music", "amazon-music", "deezer", "bandcamp"],
@@ -86,7 +93,6 @@ const SINGLES = [
     coverOg: "/assets/at-the-gallows-of-doom-og.jpg",
     coverAlt: "At the Gallows of Doom — cover art of the new Ereboros single",
     releaseDate: "2026-08-28",
-    videoUrl: "https://www.youtube.com/watch?v=r17RmYloCEw",
     // Pré-save no Spotify (show.co). Sai sozinho do ar quando "links" for preenchido.
     presave: "https://show.co/qSB0KOp",
     // Fora desde 28.08.2026, inclusive no Bandcamp (que a ordem própria acrescenta
@@ -178,19 +184,13 @@ function renderPage(s) {
   const preload = s.cover
     ? `\n<link rel="preload" as="image" href="${s.cover}" type="image/webp" fetchpriority="high">\n`
     : "";
-  const playIcon = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l12-7z"/></svg>`;
   const coverImg = `<img src="${s.cover}" alt="${s.coverAlt}" width="1000" height="1000" fetchpriority="high">`;
+  // Capa só imagem, sem link para o clipe (ver nota no topo do arquivo).
   const coverBlock = s.cover
-    ? (s.videoUrl
-      ? `    <!-- Capa (link para o vídeo) -->
-    <a class="sl-cover sl-cover-link" href="${s.videoUrl}" target="_blank" rel="noreferrer" data-ga-type="video" data-ga-item="youtube-video" data-ga-loc="sl-${s.slug}" aria-label="Watch the video for ${s.title} on YouTube">
-      ${coverImg}
-      <span class="sl-play" aria-hidden="true">${playIcon}</span>
-    </a>`
-      : `    <!-- Capa -->
+    ? `    <!-- Capa -->
     <div class="sl-cover">
       ${coverImg}
-    </div>`)
+    </div>`
     : `    <!-- Capa (em breve) -->
     <div class="sl-empty">
       <img src="/assets/ereboros-logo.webp" alt="Ereboros">
@@ -315,22 +315,6 @@ ${preload}
   box-shadow: 0 26px 70px rgba(0,0,0,.55);
 }
 .sl-cover img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; }
-
-/* Capa clicável (link para o vídeo) com botão de play */
-.sl-cover-link { cursor: pointer; text-decoration: none; transition: border-color .2s; }
-.sl-cover-link:hover { border-color: var(--oxide-bright); }
-.sl-play {
-  position: absolute; right: clamp(12px, 3.5%, 18px); bottom: clamp(12px, 3.5%, 18px);
-  width: clamp(42px, 11%, 58px); height: clamp(42px, 11%, 58px);
-  display: grid; place-items: center;
-  border: 1px solid rgba(240,236,228,.55); border-radius: 999px;
-  background: rgba(10,9,8,.5); color: var(--bone);
-  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
-  transition: background .2s, border-color .2s, transform .12s;
-}
-.sl-play svg { width: 42%; height: 42%; }
-.sl-cover-link:hover .sl-play { background: var(--oxide); border-color: var(--oxide-bright); }
-.sl-cover-link:active .sl-play { transform: scale(.96); }
 
 /* Placeholder quando o single ainda não tem capa */
 .sl-empty {
@@ -484,9 +468,15 @@ ${rows}
 <script>
 // Instrumentação declarativa de cliques: TODO elemento com data-ga-type é rastreado
 // nos dois: GA4 ('select_content') e Meta Pixel ('ContentClick' custom). Por cima
-// disso, no Meta os cliques de conversão disparam o evento padrão correspondente:
-// streaming (type="listen") e pré-save (type="presave") viram Lead; clipe
-// (type="video") vira ViewContent.
+// disso, no Meta o clique de conversão (streaming, type="listen", e pré-save,
+// type="presave") dispara DOIS eventos padrão com o mesmo significado:
+// - Lead: é o histórico desde jul/2026 e a base dos públicos personalizados;
+// - ViewContent: é o evento que a campanha do Gallows otimiza. Até 04.09.2026 ele
+//   era disparado pelo clique no clipe (que saiu da página); passou para o clique
+//   de streaming para a campanha mirar o objetivo certo sem trocar o evento no
+//   conjunto de anúncios (trocar reinicia o aprendizado).
+// Nada mais dispara evento padrão, de propósito: um alvo mais fácil que o
+// streaming faz o algoritmo entregar para quem não vai ouvir.
 document.addEventListener("click", function (e) {
   var el = e.target.closest("[data-ga-type]");
   if (!el) return;
@@ -499,8 +489,11 @@ document.addEventListener("click", function (e) {
   }
   if (window.fbq && /^\\d+$/.test(window.META_PIXEL_ID)) {
     fbq("trackCustom", "ContentClick", { content_type: type, item: item, location: loc });
-    if (type === "listen" || type === "presave") fbq("track", "Lead", { content_name: item, content_category: type === "presave" ? "presave" : "streaming" });
-    else if (type === "video") fbq("track", "ViewContent", { content_name: item, content_category: "video" });
+    if (type === "listen" || type === "presave") {
+      var cat = type === "presave" ? "presave" : "streaming";
+      fbq("track", "Lead", { content_name: item, content_category: cat });
+      fbq("track", "ViewContent", { content_name: item, content_category: cat });
+    }
   }
 }, true);
 

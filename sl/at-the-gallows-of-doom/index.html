@@ -107,22 +107,6 @@
 }
 .sl-cover img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; }
 
-/* Capa clicável (link para o vídeo) com botão de play */
-.sl-cover-link { cursor: pointer; text-decoration: none; transition: border-color .2s; }
-.sl-cover-link:hover { border-color: var(--oxide-bright); }
-.sl-play {
-  position: absolute; right: clamp(12px, 3.5%, 18px); bottom: clamp(12px, 3.5%, 18px);
-  width: clamp(42px, 11%, 58px); height: clamp(42px, 11%, 58px);
-  display: grid; place-items: center;
-  border: 1px solid rgba(240,236,228,.55); border-radius: 999px;
-  background: rgba(10,9,8,.5); color: var(--bone);
-  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
-  transition: background .2s, border-color .2s, transform .12s;
-}
-.sl-play svg { width: 42%; height: 42%; }
-.sl-cover-link:hover .sl-play { background: var(--oxide); border-color: var(--oxide-bright); }
-.sl-cover-link:active .sl-play { transform: scale(.96); }
-
 /* Placeholder quando o single ainda não tem capa */
 .sl-empty {
   width: min(100%, 460px); margin: 0 auto clamp(24px, 4vh, 38px);
@@ -249,11 +233,10 @@
       <h1 class="sl-title">At the Gallows of Doom</h1>
     </div>
 
-    <!-- Capa (link para o vídeo) -->
-    <a class="sl-cover sl-cover-link" href="https://www.youtube.com/watch?v=r17RmYloCEw" target="_blank" rel="noreferrer" data-ga-type="video" data-ga-item="youtube-video" data-ga-loc="sl-at-the-gallows-of-doom" aria-label="Watch the video for At the Gallows of Doom on YouTube">
+    <!-- Capa -->
+    <div class="sl-cover">
       <img src="/assets/at-the-gallows-of-doom.webp" alt="At the Gallows of Doom — cover art of the new Ereboros single" width="1000" height="1000" fetchpriority="high">
-      <span class="sl-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l12-7z"/></svg></span>
-    </a>
+    </div>
 
     <!-- Streamings -->
     <p class="sl-listen-label">Listen on every platform</p>
@@ -313,9 +296,15 @@
 <script>
 // Instrumentação declarativa de cliques: TODO elemento com data-ga-type é rastreado
 // nos dois: GA4 ('select_content') e Meta Pixel ('ContentClick' custom). Por cima
-// disso, no Meta os cliques de conversão disparam o evento padrão correspondente:
-// streaming (type="listen") e pré-save (type="presave") viram Lead; clipe
-// (type="video") vira ViewContent.
+// disso, no Meta o clique de conversão (streaming, type="listen", e pré-save,
+// type="presave") dispara DOIS eventos padrão com o mesmo significado:
+// - Lead: é o histórico desde jul/2026 e a base dos públicos personalizados;
+// - ViewContent: é o evento que a campanha do Gallows otimiza. Até 04.09.2026 ele
+//   era disparado pelo clique no clipe (que saiu da página); passou para o clique
+//   de streaming para a campanha mirar o objetivo certo sem trocar o evento no
+//   conjunto de anúncios (trocar reinicia o aprendizado).
+// Nada mais dispara evento padrão, de propósito: um alvo mais fácil que o
+// streaming faz o algoritmo entregar para quem não vai ouvir.
 document.addEventListener("click", function (e) {
   var el = e.target.closest("[data-ga-type]");
   if (!el) return;
@@ -328,8 +317,11 @@ document.addEventListener("click", function (e) {
   }
   if (window.fbq && /^\d+$/.test(window.META_PIXEL_ID)) {
     fbq("trackCustom", "ContentClick", { content_type: type, item: item, location: loc });
-    if (type === "listen" || type === "presave") fbq("track", "Lead", { content_name: item, content_category: type === "presave" ? "presave" : "streaming" });
-    else if (type === "video") fbq("track", "ViewContent", { content_name: item, content_category: "video" });
+    if (type === "listen" || type === "presave") {
+      var cat = type === "presave" ? "presave" : "streaming";
+      fbq("track", "Lead", { content_name: item, content_category: cat });
+      fbq("track", "ViewContent", { content_name: item, content_category: cat });
+    }
   }
 }, true);
 
