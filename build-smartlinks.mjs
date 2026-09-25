@@ -108,6 +108,26 @@ const SINGLES = [
     },
   },
   {
+    slug: "dissonant-soul",
+    title: "Dissonant Soul",
+    cover: "/assets/dissonant-soul.webp",
+    coverOg: "/assets/dissonant-soul-og.jpg",
+    coverAlt: "Dissonant Soul — cover art of the new Ereboros single",
+    releaseDate: "2026-09-25",
+    // Nasce já sem clipe e com todas as plataformas (Bandcamp incluído, como em
+    // Gallows). No YouTube Music a playlist do EP ainda não estava indexada no
+    // lançamento, então o link vai direto à faixa do canal Topic.
+    order: ["spotify", "apple-music", "youtube-music", "amazon-music", "deezer", "bandcamp"],
+    links: {
+      spotify: "https://open.spotify.com/album/1u0rLCistJoazpcHUVz9hu",
+      "apple-music": "https://music.apple.com/us/album/dissonant-soul-ep/6806442721",
+      "youtube-music": "https://music.youtube.com/watch?v=uPmkjCxPY0o",
+      "amazon-music": "https://music.amazon.com/albums/B0HH1YD2FT",
+      deezer: "https://www.deezer.com/album/1065630881",
+      bandcamp: "https://ereboros.bandcamp.com/track/dissonant-soul",
+    },
+  },
+  {
     slug: "distorted-man-made-concept",
     title: "Distorted Man-made Concept",
     cover: null,

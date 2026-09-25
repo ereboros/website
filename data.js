@@ -48,6 +48,7 @@ window.EREBOROS_DATA = {
   // a audição fica no embed do Spotify. Espelha a lista do JSON-LD em index.html.
   discography: [
     { title: "From Oblivion to the Grave", type: { pt: "álbum", en: "full-length" }, year: "2026" },
+    { title: "Dissonant Soul",             type: { pt: "single", en: "single" },     year: "2026" },
     { title: "At the Gallows of Doom",     type: { pt: "single", en: "single" },     year: "2026" },
     { title: "Progenies of the Unseen",    type: { pt: "single", en: "single" },     year: "2026" },
     { title: "In the Depths of Misery",    type: { pt: "single", en: "single" },     year: "2026" },
