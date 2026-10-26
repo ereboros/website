@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>From Oblivion to the Grave — Ereboros | Novo álbum 30.10.2026</title>
-<meta name="description" content="From Oblivion to the Grave, o novo álbum da Ereboros, chega em 30 de outubro de 2026. Dissonant Soul, o novo single, já está em todas as plataformas: ouça, assista ao clipe oficial e garanta o merch em tiragem limitada.">
+<meta name="description" content="From Oblivion to the Grave, o álbum de estreia da Ereboros, chega em 30 de outubro de 2026. Faça o pré-save no Spotify, ouça os quatro singles e garanta o vinil e o CD em pré-venda limitada.">
 <link rel="canonical" href="https://www.ereboros.com/from-oblivion-to-the-grave/">
 
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -16,7 +16,7 @@
 <meta property="og:type" content="music.album">
 <meta property="og:site_name" content="Ereboros">
 <meta property="og:title" content="Ereboros — From Oblivion to the Grave">
-<meta property="og:description" content="“Dissonant Soul”, o novo single da Ereboros, já está em todas as plataformas, com clipe oficial. Banda de death metal do Rio de Janeiro.">
+<meta property="og:description" content="O álbum de estreia da Ereboros chega em 30 de outubro. Faça o pré-save no Spotify. Banda de death metal do Rio de Janeiro.">
 <meta property="og:url" content="https://www.ereboros.com/from-oblivion-to-the-grave/">
 <meta property="og:image" content="https://www.ereboros.com/assets/from-oblivion-to-the-grave-og.jpg">
 <meta property="og:image:width" content="1200">
@@ -29,7 +29,7 @@
 <meta property="og:locale" content="pt_BR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ereboros — From Oblivion to the Grave">
-<meta name="twitter:description" content="“Dissonant Soul”, o novo single da Ereboros, já está em todas as plataformas, com clipe oficial. Banda de death metal do Rio de Janeiro.">
+<meta name="twitter:description" content="O álbum de estreia da Ereboros chega em 30 de outubro. Faça o pré-save no Spotify. Banda de death metal do Rio de Janeiro.">
 <meta name="twitter:image" content="https://www.ereboros.com/assets/from-oblivion-to-the-grave-og.jpg">
 
 <!-- JSON-LD: MusicAlbum -->
@@ -56,10 +56,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
 
-<link rel="preload" as="image" href="/assets/dissonant-soul.webp" type="image/webp" fetchpriority="high">
+<link rel="preload" as="image" href="/assets/from-oblivion-to-the-grave.webp" type="image/webp" fetchpriority="high">
 
 <!-- Design system do site (tokens, grain, tipografia) -->
-<link rel="stylesheet" href="/styles.css?v=43">
+<link rel="stylesheet" href="/styles.css?v=47">
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H3N99TLRFJ"></script>
@@ -88,25 +88,6 @@ html { scroll-behavior: smooth; }
 .fo-nav a.fo-back:hover { color: var(--bone); border-color: var(--rule-strong); }
 
 .fo-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
-
-/* Strip de contexto do álbum: primeira coisa da página, afirma que tudo aqui
-   é o ciclo de From Oblivion to the Grave e leva à seção do álbum */
-.fo-album-strip {
-  display: block; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
-  color: var(--bone-dim); transition: color .2s, background .2s;
-}
-.fo-album-strip:hover { color: var(--bone); background: var(--ink-2); }
-.fo-strip-in {
-  max-width: var(--maxw); margin: 0 auto; padding: 10px var(--gutter);
-  display: flex; align-items: center; gap: 14px;
-  font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
-}
-.fo-strip-in img { width: 38px; height: 38px; display: block; flex: none; }
-.fo-strip-text { flex: 1; min-width: 0; }
-.fo-strip-in strong { color: var(--bone); font-weight: 500; }
-.fo-strip-days { color: var(--oxide-bright); white-space: nowrap; }
-.fo-strip-arrow { margin-left: auto; color: var(--ash-2); }
-.fo-album-strip:hover .fo-strip-arrow { color: var(--bone); }
 
 /* Timeline do ciclo do lançamento (seção do álbum) */
 .fo-timeline { list-style: none; margin: 0; padding: 0; }
@@ -170,6 +151,8 @@ html { scroll-behavior: smooth; }
   font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.3em;
   text-transform: uppercase; color: var(--oxide-bright); margin: 0 0 18px;
 }
+/* Trecho do kicker que não pode quebrar no meio (no mobile a coluna é estreita) */
+.fo-nw { white-space: nowrap; }
 .fo-title {
   font-family: var(--f-black); font-weight: 400; color: var(--bone);
   font-size: clamp(38px, 6vw, 76px); line-height: 1.02; margin: 0 0 14px;
@@ -341,9 +324,6 @@ html.is-premiered .fo-post-premiere { display: revert; }
 html.is-premiered .fo-pre-premiere { display: none; }
 
 @media (max-width: 860px) {
-  .fo-strip-in { font-size: 10px; gap: 10px; padding-top: 9px; padding-bottom: 9px; }
-  .fo-strip-in img { width: 30px; height: 30px; }
-  .fo-strip-arrow { display: none; }
   .fo-hero {
     grid-template-columns: auto 1fr;
     grid-template-areas: "cover head" "actions actions";
@@ -375,44 +355,40 @@ html.is-premiered .fo-pre-premiere { display: none; }
   </div>
 </nav>
 
-<!-- Contexto do álbum: a página inteira é o ciclo de From Oblivion to the Grave -->
-<a class="fo-album-strip" href="#album" data-ga-type="navigate" data-ga-item="album-strip" data-ga-loc="landing_strip">
-  <span class="fo-strip-in">
-    <img src="/assets/from-oblivion-to-the-grave.webp" alt="" width="38" height="38">
-    <span class="fo-strip-text"><strong>From Oblivion to the Grave</strong> · <span class="i-pt">o novo álbum</span><span class="i-en">the new album</span> · 30.10.2026 · <span class="fo-strip-days" id="strip-days">&nbsp;</span></span>
-    <span class="fo-strip-arrow"><span class="i-pt">↓ o ciclo do álbum</span><span class="i-en">↓ the album cycle</span></span>
-  </span>
-</a>
-
 <main class="fo-wrap">
 
-  <!-- Hero: a novidade de agora -->
+  <!-- Hero: a novidade de agora (pré-save do álbum, campanha show.co só no Spotify) -->
   <header class="fo-hero">
     <div class="fo-cover">
-      <img src="/assets/dissonant-soul.webp" alt="Capa do single Dissonant Soul, da Ereboros" width="1000" height="1000" fetchpriority="high">
+      <img src="/assets/from-oblivion-to-the-grave.webp" alt="Capa do álbum From Oblivion to the Grave, da Ereboros" width="750" height="750" fetchpriority="high">
     </div>
     <div class="fo-hero-head">
-      <p class="fo-kicker"><span class="i-pt">Novo single · 25.09.2026 · Já disponível</span><span class="i-en">New single · 25.09.2026 · Out now</span></p>
-      <h1 class="fo-title">Dissonant Soul</h1>
+      <p class="fo-kicker"><span class="i-pt"><span class="fo-nw">Álbum de estreia ·</span> <span class="fo-nw">30.10.2026</span></span><span class="i-en"><span class="fo-nw">Debut album ·</span> <span class="fo-nw">30.10.2026</span></span></p>
+      <h1 class="fo-title">From Oblivion to the Grave</h1>
     </div>
     <div class="fo-hero-actions">
       <p class="fo-sub i-pt">
-        O quarto single de <strong>From Oblivion to the Grave</strong> saiu em 25 de setembro
-        e já está em todas as plataformas, do Spotify ao Bandcamp.
-        <span class="fo-pre-premiere">O clipe oficial estreia hoje às 11h45.</span><span class="fo-post-premiere">O clipe oficial também já está no ar.</span>
+        O álbum de estreia da Ereboros chega em <strong>30 de outubro</strong>: dez faixas,
+        entre elas os quatro singles do ciclo. Faça o pré-save e ele entra na sua
+        biblioteca no minuto do lançamento.
       </p>
       <p class="fo-sub i-en">
-        The fourth single from <strong>From Oblivion to the Grave</strong> came out on
-        September 25 and is on every platform, from Spotify to Bandcamp.
-        <span class="fo-pre-premiere">The official video premieres today at 11:45 (Brasília time).</span><span class="fo-post-premiere">The official video is out too.</span>
+        Ereboros’s debut full-length arrives on <strong>October 30</strong>: ten tracks,
+        including the four singles of the cycle. Pre-save it and it lands in your library
+        the minute it drops.
       </p>
+      <div class="fo-count" id="countdown" role="timer" aria-label="Contagem regressiva para o lançamento do álbum">
+        <div><b data-cd="d">—</b><span><span class="i-pt">dias</span><span class="i-en">days</span></span></div>
+        <div><b data-cd="h">—</b><span><span class="i-pt">horas</span><span class="i-en">hours</span></span></div>
+        <div><b data-cd="m">—</b><span><span class="i-pt">min</span><span class="i-en">min</span></span></div>
+        <div><b data-cd="s">—</b><span><span class="i-pt">seg</span><span class="i-en">sec</span></span></div>
+      </div>
       <div class="fo-ctas">
-        <a class="fo-btn fo-primary" href="#dissonant-soul" data-ga-type="navigate" data-ga-item="listen-now" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg><span class="i-pt">Ouvir agora</span><span class="i-en">Listen now</span></a>
-        <a class="fo-btn" href="https://www.youtube.com/watch?v=OcVVnKboIE0" target="_blank" rel="noreferrer" data-ga-type="video" data-ga-item="dissonant-video" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6 3v18l14-9z"/></svg><span class="fo-pre-premiere"><span class="i-pt">Estreia do clipe</span><span class="i-en">Video premiere</span></span><span class="fo-post-premiere"><span class="i-pt">Assista ao clipe</span><span class="i-en">Watch the video</span></span></a>
-        <a class="fo-btn" href="#presave" data-ga-type="navigate" data-ga-item="releases" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span class="i-pt">Ouça os outros singles</span><span class="i-en">Hear the other singles</span></a>
+        <a class="fo-btn fo-primary" href="https://show.co/55BY4jL" target="_blank" rel="noreferrer" data-ga-type="presave" data-ga-item="spotify" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg><span class="i-pt">Pré-save no Spotify</span><span class="i-en">Pre-save on Spotify</span></a>
+        <a class="fo-btn" href="#merch" data-ga-type="navigate" data-ga-item="merch" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg><span class="i-pt">Vinil e CD na pré-venda</span><span class="i-en">Vinyl and CD pre-order</span></a>
       </div>
       <div class="fo-ctas-quiet">
-        <a href="#merch" data-ga-type="navigate" data-ga-item="merch" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="i-pt">Garantir o merch</span><span class="i-en">Get the merch</span></a>
+        <a href="#dissonant-soul" data-ga-type="navigate" data-ga-item="releases" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span class="i-pt">Ouça os singles</span><span class="i-en">Hear the singles</span></a>
         <a href="#share" data-ga-type="navigate" data-ga-item="share" data-ga-loc="landing_hero"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg><span class="i-pt">Compartilhe</span><span class="i-en">Share</span></a>
       </div>
     </div>
@@ -443,13 +419,6 @@ html.is-premiered .fo-pre-premiere { display: none; }
         <img src="/assets/from-oblivion-to-the-grave.webp" alt="Capa do álbum From Oblivion to the Grave, da Ereboros" width="750" height="750" loading="lazy">
       </div>
       <div class="fo-release-body">
-        <p class="fo-streams-label"><span class="i-pt">Lançamento em 30 de outubro de 2026</span><span class="i-en">Out October 30, 2026</span></p>
-        <div class="fo-count" id="countdown" role="timer" aria-label="Contagem regressiva para o lançamento do álbum">
-          <div><b data-cd="d">—</b><span><span class="i-pt">dias</span><span class="i-en">days</span></span></div>
-          <div><b data-cd="h">—</b><span><span class="i-pt">horas</span><span class="i-en">hours</span></span></div>
-          <div><b data-cd="m">—</b><span><span class="i-pt">min</span><span class="i-en">min</span></span></div>
-          <div><b data-cd="s">—</b><span><span class="i-pt">seg</span><span class="i-en">sec</span></span></div>
-        </div>
         <p class="fo-streams-label"><span class="i-pt">A história até aqui</span><span class="i-en">The story so far</span></p>
         <ol class="fo-timeline">
           <li class="is-done">
@@ -470,17 +439,17 @@ html.is-premiered .fo-pre-premiere { display: none; }
             <p class="fo-tl-desc i-pt">O terceiro single, em todas as plataformas. <a href="https://open.spotify.com/album/4AKmw4BZFQVCrzUWY0o4je" target="_blank" rel="noreferrer" data-ga-type="listen" data-ga-item="spotify" data-ga-loc="landing_album">Ouça no Spotify</a> e <a href="#presave" data-ga-type="navigate" data-ga-item="gallows" data-ga-loc="landing_album">assista ao clipe</a>.</p>
             <p class="fo-tl-desc i-en">The third single, out on every platform. <a href="https://open.spotify.com/album/4AKmw4BZFQVCrzUWY0o4je" target="_blank" rel="noreferrer" data-ga-type="listen" data-ga-item="spotify" data-ga-loc="landing_album">Listen on Spotify</a> and <a href="#presave" data-ga-type="navigate" data-ga-item="gallows" data-ga-loc="landing_album">watch the video</a>.</p>
           </li>
-          <li class="is-now">
-            <span class="fo-tl-date"><span class="i-pt">25.09.2026 · agora</span><span class="i-en">25.09.2026 · now</span></span>
+          <li class="is-done">
+            <span class="fo-tl-date">25.09.2026</span>
             <h3 class="fo-tl-title">Dissonant Soul</h3>
-            <p class="fo-tl-desc i-pt">O novo single, já em todas as plataformas. <a href="https://open.spotify.com/album/1u0rLCistJoazpcHUVz9hu" target="_blank" rel="noreferrer" data-ga-type="listen" data-ga-item="spotify" data-ga-loc="landing_album">Ouça no Spotify</a> e <a href="#dissonant-soul" data-ga-type="navigate" data-ga-item="dissonant-soul" data-ga-loc="landing_album">assista ao clipe</a>.</p>
-            <p class="fo-tl-desc i-en">The new single, out on every platform. <a href="https://open.spotify.com/album/1u0rLCistJoazpcHUVz9hu" target="_blank" rel="noreferrer" data-ga-type="listen" data-ga-item="spotify" data-ga-loc="landing_album">Listen on Spotify</a> and <a href="#dissonant-soul" data-ga-type="navigate" data-ga-item="dissonant-soul" data-ga-loc="landing_album">watch the video</a>.</p>
+            <p class="fo-tl-desc i-pt">O quarto single, em todas as plataformas. <a href="https://open.spotify.com/album/1u0rLCistJoazpcHUVz9hu" target="_blank" rel="noreferrer" data-ga-type="listen" data-ga-item="spotify" data-ga-loc="landing_album">Ouça no Spotify</a> e <a href="#dissonant-soul" data-ga-type="navigate" data-ga-item="dissonant-soul" data-ga-loc="landing_album">assista ao clipe</a>.</p>
+            <p class="fo-tl-desc i-en">The fourth single, out on every platform. <a href="https://open.spotify.com/album/1u0rLCistJoazpcHUVz9hu" target="_blank" rel="noreferrer" data-ga-type="listen" data-ga-item="spotify" data-ga-loc="landing_album">Listen on Spotify</a> and <a href="#dissonant-soul" data-ga-type="navigate" data-ga-item="dissonant-soul" data-ga-loc="landing_album">watch the video</a>.</p>
           </li>
-          <li>
-            <span class="fo-tl-date">30.10.2026</span>
+          <li class="is-now">
+            <span class="fo-tl-date"><span class="i-pt">30.10.2026 · pré-save</span><span class="i-en">30.10.2026 · pre-save</span></span>
             <h3 class="fo-tl-title">From Oblivion to the Grave</h3>
-            <p class="fo-tl-desc i-pt">O álbum completo. Vinil e CD em pré-venda limitada. <a href="#merch" data-ga-type="navigate" data-ga-item="merch" data-ga-loc="landing_album">Garanta o seu</a>.</p>
-            <p class="fo-tl-desc i-en">The full album. Vinyl and CD in limited pre-order. <a href="#merch" data-ga-type="navigate" data-ga-item="merch" data-ga-loc="landing_album">Get yours</a>.</p>
+            <p class="fo-tl-desc i-pt">O álbum completo, em pré-save. <a href="https://show.co/55BY4jL" target="_blank" rel="noreferrer" data-ga-type="presave" data-ga-item="spotify" data-ga-loc="landing_album">Garanta o seu no Spotify</a>. Vinil e CD em pré-venda limitada: <a href="#merch" data-ga-type="navigate" data-ga-item="merch" data-ga-loc="landing_album">veja o merch</a>.</p>
+            <p class="fo-tl-desc i-en">The full album, up for pre-save. <a href="https://show.co/55BY4jL" target="_blank" rel="noreferrer" data-ga-type="presave" data-ga-item="spotify" data-ga-loc="landing_album">Get it on Spotify</a>. Vinyl and CD in limited pre-order: <a href="#merch" data-ga-type="navigate" data-ga-item="merch" data-ga-loc="landing_album">see the merch</a>.</p>
           </li>
         </ol>
       </div>
@@ -804,22 +773,17 @@ html.is-premiered .fo-pre-premiere { display: none; }
 <script>
 // ---- i18n client-side (PT/EN) ----------------------------------------------
 // A página é servida em PT; o botão da nav alterna para EN sem recarregar nem mudar
-// a URL. Textos estáticos trocam via CSS (.i-pt/.i-en); os gerados por JS (strip,
-// countdown, copiar, compartilhar) usam FO_T + foLang().
+// a URL. Textos estáticos trocam via CSS (.i-pt/.i-en); os gerados por JS
+// (countdown, copiar, compartilhar) usam FO_T + foLang().
 var FO_T = {
-  stripSoon: { pt: "já disponível", en: "out now" },
-  stripDays: {
-    pt: function (n) { return "faltam " + n + (n === 1 ? " dia" : " dias"); },
-    en: function (n) { return n + (n === 1 ? " day left" : " days left"); }
-  },
   countdownDone: {
     pt: '<div><b>Já disponível</b><span>em todas as plataformas</span></div>',
     en: '<div><b>Out now</b><span>on every platform</span></div>'
   },
   copyDone: { pt: "Link copiado!", en: "Link copied!" },
   shareText: {
-    pt: "Saca só o som do Ereboros, uma banda de metal do Rio de Janeiro. O novo single, Dissonant Soul, já está em todas as plataformas.",
-    en: "Check out Ereboros, a metal band from Rio de Janeiro. Their new single, Dissonant Soul, is out now on every platform."
+    pt: "Saca só o som do Ereboros, uma banda de metal do Rio de Janeiro. O álbum de estreia, From Oblivion to the Grave, sai dia 30 de outubro e já dá pra fazer o pré-save.",
+    en: "Check out Ereboros, a metal band from Rio de Janeiro. Their debut album, From Oblivion to the Grave, drops October 30 and is up for pre-save now."
   }
 };
 function foLang() { return document.documentElement.lang === "en" ? "en" : "pt"; }
@@ -836,7 +800,6 @@ function foLang() { return document.documentElement.lang === "en" ? "en" : "pt";
     document.title = en
       ? "From Oblivion to the Grave — Ereboros | New album out Oct 30, 2026"
       : "From Oblivion to the Grave — Ereboros | Novo álbum 30.10.2026";
-    if (typeof window.foRenderStrip === "function") window.foRenderStrip();
     if (typeof window.foRenderShare === "function") window.foRenderShare();
   }
   // Limpa a preferência gravada por versões anteriores desta página.
@@ -870,16 +833,6 @@ function foLang() { return document.documentElement.lang === "en" ? "en" : "pt";
   }
   start("countdown", "2026-10-30T00:00:00-03:00",
         function () { return FO_T.countdownDone[foLang()]; });
-
-  // Dias restantes no strip do álbum (recalculável ao trocar de idioma)
-  window.foRenderStrip = function () {
-    var strip = document.getElementById("strip-days");
-    if (!strip) return;
-    var diff = new Date("2026-10-30T00:00:00-03:00").getTime() - Date.now();
-    var L = foLang();
-    strip.textContent = diff <= 0 ? FO_T.stripSoon[L] : FO_T.stripDays[L](Math.ceil(diff / 86400000));
-  };
-  window.foRenderStrip();
 })();
 
 // Estreia do clipe do novo single (25.09.2026, 11h45 de Brasília): marca
