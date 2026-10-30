@@ -68,14 +68,16 @@ function LiteYouTube({ id, title, eager }) {
   );
 }
 
-function LiteSpotify({ lang }) {
+// Com `album` (release.spotifyAlbum em data.js) o embed é o do álbum; sem ele, o do artista.
+function LiteSpotify({ lang, album }) {
   const [on, setOn] = useState(false);
+  const path = album ? `album/${album}` : "artist/4j0EjyhqLFjcksGkgwE8mz";
   if (on) {
     return (
       <iframe
         data-testid="embed-iframe"
         title="Ereboros on Spotify"
-        src="https://open.spotify.com/embed/artist/4j0EjyhqLFjcksGkgwE8mz?utm_source=generator&theme=0"
+        src={`https://open.spotify.com/embed/${path}?utm_source=generator&theme=0`}
         width="100%"
         height="420"
         frameBorder="0"
@@ -86,7 +88,7 @@ function LiteSpotify({ lang }) {
     );
   }
   return (
-    <button type="button" className="lite-embed lite-spotify" onClick={() => { if (typeof gtag === "function") gtag("event", "select_content", { content_type: "audio", item_id: "spotify-artist", location: "home_listen" }); setOn(true); }}>
+    <button type="button" className="lite-embed lite-spotify" onClick={() => { if (typeof gtag === "function") gtag("event", "select_content", { content_type: "audio", item_id: album ? "spotify-album" : "spotify-artist", location: "home_listen" }); setOn(true); }}>
       <Icon.Spotify className="lite-spotify-logo" />
       <span className="lite-spotify-title">{lang === "pt" ? "Ouvir no Spotify" : "Play on Spotify"}</span>
       <span className="lite-play"><Icon.Play /></span>
@@ -106,7 +108,7 @@ function Listen({ lang, data, i18n }) {
           <Reveal>
             <div className="spotify-embed">
               <div className="meta meta-oxide" style={{ marginBottom: 14 }}>{pick(rel.subtitle, lang)}</div>
-              <LiteSpotify lang={lang} />
+              <LiteSpotify lang={lang} album={rel.spotifyAlbum} />
               <p className="meta" style={{ marginTop: 14, lineHeight: 1.7 }}>
                 {lang === "pt" ? "Discografia" : "Discography"}:{" "}
                 {data.discography.map((d, i) => (

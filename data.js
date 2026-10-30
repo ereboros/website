@@ -21,26 +21,28 @@ window.EREBOROS_DATA = {
     pt: [
       "Ereboros é uma banda brasileira de Death Metal formada na cidade do Rio de Janeiro, reunindo músicos veteranos da cena underground nacional. Sua sonoridade transita entre agressividade extrema, densidade atmosférica e construção melódica, criando uma estética intensa e contemporânea dentro da música extrema.",
       "Desde seu primeiro lançamento, em 2023, a banda vem expandindo consistentemente sua atuação através de apresentações ao vivo pelo Brasil, Europa e México, fortalecendo sua presença no circuito underground internacional. A experiência de seus integrantes e a forte abordagem estética do grupo têm contribuído para o crescimento do nome Ereboros dentro da cena extrema contemporânea.",
-      "Em junho de 2026, a banda inicia um novo ciclo com o lançamento de um novo single, antecipando o álbum que será oficialmente lançado em outubro de 2026. O novo material aprofunda a proposta sonora e conceitual do grupo, reforçando sua identidade dentro do metal extremo moderno.",
+      "Em junho de 2026, a banda iniciou um novo ciclo com o lançamento de um novo single, antecipando o álbum From Oblivion to the Grave, lançado em 30 de outubro de 2026. O novo material aprofunda a proposta sonora e conceitual do grupo, reforçando sua identidade dentro do metal extremo moderno.",
     ],
     en: [
       "Ereboros is a Brazilian Death Metal band formed in Rio de Janeiro, bringing together seasoned musicians from the national underground scene. Their sound blends extreme aggression, atmospheric density, and melodic composition, creating an intense and contemporary identity within extreme music.",
       "Since their debut release in 2023, the band has steadily expanded its presence through live performances across Brazil, Europe, and Mexico, strengthening its position within the international underground circuit. The experience of its members, combined with the band’s strong artistic identity, has contributed to the growing recognition of the Ereboros name within the contemporary extreme metal scene.",
-      "In June 2026, the band begins a new chapter with the release of a new single, leading into the launch of their upcoming album, officially scheduled for October 2026. The new material further expands the group’s sonic and conceptual approach, reinforcing its identity within modern extreme metal.",
+      "In June 2026, the band began a new chapter with the release of a new single, leading into the album From Oblivion to the Grave, released on October 30, 2026. The new material further expands the group’s sonic and conceptual approach, reinforcing its identity within modern extreme metal.",
     ],
   },
 
   release: {
     title: "From Oblivion to the Grave",
     subtitle: { pt: "Álbum · 2026", en: "Full-length · 2026" },
+    // ID do álbum no Spotify: alimenta o embed da seção "Ouça" (LiteSpotify em sections.jsx)
+    spotifyAlbum: "3m9PPGEcuGQjgwqcho6e8E",
   },
 
   // Faixa de anúncio no topo da home (CTA para a landing do álbum). O link é
   // INTERNO (mesmo domínio), então o clique é medido por evento GA4, não por UTM.
   announce: {
     tag:  { pt: "Novo álbum", en: "New album" },
-    text: { pt: "From Oblivion to the Grave · 30.10.2026", en: "From Oblivion to the Grave · 30.10.2026" },
-    cta:  { pt: "Faça o pré-save", en: "Pre-save now" },
+    text: { pt: "From Oblivion to the Grave · já disponível", en: "From Oblivion to the Grave · out now" },
+    cta:  { pt: "Ouça agora", en: "Listen now" },
     href: "/from-oblivion-to-the-grave/",
   },
 
@@ -67,6 +69,7 @@ window.EREBOROS_DATA = {
   // destaque); os demais entram como facade clicável, para não somar players de
   // terceiro ao carregamento inicial (ver LiteYouTube em sections.jsx).
   videos: [
+    { id: "wEnr2StvxcA", title: "Ereboros — Distorted Man-made Concept", meta: { pt: "YouTube", en: "YouTube" } },
     { id: "r17RmYloCEw", title: "Ereboros — At the Gallows of Doom", meta: { pt: "YouTube", en: "YouTube" } },
     { id: "4X5KjAnuQoA", title: "Ereboros — Progenies of the Unseen", meta: { pt: "YouTube", en: "YouTube" } },
     { id: "Fv17iU8Z5ho", title: "Ereboros — In the Depths of Misery", meta: { pt: "YouTube", en: "YouTube" } },

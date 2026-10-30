@@ -55,7 +55,7 @@ const NOSCRIPT_PT = `  <article>
     <p>Death Metal — Rio de Janeiro, Brasil.</p>
     <p>Ereboros é uma banda brasileira de Death Metal formada na cidade do Rio de Janeiro, reunindo músicos veteranos da cena underground nacional. Sua sonoridade transita entre agressividade extrema, densidade atmosférica e construção melódica, criando uma estética intensa e contemporânea dentro da música extrema.</p>
     <p>Desde seu primeiro lançamento, em 2023, a banda vem expandindo consistentemente sua atuação através de apresentações ao vivo pelo Brasil, Europa e México, fortalecendo sua presença no circuito underground internacional.</p>
-    <p>Em junho de 2026, a banda inicia um novo ciclo com o lançamento de um novo single, antecipando o álbum que será oficialmente lançado em outubro de 2026.</p>
+    <p>Em junho de 2026, a banda iniciou um novo ciclo com o lançamento de um novo single, antecipando o álbum From Oblivion to the Grave, lançado em 30 de outubro de 2026.</p>
     <p>Discografia: From Oblivion to the Grave (álbum, 2026), In the Depths of Misery (single, 2026), Ereboros (EP, 2023).</p>
     <p>Formação: Thiago Barbosa (Guitarra &amp; Vocais), Juan Carlos (Guitarra), Paulo Doc (Baixo), Victor Mendonça (Bateria).</p>
     <p>Links oficiais: Spotify, Bandcamp, YouTube, Instagram, TikTok, Facebook e loja oficial em ereboros.lojaintegrada.com.br.</p>
@@ -66,7 +66,7 @@ const NOSCRIPT_EN = `  <article>
     <p>Death Metal — Rio de Janeiro, Brazil.</p>
     <p>Ereboros is a Brazilian Death Metal band formed in Rio de Janeiro, bringing together seasoned musicians from the national underground scene. Their sound blends extreme aggression, atmospheric density and melodic composition, creating an intense and contemporary identity within extreme music.</p>
     <p>Since their debut release in 2023, the band has steadily expanded its presence through live performances across Brazil, Europe and Mexico, strengthening its position within the international underground circuit.</p>
-    <p>In June 2026, the band begins a new chapter with the release of a new single, leading into the album officially scheduled for October 2026.</p>
+    <p>In June 2026, the band began a new chapter with the release of a new single, leading into the album From Oblivion to the Grave, released on October 30, 2026.</p>
     <p>Discography: From Oblivion to the Grave (album, 2026), In the Depths of Misery (single, 2026), Ereboros (EP, 2023).</p>
     <p>Lineup: Thiago Barbosa (Guitar &amp; Vocals), Juan Carlos (Guitar), Paulo Doc (Bass), Victor Mendonça (Drums).</p>
     <p>Official links: Spotify, Bandcamp, YouTube, Instagram, TikTok, Facebook and the official store at ereboros.lojaintegrada.com.br.</p>

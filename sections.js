@@ -80,15 +80,16 @@ function LiteYouTube({ id, title, eager }) {
     /* @__PURE__ */ React.createElement("span", { className: "lite-play" }, /* @__PURE__ */ React.createElement(Icon.Play, null))
   );
 }
-function LiteSpotify({ lang }) {
+function LiteSpotify({ lang, album }) {
   const [on, setOn] = useState(false);
+  const path = album ? `album/${album}` : "artist/4j0EjyhqLFjcksGkgwE8mz";
   if (on) {
     return /* @__PURE__ */ React.createElement(
       "iframe",
       {
         "data-testid": "embed-iframe",
         title: "Ereboros on Spotify",
-        src: "https://open.spotify.com/embed/artist/4j0EjyhqLFjcksGkgwE8mz?utm_source=generator&theme=0",
+        src: `https://open.spotify.com/embed/${path}?utm_source=generator&theme=0`,
         width: "100%",
         height: "420",
         frameBorder: "0",
@@ -99,14 +100,14 @@ function LiteSpotify({ lang }) {
     );
   }
   return /* @__PURE__ */ React.createElement("button", { type: "button", className: "lite-embed lite-spotify", onClick: () => {
-    if (typeof gtag === "function") gtag("event", "select_content", { content_type: "audio", item_id: "spotify-artist", location: "home_listen" });
+    if (typeof gtag === "function") gtag("event", "select_content", { content_type: "audio", item_id: album ? "spotify-album" : "spotify-artist", location: "home_listen" });
     setOn(true);
   } }, /* @__PURE__ */ React.createElement(Icon.Spotify, { className: "lite-spotify-logo" }), /* @__PURE__ */ React.createElement("span", { className: "lite-spotify-title" }, lang === "pt" ? "Ouvir no Spotify" : "Play on Spotify"), /* @__PURE__ */ React.createElement("span", { className: "lite-play" }, /* @__PURE__ */ React.createElement(Icon.Play, null)));
 }
 function Listen({ lang, data, i18n }) {
   const s = i18n.sections.listen;
   const rel = data.release;
-  return /* @__PURE__ */ React.createElement("section", { className: "section", id: "listen" }, /* @__PURE__ */ React.createElement("div", { className: "wrap" }, /* @__PURE__ */ React.createElement(SectionHead, { num: s.num, title: pick(s.title, lang), kicker: pick(s.kicker, lang) }), /* @__PURE__ */ React.createElement("div", { className: "listen-grid" }, /* @__PURE__ */ React.createElement(Reveal, null, /* @__PURE__ */ React.createElement("div", { className: "spotify-embed" }, /* @__PURE__ */ React.createElement("div", { className: "meta meta-oxide", style: { marginBottom: 14 } }, pick(rel.subtitle, lang)), /* @__PURE__ */ React.createElement(LiteSpotify, { lang }), /* @__PURE__ */ React.createElement("p", { className: "meta", style: { marginTop: 14, lineHeight: 1.7 } }, lang === "pt" ? "Discografia" : "Discography", ":", " ", data.discography.map((d, i) => /* @__PURE__ */ React.createElement("span", { key: d.title }, i > 0 ? " · " : "", d.title, " (", pick(d.type, lang), ", ", d.year, ")"))))), /* @__PURE__ */ React.createElement(Reveal, { delay: 120 }, /* @__PURE__ */ React.createElement("div", { className: "meta", style: { marginBottom: 14 } }, pick(i18n.listen.platforms, lang)), /* @__PURE__ */ React.createElement("div", { className: "platforms" }, data.platforms.map((p) => /* @__PURE__ */ React.createElement("a", { key: p.name, href: p.href, className: "platform-row", target: "_blank", rel: "noreferrer", "data-ga-type": "platform", "data-ga-item": p.icon, "data-ga-loc": "home_listen" }, iconByName(p.icon), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "platform-name" }, p.name), /* @__PURE__ */ React.createElement("div", { className: "platform-sub" }, pick(p.sub, lang))), /* @__PURE__ */ React.createElement("span", { className: "platform-arrow" }, "→"))))))));
+  return /* @__PURE__ */ React.createElement("section", { className: "section", id: "listen" }, /* @__PURE__ */ React.createElement("div", { className: "wrap" }, /* @__PURE__ */ React.createElement(SectionHead, { num: s.num, title: pick(s.title, lang), kicker: pick(s.kicker, lang) }), /* @__PURE__ */ React.createElement("div", { className: "listen-grid" }, /* @__PURE__ */ React.createElement(Reveal, null, /* @__PURE__ */ React.createElement("div", { className: "spotify-embed" }, /* @__PURE__ */ React.createElement("div", { className: "meta meta-oxide", style: { marginBottom: 14 } }, pick(rel.subtitle, lang)), /* @__PURE__ */ React.createElement(LiteSpotify, { lang, album: rel.spotifyAlbum }), /* @__PURE__ */ React.createElement("p", { className: "meta", style: { marginTop: 14, lineHeight: 1.7 } }, lang === "pt" ? "Discografia" : "Discography", ":", " ", data.discography.map((d, i) => /* @__PURE__ */ React.createElement("span", { key: d.title }, i > 0 ? " · " : "", d.title, " (", pick(d.type, lang), ", ", d.year, ")"))))), /* @__PURE__ */ React.createElement(Reveal, { delay: 120 }, /* @__PURE__ */ React.createElement("div", { className: "meta", style: { marginBottom: 14 } }, pick(i18n.listen.platforms, lang)), /* @__PURE__ */ React.createElement("div", { className: "platforms" }, data.platforms.map((p) => /* @__PURE__ */ React.createElement("a", { key: p.name, href: p.href, className: "platform-row", target: "_blank", rel: "noreferrer", "data-ga-type": "platform", "data-ga-item": p.icon, "data-ga-loc": "home_listen" }, iconByName(p.icon), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "platform-name" }, p.name), /* @__PURE__ */ React.createElement("div", { className: "platform-sub" }, pick(p.sub, lang))), /* @__PURE__ */ React.createElement("span", { className: "platform-arrow" }, "→"))))))));
 }
 function Videos({ lang, data, i18n }) {
   const s = i18n.sections.videos;
