@@ -346,6 +346,29 @@ html.is-premiered .fo-pre-premiere { display: none; }
   .fo-single { grid-template-columns: 1fr; }
   .fo-merch-grid { grid-template-columns: 1fr; }
 }
+
+/* Fundo em vídeo do hero: o mesmo corte de 12 s do clipe de Progenies usado no
+   smartlink do álbum, mudo, em loop e sem clique. Fica só no topo (a página é longa
+   e tem outros clipes embutidos) e pausa quando o hero sai da tela (ver script). */
+.fo-nav { position: relative; z-index: 1; }
+.fo-hero { position: relative; z-index: 0; }
+/* Sangra até as bordas da tela. No Windows o 100vw inclui a barra de rolagem; a
+   sobra é cortada pelo overflow-x: hidden do body e não cria rolagem lateral. */
+.fo-hero-bg {
+  position: absolute; z-index: -1; pointer-events: none; overflow: hidden;
+  top: -120px; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%);
+  background: var(--ink) center / cover no-repeat;
+}
+.fo-hero-bg video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* Escurece por igual (o texto fica por cima do vídeo) e funde no fundo da página */
+.fo-hero-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(10,9,8,.35) 0%, rgba(10,9,8,.5) 65%, var(--ink) 100%),
+    radial-gradient(ellipse 80% 70% at 50% 45%, transparent 0%, rgba(10,9,8,.5) 100%);
+}
+/* Os botões secundários são transparentes: sobre o vídeo ganham fundo escuro */
+.fo-hero .fo-btn:not(.fo-primary) { background: rgba(10,9,8,.6); }
 </style>
 </head>
 <body>
@@ -362,6 +385,9 @@ html.is-premiered .fo-pre-premiere { display: none; }
 
   <!-- Hero: a novidade de agora (o álbum, fora desde 30.10.2026, em todas as plataformas) -->
   <header class="fo-hero">
+    <div class="fo-hero-bg" data-src="/assets/progenies-loop" aria-hidden="true">
+      <video muted autoplay loop playsinline preload="none"></video>
+    </div>
     <div class="fo-cover">
       <img src="/assets/from-oblivion-to-the-grave.webp" alt="Capa do álbum From Oblivion to the Grave, da Ereboros" width="750" height="750" fetchpriority="high">
     </div>
@@ -1041,6 +1067,31 @@ document.addEventListener("click", function (e) {
   var onScroll = function () { el.classList.toggle("is-hidden", window.scrollY > 60); };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+})();
+</script>
+
+<script>
+// Fundo em vídeo do hero: corte vertical no celular em pé, horizontal no resto.
+// Só baixa depois do load (a capa é o LCP), não baixa com economia de dados ou
+// "reduzir movimento" (fica o pôster) e pausa quando o hero sai da tela.
+(function () {
+  var bg = document.querySelector(".fo-hero-bg");
+  if (!bg) return;
+  var base = bg.getAttribute("data-src") + (matchMedia("(max-aspect-ratio: 3/4)").matches ? "-vertical" : "");
+  bg.style.backgroundImage = "url(" + base + ".jpg)";
+  var saveData = navigator.connection && navigator.connection.saveData;
+  if (saveData || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var v = bg.querySelector("video");
+  function play() { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+  function start() {
+    v.src = base + ".mp4";
+    if (!("IntersectionObserver" in window)) return play();
+    new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) play(); else v.pause();
+    }).observe(bg);
+  }
+  if (document.readyState === "complete") start();
+  else window.addEventListener("load", start);
 })();
 </script>
 

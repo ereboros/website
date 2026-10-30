@@ -52,6 +52,8 @@ Os arquivos gerados (`.js`, `en/index.html`, `sl/`, `merch/`) **são commitados*
 
 Consequência prática: ela carrega o `styles.css` com um **`?v=` escrito à mão, independente do da home**, e por isso costuma ficar defasada. Ao mexer no `styles.css`, incremente nos dois lugares. A URL curta `/fotg` é um redirect temporário no `vercel.json`.
 
+Desde 30.10.2026 o hero tem fundo em vídeo (`.fo-hero-bg`): o mesmo corte de Progenies do smartlink do álbum (`assets/progenies-loop*.mp4`), só atrás do topo, escurecido para o texto que fica por cima. Segue as mesmas regras do smartlink (baixa depois do `load`, corte vertical no celular em pé, nada com economia de dados ou "reduzir movimento") e, como a página é longa e tem outros clipes, **pausa quando o hero sai da tela**.
+
 ## Smartlinks por single (`/sl/<slug>/`)
 
 As páginas de smartlink usadas em campanhas (Meta etc.) ficam em `/sl/<slug>/index.html` e são **geradas** por `build-smartlinks.mjs` a partir de UM template. **Não edite os HTML em `sl/` à mão**: edite a lista `SINGLES` (e, se preciso, o template ou os ícones) no `.mjs` e rode:
