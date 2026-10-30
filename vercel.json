@@ -17,6 +17,11 @@
       "permanent": false
     },
     {
+      "source": "/sl/(distorted-man-made-concept/?)",
+      "destination": "/sl/from-oblivion-to-the-grave/",
+      "permanent": true
+    },
+    {
       "source": "/((?:biography|bio|about|sobre|banda)(?:/.*)?)",
       "destination": "/#about",
       "permanent": true

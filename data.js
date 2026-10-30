@@ -60,7 +60,7 @@ window.EREBOROS_DATA = {
   platforms: [
     { name: "Instagram", sub: { pt: "@ereborosofficial",     en: "@ereborosofficial" },     href: "https://www.instagram.com/ereborosofficial/", icon: "instagram" },
     { name: "Spotify",  sub: { pt: "Discografia completa", en: "Full discography" }, href: "https://open.spotify.com/intl-pt/artist/4j0EjyhqLFjcksGkgwE8mz", icon: "spotify" },
-    { name: "Bandcamp", sub: { pt: "Edições digitais & físicas", en: "Digital & physical releases" }, href: "https://ereboros.bandcamp.com/album/ereboros", icon: "bandcamp" },
+    { name: "Bandcamp", sub: { pt: "Edições digitais & físicas", en: "Digital & physical releases" }, href: "https://ereboros.bandcamp.com/album/from-oblivion-to-the-grave", icon: "bandcamp" },
     { name: "YouTube",  sub: { pt: "Canal oficial",         en: "Official channel" }, href: "https://www.youtube.com/@Ereboros", icon: "youtube" },
     { name: "Loja oficial", sub: { pt: "Camisetas, vinis & mais", en: "Shirts, vinyl & more" }, href: "https://ereboros.lojaintegrada.com.br/", icon: "store" },
   ],
