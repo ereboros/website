@@ -220,9 +220,31 @@
   .sl-link .sl-go span { display: none; } /* no mobile deixa só a seta, menos poluído */
   .sl-link { padding: 15px 18px; }
 }
+
+/* Fundo em vídeo (bgVideo): corte do clipe atrás do conteúdo */
+.sl-bg {
+  position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+  background: var(--ink) center / cover no-repeat;
+}
+.sl-bg video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* Vinheta: escurece as bordas e o pé para a capa e os botões seguirem legíveis */
+.sl-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 75% 65% at 50% 38%, transparent 0%, rgba(10,9,8,.7) 100%),
+    linear-gradient(to bottom, rgba(10,9,8,.15), rgba(10,9,8,.55));
+}
+.sl-shell { position: relative; z-index: 1; }
+/* Sobre vídeo, o desfoque do botão de rolar seria refeito a cada quadro: fundo sólido */
+.sl-scrolldown { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(10,9,8,.85); }
 </style>
 </head>
 <body>
+
+<!-- Fundo em vídeo (bgVideo) -->
+<div class="sl-bg" data-src="/assets/progenies-loop" aria-hidden="true">
+  <video muted autoplay loop playsinline preload="none"></video>
+</div>
 
 <div class="sl-shell">
 
@@ -343,6 +365,26 @@ document.addEventListener("click", function (e) {
   window.addEventListener("resize", update);
   window.addEventListener("load", update);
   update();
+})();
+
+// Fundo em vídeo: no celular em pé usa o corte vertical; no resto, o horizontal.
+// Só baixa depois do load, e não baixa com economia de dados ou com "reduzir
+// movimento" ligado (nesses casos fica o pôster).
+(function () {
+  var bg = document.querySelector(".sl-bg");
+  if (!bg) return;
+  var base = bg.getAttribute("data-src") + (matchMedia("(max-aspect-ratio: 3/4)").matches ? "-vertical" : "");
+  bg.style.backgroundImage = "url(" + base + ".jpg)";
+  var saveData = navigator.connection && navigator.connection.saveData;
+  if (saveData || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  function start() {
+    var v = bg.querySelector("video");
+    v.src = base + ".mp4";
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {});
+  }
+  if (document.readyState === "complete") start();
+  else window.addEventListener("load", start);
 })();
 </script>
 

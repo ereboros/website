@@ -30,6 +30,11 @@
 // - kind: "album"            -> página de álbum: kicker "New album", og:type music.album e
 //                              JSON-LD MusicAlbum (sem kind = single; ver KINDS)
 // - coverOgSize: "LxA"       -> dimensões do coverOg quando ele não é o quadrado 1200x1200
+// - bgVideo: "/assets/x"     -> corte de clipe em loop no fundo, mudo e sem clique (não vira
+//                              um alvo que concorra com o streaming). Usa x.mp4 e x.jpg
+//                              (horizontal) e x-vertical.mp4 e x-vertical.jpg (celular em pé).
+//                              Entrou no álbum em 30.10.2026: ao ler a taxa de clique em
+//                              streaming dessa página, compare antes e depois dessa data.
 //
 // Depois de rodar, os arquivos gerados são commitados (a Vercel serve estático).
 // ---------------------------------------------------------------------------
@@ -151,6 +156,8 @@ const SINGLES = [
     coverOgSize: "1200x630",
     coverAlt: "From Oblivion to the Grave, cover art of the Ereboros debut album",
     releaseDate: "2026-10-30",
+    // 12 s do clipe de Progenies of the Unseen (de 0:08 a 0:20), sem áudio
+    bgVideo: "/assets/progenies-loop",
     order: ["spotify", "apple-music", "youtube-music", "amazon-music", "deezer", "bandcamp"],
     links: {
       spotify: "https://open.spotify.com/album/3m9PPGEcuGQjgwqcho6e8E",
@@ -247,6 +254,60 @@ function renderPage(s) {
       <span>Artwork coming soon</span>
     </div>`;
   const rows = order.map((id) => renderRow(s.slug, id, links[id])).join("\n\n");
+
+  // Fundo em vídeo (opcional). A fonte entra por script, depois do load, para não
+  // disputar banda com a capa (o LCP); até lá, e sem vídeo, fica o pôster parado.
+  const bgCss = s.bgVideo
+    ? `
+/* Fundo em vídeo (bgVideo): corte do clipe atrás do conteúdo */
+.sl-bg {
+  position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+  background: var(--ink) center / cover no-repeat;
+}
+.sl-bg video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* Vinheta: escurece as bordas e o pé para a capa e os botões seguirem legíveis */
+.sl-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 75% 65% at 50% 38%, transparent 0%, rgba(10,9,8,.7) 100%),
+    linear-gradient(to bottom, rgba(10,9,8,.15), rgba(10,9,8,.55));
+}
+.sl-shell { position: relative; z-index: 1; }
+/* Sobre vídeo, o desfoque do botão de rolar seria refeito a cada quadro: fundo sólido */
+.sl-scrolldown { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(10,9,8,.85); }
+`
+    : "";
+  const bgMarkup = s.bgVideo
+    ? `
+<!-- Fundo em vídeo (bgVideo) -->
+<div class="sl-bg" data-src="${s.bgVideo}" aria-hidden="true">
+  <video muted autoplay loop playsinline preload="none"></video>
+</div>
+`
+    : "";
+  const bgScript = s.bgVideo
+    ? `
+// Fundo em vídeo: no celular em pé usa o corte vertical; no resto, o horizontal.
+// Só baixa depois do load, e não baixa com economia de dados ou com "reduzir
+// movimento" ligado (nesses casos fica o pôster).
+(function () {
+  var bg = document.querySelector(".sl-bg");
+  if (!bg) return;
+  var base = bg.getAttribute("data-src") + (matchMedia("(max-aspect-ratio: 3/4)").matches ? "-vertical" : "");
+  bg.style.backgroundImage = "url(" + base + ".jpg)";
+  var saveData = navigator.connection && navigator.connection.saveData;
+  if (saveData || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  function start() {
+    var v = bg.querySelector("video");
+    v.src = base + ".mp4";
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {});
+  }
+  if (document.readyState === "complete") start();
+  else window.addEventListener("load", start);
+})();
+`
+    : "";
 
   // CTA de pré-save: bloco em destaque acima da lista (que segue toda em "Soon").
   const presaveBlock = presave
@@ -479,10 +540,10 @@ ${preload}
   .sl-link .sl-go span { display: none; } /* no mobile deixa só a seta, menos poluído */
   .sl-link { padding: 15px 18px; }
 }
-</style>
+${bgCss}</style>
 </head>
 <body>
-
+${bgMarkup}
 <div class="sl-shell">
 
   <main class="sl-main">
@@ -566,7 +627,7 @@ document.addEventListener("click", function (e) {
   window.addEventListener("load", update);
   update();
 })();
-</script>
+${bgScript}</script>
 
 </body>
 </html>
